@@ -1,5 +1,6 @@
 import { useLocation } from "react-router";
-import type { ParameterDto } from "@/core/dtos/ParameterDto";
+import { useState } from "react";
+import type { ParameterDto } from "@/core/dtos/Parameter-dto";
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
@@ -7,74 +8,82 @@ const mockParameters: ParameterDto[] = [
   {
     id: "1",
     name: "Temperatura do Ar",
-    unit: "°C",
+    unitOfMeasure: "°C",
     factor: 0.1,
     offset: -40.0,
-    active: true,
-    createdAt: "2024-01-15T10:30:00Z",
+    isActive: true,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
   {
-    id: "2",
+    id: "2",  
     name: "Umidade Relativa",
-    unit: "%",
+    unitOfMeasure: "%",
     factor: 0.1,
     offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T10:35:00Z",
+    isActive: true,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
   {
     id: "3",
     name: "Pressão Atmosférica",
-    unit: "hPa",
+    unitOfMeasure: "hPa",
     factor: 0.1,
     offset: 300.0,
-    active: true,
-    createdAt: "2024-01-15T10:40:00Z",
+    isActive: true,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
   {
     id: "4",
     name: "Velocidade do Vento",
-    unit: "m/s",
+    unitOfMeasure: "m/s",
     factor: 0.1,
     offset: 0.0,
-    active: false,
-    createdAt: "2024-01-15T10:45:00Z",
+    isActive: false,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
   {
     id: "5",
     name: "Direção do Vento",
-    unit: "°",
+    unitOfMeasure: "°",
     factor: 1.0,
     offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T10:50:00Z",
+    isActive: true,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
   {
     id: "6",
     name: "Radiação Solar",
-    unit: "W/m²",
+    unitOfMeasure: "W/m²",
     factor: 1.0,
     offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T10:55:00Z",
+    isActive: true,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
   {
     id: "7",
     name: "Precipitação",
-    unit: "mm",
+    unitOfMeasure: "mm",
     factor: 0.1,
     offset: 0.0,
-    active: false,
-    createdAt: "2024-01-15T11:00:00Z",
+    isActive: false,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
   {
     id: "8",
     name: "Índice UV",
-    unit: "índice",
+    unitOfMeasure: "índice",
     factor: 0.1,
     offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T11:05:00Z",
+    isActive: true,
+    numberOfDecimalPlaces: 1,
+    createdAt: new Date(),
   },
 ];
 
@@ -84,25 +93,26 @@ export type ParametersPageProps = {
   prevCursor: string | null;
   limit: number;
   q: string;
-  status: string;
+  isActive: string;
 };
 
 export function useParametersPage() {
   const { search } = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const searchParams = new URLSearchParams(search);
   const q = searchParams.get("q") || "";
-  const status = searchParams.get("status") || "all";
+  const isActive = searchParams.get("isActive") || "all";
   const limit = parseInt(searchParams.get("limit") || "10");
   const cursor = searchParams.get("cursor");
 
   const filteredItems = mockParameters.filter((item) => {
     const matchesName = item.name.toLowerCase().includes(q.toLowerCase());
-    const matchesStatus =
-      status === "all" ||
-      (status === "active" && item.active) ||
-      (status === "inactive" && !item.active);
-    return matchesName && matchesStatus;
+    const matchesisActive =
+      isActive === "all" ||
+      (isActive === "active" && item.isActive === true) ||
+      (isActive === "inactive" && item.isActive === false);
+    return matchesName && matchesisActive;
   });
 
   const startIndex = cursor ? parseInt(cursor) : 0;
@@ -112,16 +122,24 @@ export function useParametersPage() {
   const prevCursor =
     startIndex > 0 ? String(Math.max(0, startIndex - limit)) : null;
 
-  const handleView = (id: string) => {
+  function handleView(id: string) {
     console.log("Visualizar parâmetro:", id);
   };
 
-  const handleEdit = (id: string) => {
+  function handleEdit(id: string) {
     console.log("Editar parâmetro:", id);
   };
 
-  const handleToggleStatus = (id: string) => {
-    console.log("Alternar status do parâmetro:", id);
+  function handleToggleisActive(id: string) {
+    console.log("Alternar isActive do parâmetro:", id);
+  };
+
+  function handleNewParameter() {
+    setIsModalOpen(true);
+  };
+
+  function handleCloseModal() {
+    setIsModalOpen(false);
   };
 
   return {
@@ -130,10 +148,13 @@ export function useParametersPage() {
     prevCursor,
     limit,
     q,
-    status,
+    isActive,
     searchParams,
+    isModalOpen,
     onView: handleView,
     onEdit: handleEdit,
-    onToggleStatus: handleToggleStatus,
+    onToggleisActive: handleToggleisActive,
+    onNewParameter: handleNewParameter,
+    onCloseModal: handleCloseModal,
   };
 }

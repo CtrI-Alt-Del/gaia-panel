@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
 import { useState } from "react";
-import type { ParameterDto } from "@/core/dtos/Parameter-dto";
+import type { ParameterDto } from "@/core/dtos/parameter-dto";
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
@@ -16,7 +16,7 @@ const mockParameters: ParameterDto[] = [
     createdAt: new Date(),
   },
   {
-    id: "2",  
+    id: "2",
     name: "Umidade Relativa",
     unitOfMeasure: "%",
     factor: 0.1,
@@ -99,6 +99,9 @@ export type ParametersPageProps = {
 export function useParametersPage() {
   const { search } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedParameter, setSelectedParameter] = useState<
+    ParameterDto | undefined
+  >(undefined);
 
   const searchParams = new URLSearchParams(search);
   const q = searchParams.get("q") || "";
@@ -124,23 +127,33 @@ export function useParametersPage() {
 
   function handleView(id: string) {
     console.log("Visualizar parâmetro:", id);
-  };
+  }
 
   function handleEdit(id: string) {
-    console.log("Editar parâmetro:", id);
-  };
+    const parameter = mockParameters.find((p) => p.id === id);
+    if (parameter) {
+      setSelectedParameter(parameter);
+      setIsModalOpen(true);
+    }
+  }
 
   function handleToggleisActive(id: string) {
     console.log("Alternar isActive do parâmetro:", id);
-  };
+  }
 
   function handleNewParameter() {
+    setSelectedParameter(undefined);
     setIsModalOpen(true);
-  };
+  }
 
   function handleCloseModal() {
     setIsModalOpen(false);
-  };
+    setSelectedParameter(undefined);
+  }
+
+  function handleParameterUpdated(updatedParameter: ParameterDto) {
+    console.log("Parâmetro atualizado:", updatedParameter);
+  }
 
   return {
     items,
@@ -151,10 +164,12 @@ export function useParametersPage() {
     isActive,
     searchParams,
     isModalOpen,
+    selectedParameter,
     onView: handleView,
     onEdit: handleEdit,
     onToggleisActive: handleToggleisActive,
     onNewParameter: handleNewParameter,
     onCloseModal: handleCloseModal,
+    onParameterUpdated: handleParameterUpdated,
   };
 }

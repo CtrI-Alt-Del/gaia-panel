@@ -10,6 +10,7 @@ export type ParameterFormViewProps = {
   selectedIcon: ParameterIconType;
   onSubmit: (data: ParameterFormData) => void;
   onCancel: () => void;
+  isEditMode?: boolean;
 };
 
 export function ParameterFormView({
@@ -17,6 +18,7 @@ export function ParameterFormView({
   selectedIcon,
   onSubmit,
   onCancel,
+  isEditMode = false,
 }: ParameterFormViewProps) {
   const {
     register,
@@ -53,15 +55,6 @@ export function ParameterFormView({
         {errors.name && (
           <p className="text-sm text-red-500">{errors.name.message}</p>
         )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="description">Descrição</Label>
-        <Input
-          id="description"
-          {...register("description")}
-          placeholder="Ex: Medição da temperatura ambiente"
-        />
       </div>
 
       <div className="space-y-2">
@@ -130,7 +123,7 @@ export function ParameterFormView({
           type="submit"
           className="min-w-[100px] cursor-pointer"
         >
-          Salvar
+          {isEditMode ? "Atualizar" : "Salvar"}
         </Button>
       </div>
     </form>

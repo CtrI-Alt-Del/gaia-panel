@@ -37,11 +37,13 @@ export type ParametersPageViewProps = {
   isActive?: string;
   searchParams: URLSearchParams;
   isModalOpen: boolean;
+  selectedParameter?: ParameterDto;
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onToggleisActive?: (id: string) => void;
   onNewParameter?: () => void;
   onCloseModal?: () => void;
+  onParameterUpdated?: (parameter: ParameterDto) => void;
 };
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
@@ -149,11 +151,13 @@ export function ParametersPageView({
   isActive,
   searchParams,
   isModalOpen,
+  selectedParameter,
   onView,
   onEdit,
   onToggleisActive,
   onNewParameter,
   onCloseModal,
+  onParameterUpdated,
 }: ParametersPageViewProps) {
   return (
     <section className="container mx-auto px-4 py-2">
@@ -322,9 +326,7 @@ export function ParametersPageView({
                           type="button"
                           onClick={() => onToggleisActive(p.id || "")}
                           className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${p.isActive
-                            ? "bg-orange-100 hover:bg-orange-200 text-orange-700 hover:text-orange-800 border border-orange-200" : p.isActive
-                              ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                              : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                            ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200" : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
                             }`}
                           title={
                             p.isActive
@@ -386,6 +388,8 @@ export function ParametersPageView({
         <ParameterModal
           isOpen={isModalOpen}
           onClose={onCloseModal}
+          parameter={selectedParameter}
+          onUpdated={onParameterUpdated}
         />
       )}
     </section>

@@ -9,7 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "@/ui/global/styles/global.css";
-import { Toaster } from "@/ui/shadcn/components/sonner"
+import { Toaster } from "@/ui/shadcn/components/sonner";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -37,6 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <Toaster />
       </body>
     </html>
   );
@@ -71,7 +72,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           <code>{stack}</code>
         </pre>
       )}
-      <Toaster />
     </main>
   );
 }

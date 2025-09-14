@@ -259,12 +259,6 @@ export const AlarmsTable = ({
           </Button>
         </div>
 
-        <div className='mt-2 flex gap-4 text-xs text-gray-600'>
-          <span>Total: {stats.total}</span>
-          <span>Ativos: {stats.active}</span>
-          <span>Críticos: {stats.critical}</span>
-          <span>Alarmes: {stats.bySeverity.alarm || 0}</span>
-        </div>
       </div>
 
       <div className='overflow-x-auto border-stone-200'>
@@ -274,9 +268,8 @@ export const AlarmsTable = ({
               {TABLE_HEADERS.map((header) => (
                 <th
                   key={header}
-                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                    CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
-                  }`}
+                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
+                    }`}
                 >
                   {header}
                 </th>

@@ -10,19 +10,19 @@ import { Button } from '@/ui/shadcn/components/button'
 import { AlertTriangle } from 'lucide-react'
 import type { AlarmRule } from '../pages/use-alarms'
 
-interface DeleteAlarmDialogProps {
+interface DeactivateAlarmDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   alarm: AlarmRule | null
   onConfirm: () => void
 }
 
-export function DeleteAlarmDialog({
+export function DeactivateAlarmDialog({
   open,
   onOpenChange,
   alarm,
   onConfirm,
-}: DeleteAlarmDialogProps) {
+}: DeactivateAlarmDialogProps) {
   if (!alarm) return null
 
   return (
@@ -35,10 +35,10 @@ export function DeleteAlarmDialog({
             </div>
             <div>
               <DialogTitle className='text-lg font-semibold text-gray-900'>
-                Confirmar Exclusão
+                Confirmar Desativação
               </DialogTitle>
               <DialogDescription className='text-sm text-gray-600 mt-1'>
-                Esta ação não pode ser desfeita.
+                O alarme será desativado e não enviará mais notificações.
               </DialogDescription>
             </div>
           </div>
@@ -46,7 +46,7 @@ export function DeleteAlarmDialog({
 
         <div className='py-4'>
           <div className='bg-gray-50 rounded-lg p-4 border'>
-            <h4 className='font-medium text-gray-900 mb-2'>Alarme a ser excluído:</h4>
+            <h4 className='font-medium text-gray-900 mb-2'>Alarme a ser desativado:</h4>
             <div className='space-y-2 text-sm text-gray-600'>
               <div>
                 <span className='font-medium'>Nome:</span> {alarm.name}
@@ -83,8 +83,9 @@ export function DeleteAlarmDialog({
 
           <div className='mt-4 p-3 bg-red-50 border border-red-200 rounded-lg'>
             <p className='text-sm text-red-800'>
-              <strong>Atenção:</strong> Ao excluir este alarme, todas as configurações e
-              histórico associados serão permanentemente removidos.
+              <strong>Atenção:</strong> Ao desativar este alarme, ele não enviará mais
+              notificações, mas as configurações serão mantidas e poderá ser reativado
+              posteriormente.
             </p>
           </div>
         </div>
@@ -101,9 +102,9 @@ export function DeleteAlarmDialog({
           <Button
             type='button'
             onClick={onConfirm}
-            className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white'
+            className='px-4 py-2 bg-red-700 hover:bg-red-800 text-white'
           >
-            Excluir Alarme
+            Desativar Alarme
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -19,7 +19,7 @@ import { Modal, type ModalRef } from '@/ui/global/widgets/components/modal'
 import { useRef, useState } from 'react'
 import { CreateAlarmForm } from './create-alarm-form'
 import { EditAlarmForm } from './edit-alarm-form'
-import { DeactivateAlarmDialog } from './deactivate-alarm-dialog'
+import { AlertDialog } from '@/ui/global/widgets/components/alert-dialog'
 
 const ICON_MAP = {
   thermometer: ThermometerSun,
@@ -348,12 +348,65 @@ export const AlarmsTable = ({
         }
       </Modal>
 
-      <DeactivateAlarmDialog
+      <AlertDialog
         open={deactivateDialogOpen}
         onOpenChange={setDeactivateDialogOpen}
-        alarm={alarmToDeactivate}
+        title='Confirmar Desativação'
+        description='O alarme será desativado e não enviará mais notificações.'
+        confirmText='Desativar Alarme'
+        variant='destructive'
+        icon={<AlertTriangle className='w-5 h-5' />}
         onConfirm={handleConfirmDeactivate}
-      />
+      >
+        {alarmToDeactivate && (
+          <>
+            <div className='bg-gray-50 rounded-lg p-4 border'>
+              <h4 className='font-medium text-gray-900 mb-2'>Alarme a ser desativado:</h4>
+              <div className='space-y-2 text-sm text-gray-600'>
+                <div>
+                  <span className='font-medium'>Nome:</span> {alarmToDeactivate.name}
+                </div>
+                <div>
+                  <span className='font-medium'>Condição:</span>{' '}
+                  {alarmToDeactivate.condition}
+                </div>
+                <div>
+                  <span className='font-medium'>Severidade:</span>{' '}
+                  <span
+                    className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                      alarmToDeactivate.severity === 'critical'
+                        ? 'bg-red-100 text-red-800'
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}
+                  >
+                    {alarmToDeactivate.severity === 'critical' ? '▲ Crítico' : '○ Alarme'}
+                  </span>
+                </div>
+                <div>
+                  <span className='font-medium'>Status:</span>{' '}
+                  <span
+                    className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                      alarmToDeactivate.status === 'active'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {alarmToDeactivate.status === 'active' ? '○ Ativo' : '• Inativo'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className='mt-4 p-3 bg-red-50 border border-red-200 rounded-lg'>
+              <p className='text-sm text-red-800'>
+                <strong>Atenção:</strong> Ao desativar este alarme, ele não enviará mais
+                notificações, mas as configurações serão mantidas e poderá ser reativado
+                posteriormente.
+              </p>
+            </div>
+          </>
+        )}
+      </AlertDialog>
     </div>
   )
 }

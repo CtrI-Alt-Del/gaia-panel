@@ -4,9 +4,9 @@ import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Badge } from "@/ui/shadcn/components/badge";
 import { StatusPill } from "@/ui/shadcn/components/status-pill";
+import { useParametersFilters } from "./use-parameters-filters";
 import {
   Table,
-  TableCaption,
   TableHead,
   TableHeader,
   TableRow,
@@ -37,11 +37,13 @@ export type ParametersPageViewProps = {
   isActive?: string;
   searchParams: URLSearchParams;
   isModalOpen: boolean;
+  selectedParameter?: ParameterDto;
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onToggleisActive?: (id: string) => void;
   onNewParameter?: () => void;
   onCloseModal?: () => void;
+  onParameterUpdated?: (parameter: ParameterDto) => void;
 };
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
@@ -127,7 +129,6 @@ const getBadgeColor = (
   return unitColors[unit] || "stone";
 };
 
-
 const urlWith = (params: Record<string, string>) => {
   const searchParams = new URLSearchParams(window.location.search);
   Object.entries(params).forEach(([key, value]) => {
@@ -149,88 +150,117 @@ export function ParametersPageView({
   isActive,
   searchParams,
   isModalOpen,
+  selectedParameter,
   onView,
   onEdit,
   onToggleisActive,
   onNewParameter,
   onCloseModal,
+  onParameterUpdated,
 }: ParametersPageViewProps) {
+  const { register, errors } = useParametersFilters({
+    initialValues: {
+      q,
+      isActive: isActive || "all",
+      limit,
+    },
+  });
   return (
-    <section className="container mx-auto p-4 pt-16">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <section className="container mx-auto px-4 py-2">
+      <header className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold">Parâmetros Meteorológicos</h1>
           <p className="text-sm text-stone-600">Filtros por nome e status</p>
         </div>
+      </header>
 
-        <div className="flex flex-wrap items-end gap-2">
-          <Form method="get" replace className="flex flex-wrap items-end gap-2">
-            <div className="flex flex-col">
-              <label htmlFor="q" className="text-xs text-stone-600">
-                Filtrar por nome
-              </label>
-              <Input
-                id="q"
-                name="q"
-                defaultValue={q}
-                placeholder="Ex.: Temperatura"
-                className="h-9 w-56"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="isActive" className="text-xs text-stone-600">
-                Status
-              </label>
-              <select
-                id="isActive"
-                name="isActive"
-                defaultValue={searchParams.get("isActive") || "all"}
-                className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">Todos</option>
-                <option value="active">Ativos</option>
-                <option value="inactive">Inativos</option>
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="limit" className="text-xs text-stone-600">
-                Itens por página
-              </label>
-              <select
-                id="limit"
-                name="limit"
-                defaultValue={String(limit ?? 10)}
-                className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {[5, 10, 20, 50].map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <Button type="submit" className="h-9">
-              Aplicar
-            </Button>
-          </Form>
+      <div className="mb-6">
+        <div className="w-full">
+          <div className="rounded-lg border border-gray-200 bg-white p-4">
+            <Form
+              method="get"
+              replace
+              className="flex flex-wrap items-end gap-2"
+            >
+              <div className="flex flex-col">
+                <label htmlFor="q" className="text-xs text-stone-600">
+                  Filtrar por nome
+                </label>
+                <Input
+                  id="q"
+                  {...register("q")}
+                  placeholder="Ex.: Temperatura"
+                  className="h-9 w-56"
+                />
+                {errors.q && (
+                  <p className="text-xs text-red-500">{errors.q.message}</p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="isActive" className="text-xs text-stone-600">
+                  Status
+                </label>
+                <select
+                  id="isActive"
+                  {...register("isActive")}
+                  className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">Todos</option>
+                  <option value="active">Ativos</option>
+                  <option value="inactive">Inativos</option>
+                </select>
+                {errors.isActive && (
+                  <p className="text-xs text-red-500">
+                    {errors.isActive.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="limit" className="text-xs text-stone-600">
+                  Itens por página
+                </label>
+                <select
+                  id="limit"
+                  {...register("limit", { valueAsNumber: true })}
+                  className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-gray-500"
+                >
+                  {[5, 10, 20, 50].map((v) => (
+                    <option key={v} value={v}>
+                      {v}
+                    </option>
+                  ))}
+                </select>
+                {errors.limit && (
+                  <p className="text-xs text-red-500">{errors.limit.message}</p>
+                )}
+              </div>
+              <Button type="submit" className="h-9">
+                Aplicar
+              </Button>
+            </Form>
+          </div>
+        </div>
+      </div>
 
+      <div className="rounded-lg border border-stone-200">
+        <div className="flex items-center justify-between p-4 border-b border-stone-200">
+          <h2 className="text-lg font-medium">Parâmetros Meteorológicos</h2>
           {onNewParameter && (
-            <Button onClick={onNewParameter} className="flex items-center gap-2 h-9">
+            <Button
+              onClick={onNewParameter}
+              className="flex items-center gap-2 h-9"
+            >
               <Plus className="w-4 h-4" />
               Novo Parâmetro
             </Button>
           )}
         </div>
-      </div>
 
-      <div className="rounded-lg border border-stone-200">
         <Table>
-          <TableCaption>Parâmetros Meteorológicos</TableCaption>
-
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
-                <TableHead>Unidade</TableHead>
+              <TableHead>Unidade</TableHead>
               <TableHead>Fator</TableHead>
               <TableHead>Offset</TableHead>
               <TableHead>Status</TableHead>
@@ -271,7 +301,9 @@ export function ParametersPageView({
                         <div className="font-medium">{p.name}</div>
                         <div className="text-xs text-stone-500">
                           Criado em{" "}
-                          {new Date(p.createdAt || new Date()).toLocaleString("pt-BR")}
+                          {new Date(p.createdAt || new Date()).toLocaleString(
+                            "pt-BR"
+                          )}
                         </div>
                       </div>
                     </div>
@@ -316,11 +348,11 @@ export function ParametersPageView({
                         <button
                           type="button"
                           onClick={() => onToggleisActive(p.id || "")}
-                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${p.isActive
-                            ? "bg-orange-100 hover:bg-orange-200 text-orange-700 hover:text-orange-800 border border-orange-200" : p.isActive
-                            ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                            : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                            }`}
+                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
+                            p.isActive
+                              ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200"
+                              : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                          }`}
                           title={
                             p.isActive
                               ? "Desativar parâmetro"
@@ -353,20 +385,22 @@ export function ParametersPageView({
                   <Link
                     to={prevCursor ? urlWith({ cursor: prevCursor }) : "#"}
                     aria-disabled={!prevCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${prevCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      prevCursor
+                        ? "hover:bg-stone-50"
+                        : "pointer-events-none opacity-50"
+                    }`}
                   >
                     Anterior
                   </Link>
                   <Link
                     to={nextCursor ? urlWith({ cursor: nextCursor }) : "#"}
                     aria-disabled={!nextCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${nextCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      nextCursor
+                        ? "hover:bg-stone-50"
+                        : "pointer-events-none opacity-50"
+                    }`}
                   >
                     Próxima
                   </Link>
@@ -381,6 +415,8 @@ export function ParametersPageView({
         <ParameterModal
           isOpen={isModalOpen}
           onClose={onCloseModal}
+          parameter={selectedParameter}
+          onUpdated={onParameterUpdated}
         />
       )}
     </section>

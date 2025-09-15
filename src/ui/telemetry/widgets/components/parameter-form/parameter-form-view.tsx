@@ -2,46 +2,38 @@ import { Button } from "@/ui/shadcn/components/button";
 import { Input } from "@/ui/shadcn/components/input";
 import { Label } from "@/ui/shadcn/components/label";
 import { Checkbox } from "@/ui/shadcn/components/checkbox";
-import type { ParameterFormData } from "./use-parameter-form";
-import type { ParameterIconType } from "./use-parameter-icon";
+import { useParameterForm } from "./use-parameter-form";
+import type { ParameterDto } from "@/core/dtos/parameter-dto";
+import { Switch } from "@/ui/shadcn/components/switch";
 
 export type ParameterFormViewProps = {
-  form: any;
-  selectedIcon: ParameterIconType;
-  onSubmit: (data: ParameterFormData) => void;
+  parameter?: ParameterDto;
   onCancel: () => void;
+  onUpdated?: (parameter: ParameterDto) => void;
 };
 
 export function ParameterFormView({
-  form,
-  selectedIcon,
-  onSubmit,
+  parameter,
   onCancel,
+  onUpdated,
 }: ParameterFormViewProps) {
+  const { form, selectedIcon, handleSubmit } = useParameterForm({
+    parameter,
+    onUpdated,
+    onCancel,
+  });
+
   const {
     register,
-    handleSubmit,
     watch,
     setValue,
     formState: { errors },
   } = form;
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="flex items-center justify-center p-4 bg-gray-50 rounded-lg">
-        <div className="flex items-center gap-3">
-          <span
-            className={`inline-flex size-12 items-center justify-center rounded-xl ring-1 ${selectedIcon.badgeColor}`}
-          >
-            <selectedIcon.Icon className={`size-6 ${selectedIcon.iconColor}`} />
-          </span>
-          <div className="text-center">
-            <div className="text-sm font-medium text-gray-700">Preview do Ícone</div>
-            <div className="text-xs text-gray-500">Ícone baseado na unidade</div>
-          </div>
-        </div>
-      </div>
+  const isEditMode = Boolean(parameter);
 
+  return (
+    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="name">Nome *</Label>
         <Input
@@ -56,22 +48,24 @@ export function ParameterFormView({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Descrição</Label>
-        <Input
-          id="description"
-          {...register("description")}
-          placeholder="Ex: Medição da temperatura ambiente"
-        />
-      </div>
-
-      <div className="space-y-2">
         <Label htmlFor="unit">Unidade *</Label>
-        <Input
-          id="unit"
-          {...register("unit")}
-          placeholder="Ex: °C, %, hPa, m/s, W/m², km, W, °"
-          className={errors.unit ? "border-red-500" : ""}
-        />
+        <div className="flex items-center gap-3">
+          <Input
+            id="unit"
+            {...register("unit")}
+            placeholder="Ex: °C, %, hPa, m/s, W/m², km, W, °"
+            className={`flex-1 ${errors.unit ? "border-red-500" : ""}`}
+          />
+          <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border">
+            <span
+              className={`inline-flex size-8 items-center justify-center rounded-lg ring-1 ${selectedIcon.badgeColor}`}
+            >
+              <selectedIcon.Icon
+                className={`size-4 ${selectedIcon.iconColor}`}
+              />
+            </span>
+          </div>
+        </div>
         {errors.unit && (
           <p className="text-sm text-red-500">{errors.unit.message}</p>
         )}
@@ -107,13 +101,16 @@ export function ParameterFormView({
       </div>
 
       <div className="flex items-center space-x-2">
-        <Checkbox
+        <Switch
           id="active"
           checked={watch("active")}
           onCheckedChange={(checked) => setValue("active", checked as boolean)}
         />
-        <Label htmlFor="active" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Parâmetro ativo
+        <Label
+          htmlFor="active"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          {watch("active") ? "Ativo" : "Inativo"}
         </Label>
       </div>
 
@@ -126,11 +123,8 @@ export function ParameterFormView({
         >
           Cancelar
         </Button>
-        <Button
-          type="submit"
-          className="min-w-[100px] cursor-pointer"
-        >
-          Salvar
+        <Button type="submit" className="min-w-[100px] cursor-pointer">
+          {isEditMode ? "Atualizar" : "Salvar"}
         </Button>
       </div>
     </form>

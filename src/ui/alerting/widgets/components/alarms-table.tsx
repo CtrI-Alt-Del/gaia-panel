@@ -9,7 +9,7 @@ import {
   AlertTriangle,
   Eye,
   Edit,
-  Trash2,
+  Power,
   Plus,
 } from 'lucide-react'
 import type { AlarmRule, AlarmStats } from '../pages/use-alarms'
@@ -19,7 +19,6 @@ import { Modal, type ModalRef } from '@/ui/global/widgets/components/modal'
 import { useRef, useState } from 'react'
 import { CreateAlarmForm } from './create-alarm-form'
 import { EditAlarmForm } from './edit-alarm-form'
-import { DeleteAlarmDialog } from './delete-alarm-dialog'
 
 const ICON_MAP = {
   thermometer: ThermometerSun,
@@ -107,10 +106,10 @@ interface AlarmRowProps {
   alarm: AlarmRule
   onView: (alarmId: string) => void
   onEdit: (alarm: AlarmRule) => void
-  onDelete: (alarm: AlarmRule) => void
+  onToggleActive?: (alarmId: string) => void
 }
 
-const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
+const AlarmRow = ({ alarm, onView, onEdit, onToggleActive }: AlarmRowProps) => {
   return (
     <tr key={alarm.id} className='border-t border-stone-200 hover:bg-gray-50'>
       <td className='px-4 py-3'>
@@ -165,30 +164,33 @@ const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
       </td>
 
       <td className='px-4 py-3 text-center'>
-        <div className='flex space-x-3 justify-center'>
+        <div className='flex gap-2 justify-center'>
           <button
             type='button'
             onClick={() => onView(alarm.id)}
-            className='bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-900 rounded p-1 transition-colors cursor-pointer'
+            className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 hover:text-blue-800 border border-blue-200'
+            title='Visualizar alarme'
           >
             <Eye className='w-4 h-4' />
           </button>
           <button
             type='button'
             onClick={() => onEdit(alarm)}
-            className='bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 rounded p-1 transition-colors cursor-pointer'
+            className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200'
+            title='Editar alarme'
           >
             <Edit className='w-4 h-4' />
           </button>
-          {alarm.status === 'active' && (
-            <button
-              type='button'
-              onClick={() => onDelete(alarm)}
-              className='bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-900 rounded p-1 transition-colors cursor-pointer'
-            >
-              <Trash2 className='w-4 h-4' />
-            </button>
-          )}
+          <button
+            type='button'
+            onClick={() => onToggleActive && onToggleActive(alarm.id)}
+            className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${alarm.status === 'active'
+              ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200" : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+              }`}
+            title={alarm.status === 'active' ? 'Desativar alarme' : 'Ativar alarme'}
+          >
+            <Power className='w-4 h-4' />
+          </button>
         </div>
       </td>
     </tr>
@@ -200,7 +202,7 @@ interface AlarmsTableProps {
   stats: AlarmStats
   onViewAlarm: (alarmId: string) => void
   onEditAlarm: (alarmId: string, data: Partial<AlarmRule>) => void
-  onDeleteAlarm: (alarmId: string) => void
+  onToggleActive?: (alarmId: string) => void
 }
 
 export const AlarmsTable = ({
@@ -208,11 +210,10 @@ export const AlarmsTable = ({
   stats,
   onViewAlarm,
   onEditAlarm,
-  onDeleteAlarm,
+  onToggleActive,
 }: AlarmsTableProps) => {
   const modalRef = useRef<ModalRef>(null)
   const editModalRef = useRef<ModalRef>(null)
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [selectedAlarm, setSelectedAlarm] = useState<AlarmRule | null>(null)
 
   const handleCreateAlarm = () => {
@@ -224,23 +225,10 @@ export const AlarmsTable = ({
     editModalRef.current?.open()
   }
 
-  const handleDeleteAlarm = (alarm: AlarmRule) => {
-    setSelectedAlarm(alarm)
-    setDeleteDialogOpen(true)
-  }
-
   const handleSaveEdit = (data: Partial<AlarmRule>) => {
     if (selectedAlarm) {
       onEditAlarm(selectedAlarm.id, data)
       editModalRef.current?.close()
-      setSelectedAlarm(null)
-    }
-  }
-
-  const handleConfirmDelete = () => {
-    if (selectedAlarm) {
-      onDeleteAlarm(selectedAlarm.id)
-      setDeleteDialogOpen(false)
       setSelectedAlarm(null)
     }
   }
@@ -259,12 +247,6 @@ export const AlarmsTable = ({
           </Button>
         </div>
 
-        <div className='mt-2 flex gap-4 text-xs text-gray-600'>
-          <span>Total: {stats.total}</span>
-          <span>Ativos: {stats.active}</span>
-          <span>Críticos: {stats.critical}</span>
-          <span>Alarmes: {stats.bySeverity.alarm || 0}</span>
-        </div>
       </div>
 
       <div className='overflow-x-auto border-stone-200'>
@@ -274,9 +256,8 @@ export const AlarmsTable = ({
               {TABLE_HEADERS.map((header) => (
                 <th
                   key={header}
-                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                    CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
-                  }`}
+                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
+                    }`}
                 >
                   {header}
                 </th>
@@ -290,7 +271,7 @@ export const AlarmsTable = ({
                 alarm={alarm}
                 onView={onViewAlarm}
                 onEdit={handleEditAlarm}
-                onDelete={handleDeleteAlarm}
+                onToggleActive={onToggleActive}
               />
             ))}
 
@@ -316,7 +297,6 @@ export const AlarmsTable = ({
         {(close) => <CreateAlarmForm onClose={close} />}
       </Modal>
 
-      {/* Modal de Edição */}
       <Modal
         ref={editModalRef}
         title='Editar Alarme'
@@ -336,13 +316,6 @@ export const AlarmsTable = ({
         }
       </Modal>
 
-      {/* Dialog de Confirmação de Exclusão */}
-      <DeleteAlarmDialog
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-        alarm={selectedAlarm}
-        onConfirm={handleConfirmDelete}
-      />
     </div>
   )
 }

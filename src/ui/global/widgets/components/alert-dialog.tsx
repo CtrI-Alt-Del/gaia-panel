@@ -9,6 +9,49 @@ import {
 import { Button } from '@/ui/shadcn/components/button'
 import { AlertTriangle } from 'lucide-react'
 
+export type AlertDialogVariant = 'destructive' | 'warning' | 'default'
+
+export interface AlertDialogStyles {
+  iconBg: string
+  iconColor: string
+  warningBg: string
+  warningBorder: string
+  warningText: string
+  buttonBg: string
+}
+
+export function getVariantStyles(variant: AlertDialogVariant): AlertDialogStyles {
+  switch (variant) {
+    case 'destructive':
+      return {
+        iconBg: 'bg-red-100',
+        iconColor: 'text-red-600',
+        warningBg: 'bg-red-50',
+        warningBorder: 'border-red-200',
+        warningText: 'text-red-800',
+        buttonBg: 'bg-red-700 hover:bg-red-800',
+      }
+    case 'warning':
+      return {
+        iconBg: 'bg-yellow-100',
+        iconColor: 'text-yellow-600',
+        warningBg: 'bg-yellow-50',
+        warningBorder: 'border-yellow-200',
+        warningText: 'text-yellow-800',
+        buttonBg: 'bg-yellow-600 hover:bg-yellow-700',
+      }
+    default:
+      return {
+        iconBg: 'bg-blue-100',
+        iconColor: 'text-blue-600',
+        warningBg: 'bg-blue-50',
+        warningBorder: 'border-blue-200',
+        warningText: 'text-blue-800',
+        buttonBg: 'bg-blue-600 hover:bg-blue-700',
+      }
+  }
+}
+
 interface AlertDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -16,7 +59,7 @@ interface AlertDialogProps {
   description: string
   confirmText: string
   cancelText?: string
-  variant?: 'destructive' | 'warning' | 'default'
+  variant?: AlertDialogVariant
   icon?: React.ReactNode
   children?: React.ReactNode
   onConfirm: () => void
@@ -34,39 +77,7 @@ export function AlertDialog({
   children,
   onConfirm,
 }: AlertDialogProps) {
-  const getVariantStyles = () => {
-    switch (variant) {
-      case 'destructive':
-        return {
-          iconBg: 'bg-red-100',
-          iconColor: 'text-red-600',
-          warningBg: 'bg-red-50',
-          warningBorder: 'border-red-200',
-          warningText: 'text-red-800',
-          buttonBg: 'bg-red-700 hover:bg-red-800',
-        }
-      case 'warning':
-        return {
-          iconBg: 'bg-yellow-100',
-          iconColor: 'text-yellow-600',
-          warningBg: 'bg-yellow-50',
-          warningBorder: 'border-yellow-200',
-          warningText: 'text-yellow-800',
-          buttonBg: 'bg-yellow-600 hover:bg-yellow-700',
-        }
-      default:
-        return {
-          iconBg: 'bg-blue-100',
-          iconColor: 'text-blue-600',
-          warningBg: 'bg-blue-50',
-          warningBorder: 'border-blue-200',
-          warningText: 'text-blue-800',
-          buttonBg: 'bg-blue-600 hover:bg-blue-700',
-        }
-    }
-  }
-
-  const styles = getVariantStyles()
+  const styles = getVariantStyles(variant)
   const defaultIcon = <AlertTriangle className='w-5 h-5' />
 
   return (

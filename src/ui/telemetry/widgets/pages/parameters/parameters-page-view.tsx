@@ -4,9 +4,9 @@ import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Badge } from "@/ui/shadcn/components/badge";
 import { StatusPill } from "@/ui/shadcn/components/status-pill";
+import { useParametersFilters } from "./use-parameters-filters";
 import {
   Table,
-  TableCaption,
   TableHead,
   TableHeader,
   TableRow,
@@ -129,7 +129,6 @@ const getBadgeColor = (
   return unitColors[unit] || "stone";
 };
 
-
 const urlWith = (params: Record<string, string>) => {
   const searchParams = new URLSearchParams(window.location.search);
   Object.entries(params).forEach(([key, value]) => {
@@ -159,6 +158,13 @@ export function ParametersPageView({
   onCloseModal,
   onParameterUpdated,
 }: ParametersPageViewProps) {
+  const { register, errors } = useParametersFilters({
+    initialValues: {
+      q,
+      isActive: isActive || "all",
+      limit,
+    },
+  });
   return (
     <section className="container mx-auto px-4 py-2">
       <header className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -171,18 +177,24 @@ export function ParametersPageView({
       <div className="mb-6">
         <div className="w-full">
           <div className="rounded-lg border border-gray-200 bg-white p-4">
-            <Form method="get" replace className="flex flex-wrap items-end gap-2">
+            <Form
+              method="get"
+              replace
+              className="flex flex-wrap items-end gap-2"
+            >
               <div className="flex flex-col">
                 <label htmlFor="q" className="text-xs text-stone-600">
                   Filtrar por nome
                 </label>
                 <Input
                   id="q"
-                  name="q"
-                  defaultValue={q}
+                  {...register("q")}
                   placeholder="Ex.: Temperatura"
                   className="h-9 w-56"
                 />
+                {errors.q && (
+                  <p className="text-xs text-red-500">{errors.q.message}</p>
+                )}
               </div>
               <div className="flex flex-col">
                 <label htmlFor="isActive" className="text-xs text-stone-600">
@@ -190,14 +202,18 @@ export function ParametersPageView({
                 </label>
                 <select
                   id="isActive"
-                  name="isActive"
-                  defaultValue={searchParams.get("isActive") || "all"}
+                  {...register("isActive")}
                   className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todos</option>
                   <option value="active">Ativos</option>
                   <option value="inactive">Inativos</option>
                 </select>
+                {errors.isActive && (
+                  <p className="text-xs text-red-500">
+                    {errors.isActive.message}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col">
                 <label htmlFor="limit" className="text-xs text-stone-600">
@@ -205,8 +221,7 @@ export function ParametersPageView({
                 </label>
                 <select
                   id="limit"
-                  name="limit"
-                  defaultValue={String(limit ?? 10)}
+                  {...register("limit", { valueAsNumber: true })}
                   className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-gray-500"
                 >
                   {[5, 10, 20, 50].map((v) => (
@@ -215,6 +230,9 @@ export function ParametersPageView({
                     </option>
                   ))}
                 </select>
+                {errors.limit && (
+                  <p className="text-xs text-red-500">{errors.limit.message}</p>
+                )}
               </div>
               <Button type="submit" className="h-9">
                 Aplicar
@@ -228,7 +246,10 @@ export function ParametersPageView({
         <div className="flex items-center justify-between p-4 border-b border-stone-200">
           <h2 className="text-lg font-medium">Parâmetros Meteorológicos</h2>
           {onNewParameter && (
-            <Button onClick={onNewParameter} className="flex items-center gap-2 h-9">
+            <Button
+              onClick={onNewParameter}
+              className="flex items-center gap-2 h-9"
+            >
               <Plus className="w-4 h-4" />
               Novo Parâmetro
             </Button>
@@ -280,7 +301,9 @@ export function ParametersPageView({
                         <div className="font-medium">{p.name}</div>
                         <div className="text-xs text-stone-500">
                           Criado em{" "}
-                          {new Date(p.createdAt || new Date()).toLocaleString("pt-BR")}
+                          {new Date(p.createdAt || new Date()).toLocaleString(
+                            "pt-BR"
+                          )}
                         </div>
                       </div>
                     </div>
@@ -325,9 +348,11 @@ export function ParametersPageView({
                         <button
                           type="button"
                           onClick={() => onToggleisActive(p.id || "")}
-                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${p.isActive
-                            ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200" : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                            }`}
+                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
+                            p.isActive
+                              ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200"
+                              : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                          }`}
                           title={
                             p.isActive
                               ? "Desativar parâmetro"
@@ -360,20 +385,22 @@ export function ParametersPageView({
                   <Link
                     to={prevCursor ? urlWith({ cursor: prevCursor }) : "#"}
                     aria-disabled={!prevCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${prevCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      prevCursor
+                        ? "hover:bg-stone-50"
+                        : "pointer-events-none opacity-50"
+                    }`}
                   >
                     Anterior
                   </Link>
                   <Link
                     to={nextCursor ? urlWith({ cursor: nextCursor }) : "#"}
                     aria-disabled={!nextCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${nextCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      nextCursor
+                        ? "hover:bg-stone-50"
+                        : "pointer-events-none opacity-50"
+                    }`}
                   >
                     Próxima
                   </Link>

@@ -1,11 +1,10 @@
 import { Link, useLocation } from 'react-router'
 import { AlarmsFilters } from '../components/alarms-filters'
 import { AlarmsTable } from '../components/alarms-table'
-import type { AlarmRule, AlarmFilters, AlarmStats, AlarmPagination } from './use-alarms'
+import type { AlarmRule, AlarmFilters, AlarmPagination } from './use-alarms-page'
 
 interface AlarmsPageViewProps {
   alarms: AlarmRule[]
-  stats: AlarmStats
   filters: AlarmFilters
   pagination: AlarmPagination
   error: string | null
@@ -17,7 +16,6 @@ interface AlarmsPageViewProps {
 
 export const AlarmsPageView = ({
   alarms,
-  stats,
   filters,
   pagination,
   error,
@@ -72,7 +70,6 @@ export const AlarmsPageView = ({
 
       <AlarmsTable
         alarms={alarms}
-        stats={stats}
         onViewAlarm={onViewAlarm}
         onEditAlarm={onEditAlarm}
         onToggleActive={onToggleActive}

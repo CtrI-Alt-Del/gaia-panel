@@ -19,6 +19,7 @@ import { Modal, type ModalRef } from '@/ui/global/widgets/components/modal'
 import { useRef, useState } from 'react'
 import { CreateAlarmForm } from './create-alarm-form'
 import { EditAlarmForm } from './edit-alarm-form'
+import { DeactivateAlarmDialog } from './deactivate-alarm-dialog'
 
 const ICON_MAP = {
   thermometer: ThermometerSun,
@@ -106,10 +107,17 @@ interface AlarmRowProps {
   alarm: AlarmRule
   onView: (alarmId: string) => void
   onEdit: (alarm: AlarmRule) => void
+  onDeactivate: (alarm: AlarmRule) => void
   onToggleActive?: (alarmId: string) => void
 }
 
-const AlarmRow = ({ alarm, onView, onEdit, onToggleActive }: AlarmRowProps) => {
+const AlarmRow = ({
+  alarm,
+  onView,
+  onEdit,
+  onDeactivate,
+  onToggleActive,
+}: AlarmRowProps) => {
   return (
     <tr key={alarm.id} className='border-t border-stone-200 hover:bg-gray-50'>
       <td className='px-4 py-3'>
@@ -181,16 +189,25 @@ const AlarmRow = ({ alarm, onView, onEdit, onToggleActive }: AlarmRowProps) => {
           >
             <Edit className='w-4 h-4' />
           </button>
-          <button
-            type='button'
-            onClick={() => onToggleActive && onToggleActive(alarm.id)}
-            className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${alarm.status === 'active'
-              ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200" : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-              }`}
-            title={alarm.status === 'active' ? 'Desativar alarme' : 'Ativar alarme'}
-          >
-            <Power className='w-4 h-4' />
-          </button>
+          {alarm.status === 'active' ? (
+            <button
+              type='button'
+              onClick={() => onDeactivate(alarm)}
+              className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200'
+              title='Desativar alarme'
+            >
+              <Power className='w-4 h-4' />
+            </button>
+          ) : (
+            <button
+              type='button'
+              onClick={() => onToggleActive?.(alarm.id)}
+              className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200'
+              title='Ativar alarme'
+            >
+              <Power className='w-4 h-4' />
+            </button>
+          )}
         </div>
       </td>
     </tr>
@@ -207,7 +224,6 @@ interface AlarmsTableProps {
 
 export const AlarmsTable = ({
   alarms,
-  stats,
   onViewAlarm,
   onEditAlarm,
   onToggleActive,
@@ -215,6 +231,8 @@ export const AlarmsTable = ({
   const modalRef = useRef<ModalRef>(null)
   const editModalRef = useRef<ModalRef>(null)
   const [selectedAlarm, setSelectedAlarm] = useState<AlarmRule | null>(null)
+  const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
+  const [alarmToDeactivate, setAlarmToDeactivate] = useState<AlarmRule | null>(null)
 
   const handleCreateAlarm = () => {
     modalRef.current?.open()
@@ -233,6 +251,19 @@ export const AlarmsTable = ({
     }
   }
 
+  const handleDeactivateClick = (alarm: AlarmRule) => {
+    setAlarmToDeactivate(alarm)
+    setDeactivateDialogOpen(true)
+  }
+
+  const handleConfirmDeactivate = () => {
+    if (alarmToDeactivate && onToggleActive) {
+      onToggleActive(alarmToDeactivate.id)
+    }
+    setDeactivateDialogOpen(false)
+    setAlarmToDeactivate(null)
+  }
+
   return (
     <div className='bg-white rounded-lg shadow-sm border'>
       <div className='px-6 py-4 border-b border-gray-200'>
@@ -246,7 +277,6 @@ export const AlarmsTable = ({
             Novo Alarme
           </Button>
         </div>
-
       </div>
 
       <div className='overflow-x-auto border-stone-200'>
@@ -256,8 +286,9 @@ export const AlarmsTable = ({
               {TABLE_HEADERS.map((header) => (
                 <th
                   key={header}
-                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
-                    }`}
+                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                    CENTERED_HEADERS.includes(header) ? 'text-center' : 'text-left'
+                  }`}
                 >
                   {header}
                 </th>
@@ -271,6 +302,7 @@ export const AlarmsTable = ({
                 alarm={alarm}
                 onView={onViewAlarm}
                 onEdit={handleEditAlarm}
+                onDeactivate={handleDeactivateClick}
                 onToggleActive={onToggleActive}
               />
             ))}
@@ -316,6 +348,12 @@ export const AlarmsTable = ({
         }
       </Modal>
 
+      <DeactivateAlarmDialog
+        open={deactivateDialogOpen}
+        onOpenChange={setDeactivateDialogOpen}
+        alarm={alarmToDeactivate}
+        onConfirm={handleConfirmDeactivate}
+      />
     </div>
   )
 }

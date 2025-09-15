@@ -11,7 +11,7 @@ interface AlarmsPageViewProps {
   error: string | null
   onViewAlarm: (alarmId: string) => void
   onEditAlarm: (alarmId: string) => void
-  onDeleteAlarm: (alarmId: string) => void
+  onToggleActive: (alarmId: string) => void
   onClearError: () => void
 }
 
@@ -23,7 +23,7 @@ export const AlarmsPageView = ({
   error,
   onViewAlarm,
   onEditAlarm,
-  onDeleteAlarm,
+  onToggleActive,
   onClearError,
 }: AlarmsPageViewProps) => {
   const { search } = useLocation()
@@ -75,7 +75,7 @@ export const AlarmsPageView = ({
         stats={stats}
         onViewAlarm={onViewAlarm}
         onEditAlarm={onEditAlarm}
-        onDeleteAlarm={onDeleteAlarm}
+        onToggleActive={onToggleActive}
       />
 
       <footer className='mt-4 flex items-center justify-between'>

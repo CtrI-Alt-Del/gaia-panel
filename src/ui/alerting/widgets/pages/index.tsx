@@ -11,7 +11,7 @@ export const AlarmsPage = () => {
     getPaginatedAlarms,
     handleViewAlarm,
     handleEditAlarm,
-    handleDeleteAlarm,
+    handleToggleActive,
   } = useAlarms()
   const [searchParams] = useSearchParams()
   const [error, setError] = useState<string | null>(null)
@@ -52,7 +52,7 @@ export const AlarmsPage = () => {
       error={error}
       onViewAlarm={handleViewAlarm}
       onEditAlarm={handleEditAlarm}
-      onDeleteAlarm={handleDeleteAlarm}
+      onToggleActive={handleToggleActive}
       onClearError={handleClearError}
     />
   )

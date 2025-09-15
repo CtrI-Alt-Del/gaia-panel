@@ -242,6 +242,22 @@ export const useAlarms = () => {
     return true
   }
 
+  const deactivateAlarm = (id: string): boolean => {
+    const alarmIndex = allAlarms.findIndex((alarm) => alarm.id === id)
+    if (alarmIndex === -1) return false
+
+    allAlarms[alarmIndex] = { ...allAlarms[alarmIndex], status: 'inactive' }
+    return true
+  }
+
+  const activateAlarm = (id: string): boolean => {
+    const alarmIndex = allAlarms.findIndex((alarm) => alarm.id === id)
+    if (alarmIndex === -1) return false
+
+    allAlarms[alarmIndex] = { ...allAlarms[alarmIndex], status: 'active' }
+    return true
+  }
+
   const handleViewAlarm = (alarmId: string) => {
     console.log('Visualizar alarme:', alarmId)
     // Aqui você implementaria a lógica de navegação para visualizar o alarme
@@ -264,6 +280,19 @@ export const useAlarms = () => {
     // Aqui você implementaria a lógica de exclusão do alarme
   }
 
+  const handleToggleActive = (alarmId: string) => {
+    const alarm = getAlarmById(alarmId)
+    if (!alarm) return
+
+    if (alarm.status === 'active') {
+      deactivateAlarm(alarmId)
+      console.log('Alarme desativado:', alarmId)
+    } else {
+      activateAlarm(alarmId)
+      console.log('Alarme ativado:', alarmId)
+    }
+  }
+
   return {
     allAlarms,
     calculateStats,
@@ -273,9 +302,12 @@ export const useAlarms = () => {
     createAlarm,
     updateAlarm,
     deleteAlarm,
+    deactivateAlarm,
+    activateAlarm,
     handleViewAlarm,
     handleEditAlarm,
     handleSaveEditAlarm,
     handleDeleteAlarm,
+    handleToggleActive,
   }
 }

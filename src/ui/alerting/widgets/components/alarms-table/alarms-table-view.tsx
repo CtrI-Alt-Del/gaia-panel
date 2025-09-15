@@ -12,14 +12,13 @@ import {
   Power,
   Plus,
 } from 'lucide-react'
-import type { AlarmRule, AlarmStats } from '../pages/use-alarms'
+import type { AlarmRule } from '../../pages/use-alarms-page'
 import { Button } from '@/ui/shadcn/components/button'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
 import { Modal, type ModalRef } from '@/ui/global/widgets/components/modal'
-import { useRef, useState } from 'react'
-import { CreateAlarmForm } from './create-alarm-form'
-import { EditAlarmForm } from './edit-alarm-form'
 import { AlertDialog } from '@/ui/global/widgets/components/alert-dialog'
+import { CreateAlarmForm } from '../create-alarm-form'
+import { EditAlarmForm } from '../edit-alarm-form'
 
 const ICON_MAP = {
   thermometer: ThermometerSun,
@@ -214,56 +213,39 @@ const AlarmRow = ({
   )
 }
 
-interface AlarmsTableProps {
+export interface AlarmsTableViewProps {
   alarms: AlarmRule[]
-  stats: AlarmStats
   onViewAlarm: (alarmId: string) => void
-  onEditAlarm: (alarmId: string, data: Partial<AlarmRule>) => void
   onToggleActive?: (alarmId: string) => void
+  modalRef: React.RefObject<ModalRef | null>
+  editModalRef: React.RefObject<ModalRef | null>
+  selectedAlarm: AlarmRule | null
+  deactivateDialogOpen: boolean
+  alarmToDeactivate: AlarmRule | null
+  handleCreateAlarm: () => void
+  handleEditAlarm: (alarm: AlarmRule) => void
+  handleSaveEdit: (data: Partial<AlarmRule>) => void
+  handleDeactivateClick: (alarm: AlarmRule) => void
+  handleConfirmDeactivate: () => void
+  setDeactivateDialogOpen: (open: boolean) => void
 }
 
-export const AlarmsTable = ({
+export function AlarmsTableView({
   alarms,
   onViewAlarm,
-  onEditAlarm,
   onToggleActive,
-}: AlarmsTableProps) => {
-  const modalRef = useRef<ModalRef>(null)
-  const editModalRef = useRef<ModalRef>(null)
-  const [selectedAlarm, setSelectedAlarm] = useState<AlarmRule | null>(null)
-  const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
-  const [alarmToDeactivate, setAlarmToDeactivate] = useState<AlarmRule | null>(null)
-
-  const handleCreateAlarm = () => {
-    modalRef.current?.open()
-  }
-
-  const handleEditAlarm = (alarm: AlarmRule) => {
-    setSelectedAlarm(alarm)
-    editModalRef.current?.open()
-  }
-
-  const handleSaveEdit = (data: Partial<AlarmRule>) => {
-    if (selectedAlarm) {
-      onEditAlarm(selectedAlarm.id, data)
-      editModalRef.current?.close()
-      setSelectedAlarm(null)
-    }
-  }
-
-  const handleDeactivateClick = (alarm: AlarmRule) => {
-    setAlarmToDeactivate(alarm)
-    setDeactivateDialogOpen(true)
-  }
-
-  const handleConfirmDeactivate = () => {
-    if (alarmToDeactivate && onToggleActive) {
-      onToggleActive(alarmToDeactivate.id)
-    }
-    setDeactivateDialogOpen(false)
-    setAlarmToDeactivate(null)
-  }
-
+  modalRef,
+  editModalRef,
+  selectedAlarm,
+  deactivateDialogOpen,
+  alarmToDeactivate,
+  handleCreateAlarm,
+  handleEditAlarm,
+  handleSaveEdit,
+  handleDeactivateClick,
+  handleConfirmDeactivate,
+  setDeactivateDialogOpen,
+}: AlarmsTableViewProps) {
   return (
     <div className='bg-white rounded-lg shadow-sm border'>
       <div className='px-6 py-4 border-b border-gray-200'>

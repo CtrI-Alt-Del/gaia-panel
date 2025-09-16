@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import type { StationDto } from "@/core/dtos/telemetry/station-dto";
 import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
@@ -157,22 +157,12 @@ export function useStations() {
     setLoading(false);
   }
 
-  const atobSafe = useCallback((s: string) => {
-    try {
-      return typeof window !== "undefined" && window.atob
-        ? window.atob(s)
-        : Buffer.from(s, "base64").toString("utf8");
-    } catch {
-      return "0";
-    }
-  }, []);
-
   const fromTo = useMemo(() => {
-    const searchIndex = Number(atobSafe(cur ?? "MA=="));
+    const searchIndex = cur ? parseInt(cur) : 0;
     const from = Math.min(total, searchIndex + 1);
     const to = Math.min(total, searchIndex + rows.length);
     return { from, to };
-  }, [cur, total, rows.length, atobSafe]);
+  }, [cur, total, rows.length]);
 
   function timeAgo(d: Date) {
     const diff = Date.now() - new Date(d).getTime();
@@ -195,7 +185,6 @@ export function useStations() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     if (formMode === "create") {
-      // Simular criação da estação
       const newStation: StationDto = {
         id: String(mockStations.length + 1),
         name: data.name,
@@ -269,17 +258,17 @@ export function useStations() {
     status,
     limit,
     fromTo,
+    isModalOpen,
+    editingStation,
+    formMode,
+    availableParameters: mockParameters,
     setParam,
     load,
     timeAgo,
     toggleStationActive,
-    isModalOpen,
-    editingStation,
-    formMode,
     onNewStation: handleNewStation,
     onEditStation: handleEditStation,
     onCloseModal: handleCloseModal,
     handleStationSubmit,
-    availableParameters: mockParameters,
   };
 }

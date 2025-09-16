@@ -6,7 +6,7 @@ interface DetailsTabProps {
   timeAgo: (d: Date) => string;
 }
 
-export default function DetailsTab({ station, timeAgo }: DetailsTabProps) {
+export function DetailsTab({ station, timeAgo }: DetailsTabProps) {
   return (
     <div className="space-y-6">
       <div className="rounded-lg border p-4">

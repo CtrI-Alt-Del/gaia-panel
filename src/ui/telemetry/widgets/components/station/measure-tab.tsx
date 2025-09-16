@@ -15,7 +15,7 @@ interface MeasureTabProps {
   formatDateTime: (d: Date) => string;
 }
 
-export default function MeasureTab({
+export function MeasureTab({
   loading,
   rows,
   cursor,

@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
 import { useState } from "react";
-import type { ParameterDto } from "@/core/dtos/Parameter-dto";
+import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
@@ -12,17 +12,15 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: -40.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
-    id: "2",  
+    id: "2",
     name: "Umidade Relativa",
     unitOfMeasure: "%",
     factor: 0.1,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -32,7 +30,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 300.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -42,7 +39,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 0.0,
     isActive: false,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -52,7 +48,6 @@ const mockParameters: ParameterDto[] = [
     factor: 1.0,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -62,7 +57,6 @@ const mockParameters: ParameterDto[] = [
     factor: 1.0,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -72,7 +66,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 0.0,
     isActive: false,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -82,7 +75,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
 ];
@@ -124,23 +116,23 @@ export function useParametersPage() {
 
   function handleView(id: string) {
     console.log("Visualizar parâmetro:", id);
-  };
+  }
 
   function handleEdit(id: string) {
     console.log("Editar parâmetro:", id);
-  };
+  }
 
   function handleToggleisActive(id: string) {
     console.log("Alternar isActive do parâmetro:", id);
-  };
+  }
 
   function handleNewParameter() {
     setIsModalOpen(true);
-  };
+  }
 
   function handleCloseModal() {
     setIsModalOpen(false);
-  };
+  }
 
   return {
     items,

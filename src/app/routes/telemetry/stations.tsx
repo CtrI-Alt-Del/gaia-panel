@@ -1,5 +1,5 @@
-const StationsRoute = () => {
-  return <div />
-}
+import StationsPage from '@/ui/telemetry/widgets/pages/stations'
 
-export default StationsRoute
+export default function StationsRoute() {
+  return <StationsPage />
+}

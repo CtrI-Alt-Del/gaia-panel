@@ -1,5 +1,5 @@
 import { Link, Form } from "react-router";
-import type { ParameterDto } from "@/core/dtos/parameter-dto";
+import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
 import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Badge } from "@/ui/shadcn/components/badge";
@@ -16,17 +16,12 @@ import {
 } from "@/ui/shadcn/components/table";
 import {
   Power,
-  Thermometer,
-  Droplets,
-  Wind,
-  Sun,
-  Cloud,
-  Gauge,
   Eye,
   Edit,
   Plus,
 } from "lucide-react";
-import { ParameterModal } from "@/ui/telemetry/widgets/components/parameter-modal";
+import { getParameterIcon, getBadgeColor } from "../../utils/parameter-utils";
+import { ParameterModal } from "@/ui/telemetry/widgets/components/parameter/parameter-modal";
 
 export type ParametersPageViewProps = {
   items: ParameterDto[];
@@ -35,7 +30,6 @@ export type ParametersPageViewProps = {
   limit: number;
   q: string;
   isActive?: string;
-  searchParams: URLSearchParams;
   isModalOpen: boolean;
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
@@ -46,86 +40,6 @@ export type ParametersPageViewProps = {
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
-const getParameterIcon = (name: string) => {
-  const lowerName = name.toLowerCase();
-  if (lowerName.includes("temperatura"))
-    return {
-      Icon: Thermometer,
-      iconColor: "text-red-500",
-      badgeColor: "bg-red-50 ring-red-200",
-      iconBgColor: "bg-red-100",
-    };
-  if (lowerName.includes("umidade") || lowerName.includes("precipitação"))
-    return {
-      Icon: Droplets,
-      iconColor: "text-blue-500",
-      badgeColor: "bg-blue-50 ring-blue-200",
-      iconBgColor: "bg-blue-100",
-    };
-  if (lowerName.includes("vento"))
-    return {
-      Icon: Wind,
-      iconColor: "text-gray-500",
-      badgeColor: "bg-gray-50 ring-gray-200",
-      iconBgColor: "bg-gray-100",
-    };
-  if (lowerName.includes("radiação") || lowerName.includes("uv"))
-    return {
-      Icon: Sun,
-      iconColor: "text-yellow-500",
-      badgeColor: "bg-yellow-50 ring-yellow-200",
-      iconBgColor: "bg-yellow-100",
-    };
-  if (lowerName.includes("pressão"))
-    return {
-      Icon: Gauge,
-      iconColor: "text-purple-500",
-      badgeColor: "bg-purple-50 ring-purple-200",
-      iconBgColor: "bg-purple-100",
-    };
-  return {
-    Icon: Cloud,
-    iconColor: "text-gray-400",
-    badgeColor: "bg-gray-50 ring-gray-200",
-    iconBgColor: "bg-gray-100",
-  };
-};
-
-const getBadgeColor = (
-  unit: string
-):
-  | "stone"
-  | "blue"
-  | "sky"
-  | "teal"
-  | "green"
-  | "yellow"
-  | "orange"
-  | "red"
-  | "violet" => {
-  const unitColors: Record<
-    string,
-    | "stone"
-    | "blue"
-    | "sky"
-    | "teal"
-    | "green"
-    | "yellow"
-    | "orange"
-    | "red"
-    | "violet"
-  > = {
-    "°C": "blue",
-    "%": "green",
-    hPa: "violet",
-    "m/s": "orange",
-    "°": "sky",
-    "W/m²": "yellow",
-    mm: "teal",
-    índice: "red",
-  };
-  return unitColors[unit] || "stone";
-};
 
 
 const urlWith = (params: Record<string, string>) => {
@@ -147,7 +61,6 @@ export function ParametersPageView({
   limit,
   q,
   isActive,
-  searchParams,
   isModalOpen,
   onView,
   onEdit,
@@ -184,7 +97,7 @@ export function ParametersPageView({
               <select
                 id="isActive"
                 name="isActive"
-                defaultValue={searchParams.get("isActive") || "all"}
+                defaultValue={isActive || "all"}
                 className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">Todos</option>
@@ -230,7 +143,7 @@ export function ParametersPageView({
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
-                <TableHead>Unidade</TableHead>
+              <TableHead>Unidade</TableHead>
               <TableHead>Fator</TableHead>
               <TableHead>Offset</TableHead>
               <TableHead>Status</TableHead>
@@ -278,7 +191,7 @@ export function ParametersPageView({
                   </TableCell>
 
                   <TableCell>
-                    <Badge color={color} className="capitalize">
+                    <Badge color={color as any} className="capitalize">
                       {p.unitOfMeasure}
                     </Badge>
                   </TableCell>
@@ -317,9 +230,10 @@ export function ParametersPageView({
                           type="button"
                           onClick={() => onToggleisActive(p.id || "")}
                           className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${p.isActive
-                            ? "bg-orange-100 hover:bg-orange-200 text-orange-700 hover:text-orange-800 border border-orange-200" : p.isActive
-                            ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                            : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                            ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200"
+                            : p.isActive
+                              ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                              : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
                             }`}
                           title={
                             p.isActive

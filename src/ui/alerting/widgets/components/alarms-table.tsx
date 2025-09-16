@@ -184,9 +184,11 @@ const AlarmRow = ({ alarm, onView, onEdit, onToggleActive }: AlarmRowProps) => {
           <button
             type='button'
             onClick={() => onToggleActive && onToggleActive(alarm.id)}
-            className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${alarm.status === 'active'
-              ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200" : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-              }`}
+            className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
+              alarm.status === 'active'
+                ? 'bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200'
+                : 'bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200'
+            }`}
             title={alarm.status === 'active' ? 'Desativar alarme' : 'Ativar alarme'}
           >
             <Power className='w-4 h-4' />
@@ -246,7 +248,6 @@ export const AlarmsTable = ({
             Novo Alarme
           </Button>
         </div>
-
       </div>
 
       <div className='overflow-x-auto border-stone-200'>
@@ -256,8 +257,9 @@ export const AlarmsTable = ({
               {TABLE_HEADERS.map((header) => (
                 <th
                   key={header}
-                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
-                    }`}
+                  className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                    CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
+                  }`}
                 >
                   {header}
                 </th>
@@ -315,7 +317,6 @@ export const AlarmsTable = ({
           )
         }
       </Modal>
-
     </div>
   )
 }

@@ -1,10 +1,9 @@
 import { Link, Form } from 'react-router'
-import type { ParameterDto } from '@/core/dtos/parameter-dto'
+import type { UserDto } from '@/core/dtos/user-dto'
 import { Input } from '@/ui/shadcn/components/input'
 import { Button } from '@/ui/shadcn/components/button'
-import { Badge } from '@/ui/shadcn/components/badge'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
-import { useParametersFilters } from './use-parameters-filters'
+import { useUsersFilters } from './use-users-filters'
 import {
   Table,
   TableHead,
@@ -14,22 +13,11 @@ import {
   TableCell,
   TableFooter,
 } from '@/ui/shadcn/components/table'
-import {
-  Power,
-  Thermometer,
-  Droplets,
-  Wind,
-  Sun,
-  Cloud,
-  Gauge,
-  Eye,
-  Edit,
-  Plus,
-} from 'lucide-react'
-import { ParameterModal } from '@/ui/telemetry/widgets/components/parameter-modal'
+import { Power, Edit, Plus } from 'lucide-react'
+import { UserAvatar } from '@/ui/global/widgets/components/user-avatar'
 
-export type ParametersPageViewProps = {
-  items: ParameterDto[]
+export type UsersPageViewProps = {
+  items: UserDto[]
   nextCursor: string | null
   prevCursor: string | null
   limit: number
@@ -37,89 +25,15 @@ export type ParametersPageViewProps = {
   isActive?: string
   searchParams: URLSearchParams
   isModalOpen: boolean
-  selectedParameter?: ParameterDto
-  onView?: (id: string) => void
+  selectedUser?: UserDto
   onEdit?: (id: string) => void
   onToggleisActive?: (id: string) => void
-  onNewParameter?: () => void
+  onNewUser?: () => void
   onCloseModal?: () => void
-  onParameterUpdated?: (parameter: ParameterDto) => void
+  onUserUpdated?: (user: UserDto) => void
 }
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
-
-const getParameterIcon = (name: string) => {
-  const lowerName = name.toLowerCase()
-  if (lowerName.includes('temperatura'))
-    return {
-      Icon: Thermometer,
-      iconColor: 'text-red-500',
-      badgeColor: 'bg-red-50 ring-red-200',
-      iconBgColor: 'bg-red-100',
-    }
-  if (lowerName.includes('umidade') || lowerName.includes('precipitação'))
-    return {
-      Icon: Droplets,
-      iconColor: 'text-blue-500',
-      badgeColor: 'bg-blue-50 ring-blue-200',
-      iconBgColor: 'bg-blue-100',
-    }
-  if (lowerName.includes('vento'))
-    return {
-      Icon: Wind,
-      iconColor: 'text-gray-500',
-      badgeColor: 'bg-gray-50 ring-gray-200',
-      iconBgColor: 'bg-gray-100',
-    }
-  if (lowerName.includes('radiação') || lowerName.includes('uv'))
-    return {
-      Icon: Sun,
-      iconColor: 'text-yellow-500',
-      badgeColor: 'bg-yellow-50 ring-yellow-200',
-      iconBgColor: 'bg-yellow-100',
-    }
-  if (lowerName.includes('pressão'))
-    return {
-      Icon: Gauge,
-      iconColor: 'text-purple-500',
-      badgeColor: 'bg-purple-50 ring-purple-200',
-      iconBgColor: 'bg-purple-100',
-    }
-  return {
-    Icon: Cloud,
-    iconColor: 'text-gray-400',
-    badgeColor: 'bg-gray-50 ring-gray-200',
-    iconBgColor: 'bg-gray-100',
-  }
-}
-
-const getBadgeColor = (
-  unit: string,
-):
-  | 'stone'
-  | 'blue'
-  | 'sky'
-  | 'teal'
-  | 'green'
-  | 'yellow'
-  | 'orange'
-  | 'red'
-  | 'violet' => {
-  const unitColors: Record<
-    string,
-    'stone' | 'blue' | 'sky' | 'teal' | 'green' | 'yellow' | 'orange' | 'red' | 'violet'
-  > = {
-    '°C': 'blue',
-    '%': 'green',
-    hPa: 'violet',
-    'm/s': 'orange',
-    '°': 'sky',
-    'W/m²': 'yellow',
-    mm: 'teal',
-    índice: 'red',
-  }
-  return unitColors[unit] || 'stone'
-}
 
 const urlWith = (params: Record<string, string>) => {
   const searchParams = new URLSearchParams(window.location.search)
@@ -133,36 +47,34 @@ const urlWith = (params: Record<string, string>) => {
   return `?${searchParams.toString()}`
 }
 
-export function ParametersPageView({
+export const UsersPageView = ({
   items,
   nextCursor,
   prevCursor,
   limit,
   q,
   isActive,
-  searchParams,
   isModalOpen,
-  selectedParameter,
-  onView,
+  selectedUser,
   onEdit,
   onToggleisActive,
-  onNewParameter,
+  onNewUser,
   onCloseModal,
-  onParameterUpdated,
-}: ParametersPageViewProps) {
-  const { register, errors } = useParametersFilters({
+}: UsersPageViewProps) => {
+  const { register, errors } = useUsersFilters({
     initialValues: {
       q,
       isActive: isActive || 'all',
       limit,
     },
   })
+
   return (
     <section className='container mx-auto px-4 py-2'>
       <header className='mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'>
         <div>
-          <h1 className='text-xl font-semibold'>Parâmetros Meteorológicos</h1>
-          <p className='text-sm text-stone-600'>Filtros por nome e status</p>
+          <h1 className='text-xl font-semibold'>Usuários</h1>
+          <p className='text-sm text-stone-600'>Filtros por nome, email e status</p>
         </div>
       </header>
 
@@ -177,8 +89,8 @@ export function ParametersPageView({
                 <Input
                   id='q'
                   {...register('q')}
-                  placeholder='Ex.: Temperatura'
-                  className='h-9 w-56'
+                  placeholder='Ex.: João Silva ou joao@email.com'
+                  className='h-9 w-64'
                 />
                 {errors.q && <p className='text-xs text-red-500'>{errors.q.message}</p>}
               </div>
@@ -228,11 +140,11 @@ export function ParametersPageView({
 
       <div className='rounded-lg border border-stone-200'>
         <div className='flex items-center justify-between p-4 border-b border-stone-200'>
-          <h2 className='text-lg font-medium'>Parâmetros Meteorológicos</h2>
-          {onNewParameter && (
-            <Button onClick={onNewParameter} className='flex items-center gap-2 h-9'>
+          <h2 className='text-lg font-medium'>Usuários</h2>
+          {onNewUser && (
+            <Button onClick={onNewUser} className='flex items-center gap-2 h-9'>
               <Plus className='w-4 h-4' />
-              Novo Parâmetro
+              Novo Usuário
             </Button>
           )}
         </div>
@@ -241,10 +153,9 @@ export function ParametersPageView({
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
-              <TableHead>Unidade</TableHead>
-              <TableHead>Fator</TableHead>
-              <TableHead>Offset</TableHead>
+              <TableHead>Email</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Data de Criação</TableHead>
               <TableHead className='text-center'>Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -252,70 +163,50 @@ export function ParametersPageView({
           <TableBody>
             {items.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className='text-center text-stone-500 py-10'>
-                  Nenhum parâmetro encontrado.
+                <TableCell colSpan={5} className='text-center text-stone-500 py-10'>
+                  Nenhum usuário encontrado.
                 </TableCell>
               </TableRow>
             )}
 
-            {items.map((p) => {
-              const {
-                Icon: IconComponent,
-                iconColor,
-                badgeColor,
-              } = getParameterIcon(p.name)
-              const color = getBadgeColor(p.unitOfMeasure)
-
+            {items.map((user) => {
               return (
-                <TableRow key={p.id}>
+                <TableRow key={user.id}>
                   <TableCell>
                     <div className='flex items-center gap-3'>
-                      <span
-                        className={`inline-flex size-9 items-center justify-center rounded-xl ring-1 ${badgeColor}`}
-                      >
-                        <IconComponent className={`size-5 ${iconColor}`} />
-                      </span>
+                      <UserAvatar name={user.name} size='md' />
                       <div className='leading-tight'>
-                        <div className='font-medium'>{p.name}</div>
-                        <div className='text-xs text-stone-500'>
-                          Criado em{' '}
-                          {new Date(p.createdAt || new Date()).toLocaleString('pt-BR')}
-                        </div>
+                        <div className='font-medium'>{user.name}</div>
                       </div>
                     </div>
                   </TableCell>
 
                   <TableCell>
-                    <Badge color={color} className='capitalize'>
-                      {p.unitOfMeasure}
-                    </Badge>
+                    <div className='text-sm text-stone-700'>{user.email}</div>
                   </TableCell>
 
-                  <TableCell className='tabular-nums'>{p.factor}</TableCell>
-                  <TableCell className='tabular-nums'>{p.offset}</TableCell>
-
                   <TableCell>
-                    <StatusPill active={p.isActive || false} />
+                    <StatusPill
+                      active={user.isActive || false}
+                      activeText='Ativo'
+                      inactiveText='Inativo'
+                    />
+                  </TableCell>
+
+                  <TableCell className='text-sm text-stone-600'>
+                    {user.createdAt
+                      ? new Date(user.createdAt).toLocaleDateString('pt-BR')
+                      : '-'}
                   </TableCell>
 
                   <TableCell className='text-right'>
                     <div className='flex gap-2 justify-center'>
-                      {onView && (
-                        <button
-                          type='button'
-                          onClick={() => onView(p.id || '')}
-                          className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 hover:text-blue-800 border border-blue-200'
-                          title='Visualizar parâmetro'
-                        >
-                          <Eye className='w-4 h-4' />
-                        </button>
-                      )}
                       {onEdit && (
                         <button
                           type='button'
-                          onClick={() => onEdit(p.id || '')}
+                          onClick={() => onEdit(user.id || '')}
                           className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200'
-                          title='Editar parâmetro'
+                          title='Editar usuário'
                         >
                           <Edit className='w-4 h-4' />
                         </button>
@@ -323,13 +214,13 @@ export function ParametersPageView({
                       {onToggleisActive && (
                         <button
                           type='button'
-                          onClick={() => onToggleisActive(p.id || '')}
+                          onClick={() => onToggleisActive(user.id || '')}
                           className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
-                            p.isActive
+                            user.isActive
                               ? 'bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200'
                               : 'bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200'
                           }`}
-                          title={p.isActive ? 'Desativar parâmetro' : 'Ativar parâmetro'}
+                          title={user.isActive ? 'Desativar usuário' : 'Ativar usuário'}
                         >
                           <Power className='w-4 h-4' />
                         </button>
@@ -344,14 +235,14 @@ export function ParametersPageView({
           <TableFooter>
             <TableRow>
               <TableCell colSpan={3} className='text-xs text-stone-600'>
-                Mostrando até {limit} itens • Nome: {q ? `"${q}"` : 'nenhum'} • Status:{' '}
+                Mostrando até {limit} itens • Busca: {q ? `"${q}"` : 'nenhuma'} • Status:{' '}
                 {isActive === 'all'
                   ? 'todos'
                   : isActive === 'active'
                     ? 'ativos'
                     : 'inativos'}
               </TableCell>
-              <TableCell colSpan={3} className='text-right'>
+              <TableCell colSpan={2} className='text-right'>
                 <nav className='inline-flex items-center gap-2'>
                   <Link
                     to={prevCursor ? urlWith({ cursor: prevCursor }) : '#'}
@@ -378,13 +269,23 @@ export function ParametersPageView({
         </Table>
       </div>
 
-      {onCloseModal && (
-        <ParameterModal
-          isOpen={isModalOpen}
-          onClose={onCloseModal}
-          parameter={selectedParameter}
-          onUpdated={onParameterUpdated}
-        />
+      {/* Modal placeholder - será implementado futuramente */}
+      {isModalOpen && onCloseModal && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-lg p-6 max-w-md w-full mx-4'>
+            <h3 className='text-lg font-semibold mb-4'>
+              {selectedUser ? 'Editar Usuário' : 'Novo Usuário'}
+            </h3>
+            <p className='text-sm text-stone-600 mb-4'>
+              Formulário de usuário será implementado futuramente.
+            </p>
+            <div className='flex gap-2 justify-end'>
+              <Button variant='outline' onClick={onCloseModal}>
+                Fechar
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </section>
   )

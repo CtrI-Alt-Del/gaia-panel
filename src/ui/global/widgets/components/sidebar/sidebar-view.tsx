@@ -211,6 +211,37 @@ export function SidebarView() {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className={buttonStyles}>
                   <a
+                    href={ROUTES.users}
+                    className={
+                      currentPath === ROUTES.users
+                        ? activeButtonStyles
+                        : inactiveButtonStyles
+                    }
+                    aria-current={currentPath === ROUTES.users ? 'page' : undefined}
+                  >
+                    <User
+                      className={
+                        currentPath === ROUTES.users
+                          ? activeIconStyles
+                          : inactiveIconStyles
+                      }
+                    />
+                    <span
+                      className={
+                        currentPath === ROUTES.users
+                          ? activeTextStyles
+                          : inactiveTextStyles
+                      }
+                    >
+                      Usuários
+                    </span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className={buttonStyles}>
+                  <a
                     href={ROUTES.configuration}
                     className={
                       currentPath === ROUTES.configuration

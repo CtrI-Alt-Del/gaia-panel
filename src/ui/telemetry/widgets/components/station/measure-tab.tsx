@@ -1,6 +1,7 @@
 import { Form } from "react-router";
 import type { MeasurementDto } from "@/core/dtos/telemetry/measurement-dto";
 import { Button } from "@/ui/shadcn/components/button";
+import { PaginationSelect } from "@/ui/global/widgets/components";
 
 interface MeasureTabProps {
   loading: boolean;
@@ -48,23 +49,10 @@ export default function MeasureTab({
                 ))}
               </select>
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="limit" className="text-xs text-stone-600">
-                Itens por página
-              </label>
-              <select
-                id="limit"
-                name="limit"
-                defaultValue={limit}
-                className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                {[5, 10, 20, 50].map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <PaginationSelect
+              value={limit}
+              onValueChange={(value) => setParam("limit", value)}
+            />
             <Button type="submit" className="h-9">
               Aplicar
             </Button>

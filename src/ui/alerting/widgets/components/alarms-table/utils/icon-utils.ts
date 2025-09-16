@@ -48,31 +48,29 @@ const SeverityColorMap = {
   warning: 'bg-yellow-100 text-yellow-800 ring-yellow-200',
 }
 
-export const getIcon = (iconName: string) => {
-  const IconComponent =
-    IconMap[iconName as keyof typeof IconMap] || IconMap.thermometer
+export function getIcon(iconName: string) {
+  const IconComponent = IconMap[iconName as keyof typeof IconMap] || IconMap.thermometer
   return IconComponent
 }
 
-export const getIconColor = (iconName: string) => {
+export function getIconColor(iconName: string) {
   return IconColorMap[iconName as keyof typeof IconColorMap] || 'text-orange-500'
 }
 
-export const getIconBgColor = (iconName: string) => {
+export function getIconBgColor(iconName: string) {
   return (
     IconBgColorMap[iconName as keyof typeof IconBgColorMap] ||
     'bg-orange-100 ring-orange-200'
   )
 }
 
-export const getSeverityIcon = (severity: string) => {
+export function getSeverityIcon(severity: string) {
   return (
-    SeverityIconMap[severity as keyof typeof SeverityIconMap] ||
-    SeverityIconMap.alarm
+    SeverityIconMap[severity as keyof typeof SeverityIconMap] || SeverityIconMap.alarm
   )
 }
 
-export const getSeverityColor = (severity: string) => {
+export function getSeverityColor(severity: string) {
   return (
     SeverityColorMap[severity as keyof typeof SeverityColorMap] ||
     'bg-yellow-100 text-yellow-800 ring-yellow-200'

@@ -1,5 +1,4 @@
 import type { AlarmRule } from '../../pages/use-alarms-page'
-import { TableHeader } from './table-header'
 import { TableBody } from './table-body'
 
 interface AlarmsTableProps {
@@ -20,7 +19,6 @@ export function AlarmsTable({
   return (
     <div className='overflow-x-auto border-stone-200'>
       <table className='min-w-full text-left text-sm'>
-        <TableHeader />
         <TableBody
           alarms={alarms}
           onViewAlarm={onViewAlarm}

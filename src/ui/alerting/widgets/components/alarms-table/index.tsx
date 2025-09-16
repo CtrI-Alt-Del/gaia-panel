@@ -1,8 +1,6 @@
 import { AlarmsTableView } from './alarms-table-view'
 import { useAlarmsTable } from './use-alarms-table'
 import { AlarmsTable } from './alarms-table'
-import { AlarmRow } from './alarm-row'
-import { TableHeader } from './table-header'
 import { TableBody } from './table-body'
 import type { AlarmRule } from '../../pages/use-alarms-page'
 
@@ -34,4 +32,4 @@ export function AlarmsTableContainer({
   )
 }
 
-export { AlarmsTable, AlarmRow, TableHeader, TableBody }
+export { AlarmsTable, TableBody }

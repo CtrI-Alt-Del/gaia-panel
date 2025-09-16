@@ -3,7 +3,7 @@ import { ROUTES } from '../core/constants/routes'
 
 export default [
   index('routes/auth/login.tsx'),
-  layout('layouts/AppLayout.tsx', [
+  layout('layouts/app-layout.tsx', [
     route(ROUTES.dashboard, 'routes/telemetry/dashboard.tsx'),
     route(ROUTES.stations, 'routes/telemetry/stations.tsx'),
     route(ROUTES.reports, 'routes/telemetry/reports.tsx'),

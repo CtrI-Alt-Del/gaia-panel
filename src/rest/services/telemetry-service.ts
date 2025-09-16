@@ -27,8 +27,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: '°C',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 1 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 1 * 3600_000),
   },
   {
     id: 'p-002',
@@ -36,8 +36,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: '%',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 2 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 2 * 3600_000),
   },
   {
     id: 'p-003',
@@ -45,8 +45,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: 'm/s',
     factor: 1,
     offset: 0,
-    active: false,
-    createdAt: new Date(Date.now() - 3 * 3600_000).toISOString(),
+    isActive: false,
+    createdAt: new Date(Date.now() - 3 * 3600_000),
   },
   {
     id: 'p-004',
@@ -54,8 +54,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: 'hPa',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 4 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 4 * 3600_000),
   },
   {
     id: 'p-005',
@@ -63,8 +63,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: 'W/m²',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 5 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 5 * 3600_000),
   },
   {
     id: 'p-001',
@@ -72,8 +72,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: '°C',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 1 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 1 * 3600_000),
   },
   {
     id: 'p-002',
@@ -81,8 +81,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: '%',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 2 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 2 * 3600_000),
   },
   {
     id: 'p-003',
@@ -90,8 +90,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: 'm/s',
     factor: 1,
     offset: 0,
-    active: false,
-    createdAt: new Date(Date.now() - 3 * 3600_000).toISOString(),
+    isActive: false,
+    createdAt: new Date(Date.now() - 3 * 3600_000),
   },
   {
     id: 'p-004',
@@ -99,8 +99,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: 'hPa',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 4 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 4 * 3600_000),
   },
   {
     id: 'p-005',
@@ -108,8 +108,8 @@ const mockData: ParameterDto[] = [
     unitOfMeasure: 'W/m²',
     factor: 1,
     offset: 0,
-    active: true,
-    createdAt: new Date(Date.now() - 5 * 3600_000).toISOString(),
+    isActive: true,
+    createdAt: new Date(Date.now() - 5 * 3600_000),
   },
 ]
 
@@ -249,7 +249,10 @@ export const TelemetryService = {
 
     const sorted = [...mockData]
       .filter(byName)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime(),
+      )
 
     const startIndex = cursor ? decode(cursor) : 0
     const pageItems = sorted.slice(startIndex, startIndex + limit)

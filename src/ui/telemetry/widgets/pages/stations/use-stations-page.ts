@@ -1,6 +1,60 @@
 import { useCallback, useMemo, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router'
+import { useSearchParams } from 'react-router'
 import type { StationDto } from '@/core/dtos/telemetry/station-dto'
+import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
+import type { StationFormData } from '../../components/station/station-form'
+
+// Mock de parâmetros disponíveis
+const mockParameters: ParameterDto[] = [
+  {
+    id: '1',
+    name: 'Temperatura do Ar',
+    unitOfMeasure: '°C',
+    factor: 0.1,
+    offset: -40.0,
+    isActive: true,
+  },
+  {
+    id: '2',
+    name: 'Umidade Relativa',
+    unitOfMeasure: '%',
+    factor: 0.1,
+    offset: 0.0,
+    isActive: true,
+  },
+  {
+    id: '3',
+    name: 'Pressão Atmosférica',
+    unitOfMeasure: 'hPa',
+    factor: 0.1,
+    offset: 300.0,
+    isActive: true,
+  },
+  {
+    id: '4',
+    name: 'Velocidade do Vento',
+    unitOfMeasure: 'm/s',
+    factor: 0.1,
+    offset: 0.0,
+    isActive: true,
+  },
+  {
+    id: '5',
+    name: 'Direção do Vento',
+    unitOfMeasure: '°',
+    factor: 1.0,
+    offset: 0.0,
+    isActive: true,
+  },
+  {
+    id: '6',
+    name: 'Precipitação',
+    unitOfMeasure: 'mm',
+    factor: 0.1,
+    offset: 0.0,
+    isActive: true,
+  },
+]
 
 const mockStations: StationDto[] = [
   {
@@ -56,9 +110,11 @@ const mockStations: StationDto[] = [
 ]
 
 export function useStations() {
-  const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const [loading, setLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingStation, setEditingStation] = useState<StationDto | null>(null)
+  const [formMode, setFormMode] = useState<'create' | 'edit'>('create')
 
   const q = params.get('q') ?? ''
   const status = (params.get('status') as any) ?? 'todos'
@@ -135,6 +191,70 @@ export function useStations() {
     console.log('Toggle station active:', stationId)
   }
 
+  async function handleStationSubmit(data: StationFormData) {
+    setLoading(true)
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    if (formMode === 'create') {
+      // Simular criação da estação
+      const newStation: StationDto = {
+        id: String(mockStations.length + 1),
+        name: data.name,
+        UID: data.UID,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        lastReadAt: new Date(),
+        parameters: mockParameters.filter((p) => data.parameterIds.includes(p.id)),
+        isActive: data.isActive,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+
+      mockStations.push(newStation)
+      console.log('Station created:', newStation)
+    } else {
+      // Simular edição da estação
+      const stationIndex = mockStations.findIndex((s) => s.id === editingStation?.id)
+      if (stationIndex !== -1) {
+        mockStations[stationIndex] = {
+          ...mockStations[stationIndex],
+          name: data.name,
+          UID: data.UID,
+          latitude: data.latitude,
+          longitude: data.longitude,
+          isActive: data.isActive,
+          parameters: mockParameters.filter((p) => data.parameterIds.includes(p.id)),
+          updatedAt: new Date(),
+        }
+        console.log('Station updated:', mockStations[stationIndex])
+      }
+    }
+
+    setLoading(false)
+    setIsModalOpen(false)
+    setEditingStation(null)
+    setFormMode('create')
+  }
+
+  function handleNewStation() {
+    setFormMode('create')
+    setEditingStation(null)
+    setIsModalOpen(true)
+  }
+
+  function handleEditStation(station: StationDto) {
+    console.log('Editando estação:', station)
+    setFormMode('edit')
+    setEditingStation(station)
+    setIsModalOpen(true)
+  }
+
+  function handleCloseModal() {
+    setIsModalOpen(false)
+    setEditingStation(null)
+    setFormMode('create')
+  }
+
   return {
     loading,
     rows,
@@ -147,8 +267,15 @@ export function useStations() {
     fromTo,
     setParam,
     load,
-    navigate,
     timeAgo,
     toggleStationActive,
+    isModalOpen,
+    editingStation,
+    formMode,
+    onNewStation: handleNewStation,
+    onEditStation: handleEditStation,
+    onCloseModal: handleCloseModal,
+    handleStationSubmit,
+    availableParameters: mockParameters,
   }
 }

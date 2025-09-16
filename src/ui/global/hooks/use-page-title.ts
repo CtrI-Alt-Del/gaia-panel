@@ -13,6 +13,9 @@ const PAGE_TITLES: Record<string, string> = {
 export function usePageTitle() {
   const location = useLocation()
   const currentPath = location.pathname
+  if (currentPath.startsWith('/stations/') && currentPath !== '/stations') {
+    return 'Detalhes da Estação'
+  }
 
   return PAGE_TITLES[currentPath] || 'Dashboard'
 }

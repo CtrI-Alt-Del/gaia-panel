@@ -3,7 +3,8 @@ import type { StationDto } from "@/core/dtos/telemetry/station-dto";
 import { StatusPill } from "@/ui/shadcn/components/status-pill";
 import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
-import { Edit, Power } from "lucide-react";
+import { Edit, Power, Plus } from "lucide-react";
+import { StationModal } from "../../components/station/station-form";
 
 interface StationsPageViewProps {
   loading: boolean;
@@ -17,9 +18,16 @@ interface StationsPageViewProps {
   fromTo: { from: number; to: number };
   setParam: (k: string, v: string | null) => void;
   load: () => Promise<void>;
-  navigate: (path: string) => void;
   timeAgo: (d: Date) => string;
   toggleStationActive: (stationId: string) => Promise<void>;
+  isModalOpen: boolean;
+  editingStation: StationDto | null;
+  formMode: "create" | "edit";
+  onNewStation: () => void;
+  onEditStation: (station: StationDto) => void;
+  onCloseModal: () => void;
+  handleStationSubmit: (data: any) => Promise<void>;
+  availableParameters: any[];
 }
 
 export default function StationsPageView({
@@ -34,9 +42,16 @@ export default function StationsPageView({
   fromTo,
   setParam,
   load,
-  navigate,
   timeAgo,
   toggleStationActive,
+  isModalOpen,
+  editingStation,
+  formMode,
+  onNewStation,
+  onEditStation,
+  onCloseModal,
+  handleStationSubmit,
+  availableParameters,
 }: StationsPageViewProps) {
   return (
     <section className="container mx-auto px-4 py-2">
@@ -126,6 +141,10 @@ export default function StationsPageView({
       <div className="rounded-lg border border-stone-200">
         <div className="flex items-center justify-between p-4 border-b border-stone-200">
           <h2 className="text-lg font-medium">Estações de Monitoramento</h2>
+          <Button onClick={onNewStation} className="flex items-center gap-2">
+            <Plus className="w-4 h-4" />
+            Nova Estação
+          </Button>
         </div>
         <table className="w-full text-sm">
           <thead className="bg-stone-50 text-left">
@@ -188,7 +207,7 @@ export default function StationsPageView({
                       <button
                         type="button"
                         className="inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200"
-                        onClick={() => navigate(`/stations/${s.id}?edit=1`)}
+                        onClick={() => onEditStation(s)}
                         title="Editar estação"
                       >
                         <Edit className="w-4 h-4" />
@@ -245,6 +264,18 @@ export default function StationsPageView({
           </button>
         </div>
       </div>
+
+      {/* Modal do Formulário */}
+      {onCloseModal && (
+        <StationModal
+          isOpen={isModalOpen}
+          onClose={onCloseModal}
+          onSubmit={handleStationSubmit}
+          availableParameters={availableParameters}
+          station={editingStation}
+          mode={formMode}
+        />
+      )}
     </section>
   );
 }

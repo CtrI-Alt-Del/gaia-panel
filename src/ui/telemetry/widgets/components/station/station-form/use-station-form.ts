@@ -1,15 +1,32 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
+import {
+  useForm,
+  type Path,
+  type PathValue,
+  type Resolver,
+  type SubmitHandler,
+} from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
 import type { StationDto } from '@/core/dtos/telemetry/station-dto'
 
-export interface StationFormData {
-  name: string
-  UID: string
-  latitude: number
-  longitude: number
-  isActive: boolean
-  parameterIds: string[]
-}
+const stationFormSchema = z.object({
+  name: z.string().min(1, 'Informe o nome da estacao'),
+  UID: z.string().min(1, 'Informe o UID'),
+  latitude: z
+    .coerce
+    .number()
+    .refine((value) => Number.isFinite(value), 'Informe a latitude'),
+  longitude: z
+    .coerce
+    .number()
+    .refine((value) => Number.isFinite(value), 'Informe a longitude'),
+  isActive: z.boolean().default(true),
+  parameterIds: z.array(z.string()).default([]),
+})
+
+export type StationFormData = z.infer<typeof stationFormSchema>
 
 interface UseStationFormProps {
   availableParameters: ParameterDto[]
@@ -19,6 +36,15 @@ interface UseStationFormProps {
   onCancel: () => void
 }
 
+const defaultValues: StationFormData = {
+  name: '',
+  UID: '',
+  latitude: 0,
+  longitude: 0,
+  isActive: true,
+  parameterIds: [],
+}
+
 export function useStationForm({
   availableParameters,
   station,
@@ -26,78 +52,87 @@ export function useStationForm({
   onSubmit,
   onCancel,
 }: UseStationFormProps) {
-  const [formData, setFormData] = useState<StationFormData>({
-    name: '',
-    UID: '',
-    latitude: 0,
-    longitude: 0,
-    isActive: true,
-    parameterIds: [],
-  })
   const [selectedParameterId, setSelectedParameterId] = useState<string>('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const defaultFormData: StationFormData = {
-    name: '',
-    UID: '',
-    latitude: 0,
-    longitude: 0,
-    isActive: true,
-    parameterIds: [],
-  }
+  const initialValues = useMemo<StationFormData>(() => {
+    if (mode === 'edit' && station) {
+      return {
+        name: station.name,
+        UID: station.UID,
+        latitude: station.latitude,
+        longitude: station.longitude,
+        isActive: station.isActive ?? true,
+        parameterIds: station.parameters.map((p) => p.id),
+      }
+    }
+    return { ...defaultValues, parameterIds: [] }
+  }, [mode, station])
 
-  const resetForm = useCallback(() => {
-    setFormData(defaultFormData)
+  const {
+    handleSubmit: rhfHandleSubmit,
+    watch,
+    reset,
+    setValue,
+    formState: { isSubmitting, isValid },
+  } = useForm<StationFormData>({
+    resolver: zodResolver(stationFormSchema) as Resolver<StationFormData>,
+    defaultValues: initialValues,
+    mode: 'onChange',
+  })
+
+  useEffect(() => {
+    reset(initialValues)
     setSelectedParameterId('')
-  }, [])
+  }, [reset, initialValues])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!formData.name || !formData.UID) return
+  const formData = watch()
 
-    setIsSubmitting(true)
+  const handleClose = useCallback(() => {
+    reset(initialValues)
+    setSelectedParameterId('')
+    onCancel()
+  }, [reset, initialValues, onCancel])
+
+  const onSubmitHandler: SubmitHandler<StationFormData> = async (data) => {
     try {
-      await onSubmit(formData)
+      await onSubmit(data)
       handleClose()
     } catch (error) {
-      console.error('Erro ao salvar estação:', error)
-    } finally {
-      setIsSubmitting(false)
+      console.error('Erro ao salvar estacao:', error)
     }
   }
 
-  const handleClose = () => {
-    resetForm()
-    onCancel()
-  }
+  const onSubmitForm = rhfHandleSubmit(onSubmitHandler)
 
   const handleMapClick = (lat: number, lng: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      latitude: lat,
-      longitude: lng,
-    }))
+    setValue('latitude', lat, { shouldDirty: true, shouldValidate: true })
+    setValue('longitude', lng, { shouldDirty: true, shouldValidate: true })
   }
 
   const addParameter = () => {
     if (selectedParameterId && !formData.parameterIds.includes(selectedParameterId)) {
-      setFormData((prev) => ({
-        ...prev,
-        parameterIds: [...prev.parameterIds, selectedParameterId],
-      }))
+      setValue(
+        'parameterIds',
+        [...formData.parameterIds, selectedParameterId],
+        { shouldDirty: true, shouldValidate: true },
+      )
       setSelectedParameterId('')
     }
   }
 
   const removeParameter = (parameterId: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      parameterIds: prev.parameterIds.filter((id) => id !== parameterId),
-    }))
+    setValue(
+      'parameterIds',
+      formData.parameterIds.filter((id) => id !== parameterId),
+      { shouldDirty: true, shouldValidate: true },
+    )
   }
 
-  const updateFormField = (field: keyof StationFormData, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  const updateFormField = <K extends Path<StationFormData>>(
+    field: K,
+    value: PathValue<StationFormData, K>,
+  ) => {
+    setValue(field, value, { shouldDirty: true, shouldValidate: true })
   }
 
   const selectedParameters = availableParameters.filter((p) =>
@@ -108,30 +143,13 @@ export function useStationForm({
     (p) => !formData.parameterIds.includes(p.id),
   )
 
-  const isFormValid = formData.name && formData.UID
-
   const submitButtonText = isSubmitting
     ? mode === 'create'
       ? 'Criando...'
       : 'Salvando...'
     : mode === 'create'
-      ? 'Criar Estação'
-      : 'Salvar Alterações'
-
-  useEffect(() => {
-    if (mode === 'edit' && station) {
-      setFormData({
-        name: station.name,
-        UID: station.UID,
-        latitude: station.latitude,
-        longitude: station.longitude,
-        isActive: station.isActive || false,
-        parameterIds: station.parameters.map((p) => p.id),
-      })
-    } else {
-      resetForm()
-    }
-  }, [mode, station, resetForm])
+      ? 'Criar Estacao'
+      : 'Salvar Alteracoes'
 
   return {
     formData,
@@ -139,10 +157,10 @@ export function useStationForm({
     isSubmitting,
     selectedParameters,
     availableParametersForSelection,
-    isFormValid,
+    isFormValid: isValid,
     submitButtonText,
     setSelectedParameterId,
-    handleSubmit,
+    handleSubmit: onSubmitForm,
     handleClose,
     handleMapClick,
     addParameter,

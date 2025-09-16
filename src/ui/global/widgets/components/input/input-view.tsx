@@ -3,7 +3,7 @@ import { useId } from 'react'
 import { Input } from '@/ui/shadcn/components/input'
 import { Label } from '@/ui/shadcn/components/label'
 
-export default function InputComponent({
+export const InputView = ({
   label,
   placeholder,
   icon,
@@ -15,7 +15,7 @@ export default function InputComponent({
   icon?: React.ReactNode
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-}) {
+}) => {
   const id = useId()
   return (
     <div className='*:not-first:mt-2'>

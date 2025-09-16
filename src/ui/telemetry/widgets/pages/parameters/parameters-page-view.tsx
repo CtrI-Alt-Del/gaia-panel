@@ -14,12 +14,7 @@ import {
   TableCell,
   TableFooter,
 } from "@/ui/shadcn/components/table";
-import {
-  Power,
-  Eye,
-  Edit,
-  Plus,
-} from "lucide-react";
+import { Power, Edit, Plus } from "lucide-react";
 import { getParameterIcon, getBadgeColor } from "../../utils/parameter-utils";
 import { ParameterModal } from "@/ui/telemetry/widgets/components/parameter/parameter-modal";
 
@@ -31,7 +26,6 @@ export type ParametersPageViewProps = {
   q: string;
   isActive?: string;
   isModalOpen: boolean;
-  onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onToggleisActive?: (id: string) => void;
   onNewParameter?: () => void;
@@ -39,8 +33,6 @@ export type ParametersPageViewProps = {
 };
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
-
-
 
 const urlWith = (params: Record<string, string>) => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -62,7 +54,6 @@ export function ParametersPageView({
   q,
   isActive,
   isModalOpen,
-  onView,
   onEdit,
   onToggleisActive,
   onNewParameter,
@@ -101,8 +92,8 @@ export function ParametersPageView({
                 className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">Todos</option>
-                <option value="active">Ativos</option>
-                <option value="inactive">Inativos</option>
+                <option value="ativo">Ativos</option>
+                <option value="inativo">Inativos</option>
               </select>
             </div>
             <div className="flex flex-col">
@@ -128,7 +119,10 @@ export function ParametersPageView({
           </Form>
 
           {onNewParameter && (
-            <Button onClick={onNewParameter} className="flex items-center gap-2 h-9">
+            <Button
+              onClick={onNewParameter}
+              className="flex items-center gap-2 h-9"
+            >
               <Plus className="w-4 h-4" />
               Novo Parâmetro
             </Button>
@@ -184,7 +178,9 @@ export function ParametersPageView({
                         <div className="font-medium">{p.name}</div>
                         <div className="text-xs text-stone-500">
                           Criado em{" "}
-                          {new Date(p.createdAt || new Date()).toLocaleString("pt-BR")}
+                          {new Date(p.createdAt || new Date()).toLocaleString(
+                            "pt-BR"
+                          )}
                         </div>
                       </div>
                     </div>
@@ -205,16 +201,6 @@ export function ParametersPageView({
 
                   <TableCell className="text-right">
                     <div className="flex gap-2 justify-center">
-                      {onView && (
-                        <button
-                          type="button"
-                          onClick={() => onView(p.id || "")}
-                          className="inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 hover:text-blue-800 border border-blue-200"
-                          title="Visualizar parâmetro"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                      )}
                       {onEdit && (
                         <button
                           type="button"
@@ -229,12 +215,13 @@ export function ParametersPageView({
                         <button
                           type="button"
                           onClick={() => onToggleisActive(p.id || "")}
-                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${p.isActive
-                            ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200"
-                            : p.isActive
-                              ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                              : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                            }`}
+                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
+                            p.isActive
+                              ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200"
+                              : p.isActive
+                                ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                                : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                          }`}
                           title={
                             p.isActive
                               ? "Desativar parâmetro"
@@ -258,7 +245,7 @@ export function ParametersPageView({
                 Status:{" "}
                 {isActive === "all"
                   ? "todos"
-                  : isActive === "active"
+                  : isActive === "ativo"
                     ? "ativos"
                     : "inativos"}
               </TableCell>
@@ -267,20 +254,22 @@ export function ParametersPageView({
                   <Link
                     to={prevCursor ? urlWith({ cursor: prevCursor }) : "#"}
                     aria-disabled={!prevCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${prevCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      prevCursor
+                        ? "hover:bg-stone-50"
+                        : "pointer-events-none opacity-50"
+                    }`}
                   >
                     Anterior
                   </Link>
                   <Link
                     to={nextCursor ? urlWith({ cursor: nextCursor }) : "#"}
                     aria-disabled={!nextCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${nextCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      nextCursor
+                        ? "hover:bg-stone-50"
+                        : "pointer-events-none opacity-50"
+                    }`}
                   >
                     Próxima
                   </Link>
@@ -292,10 +281,7 @@ export function ParametersPageView({
       </div>
 
       {onCloseModal && (
-        <ParameterModal
-          isOpen={isModalOpen}
-          onClose={onCloseModal}
-        />
+        <ParameterModal isOpen={isModalOpen} onClose={onCloseModal} />
       )}
     </section>
   );

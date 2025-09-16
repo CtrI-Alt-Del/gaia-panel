@@ -14,7 +14,7 @@ export interface AlarmRule {
 
 export interface AlarmFilters {
   search: string
-  status: 'all' | 'active' | 'inactive'
+  status: 'all' | 'ativo' | 'inativo'
 }
 
 export interface AlarmPagination {
@@ -192,7 +192,10 @@ export const useAlarms = () => {
         alarm.message.toLowerCase().includes(filters.search.toLowerCase()) ||
         alarm.target.toLowerCase().includes(filters.search.toLowerCase())
 
-      const matchesStatus = filters.status === 'all' || alarm.status === filters.status
+      const matchesStatus =
+        filters.status === 'all' ||
+        (filters.status === 'ativo' && alarm.status === 'active') ||
+        (filters.status === 'inativo' && alarm.status === 'inactive')
 
       return matchesSearch && matchesStatus
     })
@@ -242,11 +245,6 @@ export const useAlarms = () => {
     return true
   }
 
-  const handleViewAlarm = (alarmId: string) => {
-    console.log('Visualizar alarme:', alarmId)
-    // Aqui você implementaria a lógica de navegação para visualizar o alarme
-  }
-
   const handleEditAlarm = (alarmId: string) => {
     console.log('Editar alarme:', alarmId)
     // Aqui você implementaria a lógica de abertura do modal de edição
@@ -273,7 +271,6 @@ export const useAlarms = () => {
     createAlarm,
     updateAlarm,
     deleteAlarm,
-    handleViewAlarm,
     handleEditAlarm,
     handleSaveEditAlarm,
     handleDeleteAlarm,

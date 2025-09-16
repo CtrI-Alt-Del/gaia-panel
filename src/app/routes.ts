@@ -1,5 +1,5 @@
 import { type RouteConfig, index, route, layout } from '@react-router/dev/routes'
-import { ROUTES } from '../core/constants/ROUTES'
+import { ROUTES } from '../core/constants/routes'
 
 export default [
   index('routes/auth/login.tsx'),
@@ -11,5 +11,6 @@ export default [
     route(ROUTES.profile, 'routes/membership/profile.tsx'),
     route(ROUTES.parameters, 'routes/telemetry/parameters.tsx'),
     route(ROUTES.alerts, 'routes/alerting/alarms.tsx'),
+    route(ROUTES.users, 'routes/membership/users.tsx'),
   ]),
 ] satisfies RouteConfig

@@ -3,7 +3,6 @@ import { TableBody } from './table-body'
 
 interface AlarmsTableProps {
   alarms: AlarmRule[]
-  onViewAlarm: (alarmId: string) => void
   onEditAlarm: (alarm: AlarmRule) => void
   onDeactivateClick: (alarm: AlarmRule) => void
   onToggleActive?: (alarmId: string) => void
@@ -11,7 +10,6 @@ interface AlarmsTableProps {
 
 export function AlarmsTable({
   alarms,
-  onViewAlarm,
   onEditAlarm,
   onDeactivateClick,
   onToggleActive,
@@ -21,7 +19,6 @@ export function AlarmsTable({
       <table className='min-w-full text-left text-sm'>
         <TableBody
           alarms={alarms}
-          onViewAlarm={onViewAlarm}
           onEditAlarm={onEditAlarm}
           onDeactivateClick={onDeactivateClick}
           onToggleActive={onToggleActive}

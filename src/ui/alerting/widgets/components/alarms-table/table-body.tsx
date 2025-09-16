@@ -1,4 +1,4 @@
-import { Eye, Edit, Power } from 'lucide-react'
+import { Edit, Power } from 'lucide-react'
 import type { AlarmRule } from '../../pages/use-alarms-page'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
 import {
@@ -23,7 +23,6 @@ const CenteredHeaders = ['Status', 'Ações', 'Alvo']
 
 interface TableBodyProps {
   alarms: AlarmRule[]
-  onViewAlarm: (alarmId: string) => void
   onEditAlarm: (alarm: AlarmRule) => void
   onDeactivateClick: (alarm: AlarmRule) => void
   onToggleActive?: (alarmId: string) => void
@@ -31,7 +30,6 @@ interface TableBodyProps {
 
 export function TableBody({
   alarms,
-  onViewAlarm,
   onEditAlarm,
   onDeactivateClick,
   onToggleActive,
@@ -72,17 +70,11 @@ export function TableBody({
             </td>
 
             <td className='px-4 py-3'>
-              <div>
-                <div className='text-sm text-gray-900'>{alarm.condition}</div>
-                <div className='text-xs text-gray-500'>{alarm.conditionLabel}</div>
-              </div>
+              <div className='text-sm text-gray-900'>{alarm.condition}</div>
             </td>
 
             <td className='px-4 py-3'>
-              <div>
-                <div className='text-sm text-gray-900'>{alarm.message}</div>
-                <div className='text-xs text-gray-500'>{alarm.messageLabel}</div>
-              </div>
+              <div className='text-sm text-gray-900'>{alarm.message}</div>
             </td>
 
             <td className='px-4 py-3'>
@@ -100,10 +92,7 @@ export function TableBody({
             </td>
 
             <td className='px-4 py-3 text-center'>
-              <div className='flex flex-col items-center'>
-                <div className='text-sm text-gray-900 font-medium'>{alarm.target}</div>
-                <div className='text-xs text-gray-500'>{alarm.targetLabel}</div>
-              </div>
+              <div className='text-sm text-gray-900 font-medium'>{alarm.target}</div>
             </td>
 
             <td className='px-4 py-3 text-center'>
@@ -116,14 +105,6 @@ export function TableBody({
 
             <td className='px-4 py-3 text-center'>
               <div className='flex gap-2 justify-center'>
-                <button
-                  type='button'
-                  onClick={() => onViewAlarm(alarm.id)}
-                  className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 hover:text-blue-800 border border-blue-200'
-                  title='Visualizar alarme'
-                >
-                  <Eye className='w-4 h-4' />
-                </button>
                 <button
                   type='button'
                   onClick={() => onEditAlarm(alarm)}

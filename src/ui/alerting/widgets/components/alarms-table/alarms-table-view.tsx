@@ -9,7 +9,6 @@ import { AlarmsTable } from './alarms-table'
 
 export interface AlarmsTableViewProps {
   alarms: AlarmRule[]
-  onViewAlarm: (alarmId: string) => void
   onToggleActive?: (alarmId: string) => void
   modalRef: React.RefObject<ModalRef | null>
   editModalRef: React.RefObject<ModalRef | null>
@@ -26,7 +25,6 @@ export interface AlarmsTableViewProps {
 
 export function AlarmsTableView({
   alarms,
-  onViewAlarm,
   onToggleActive,
   modalRef,
   editModalRef,
@@ -57,7 +55,6 @@ export function AlarmsTableView({
 
       <AlarmsTable
         alarms={alarms}
-        onViewAlarm={onViewAlarm}
         onEditAlarm={handleEditAlarm}
         onDeactivateClick={handleDeactivateClick}
         onToggleActive={onToggleActive}

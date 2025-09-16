@@ -1,20 +1,21 @@
 import { AlarmsTableView } from './alarms-table-view'
 import { useAlarmsTable } from './use-alarms-table'
+import { AlarmsTable } from './alarms-table'
 import type { AlarmRule } from '../../pages/use-alarms-page'
 
-interface AlarmsTableProps {
+interface AlarmsTableContainerProps {
   alarms: AlarmRule[]
   onViewAlarm: (alarmId: string) => void
   onEditAlarm: (alarmId: string, data: Partial<AlarmRule>) => void
   onToggleActive?: (alarmId: string) => void
 }
 
-export function AlarmsTable({
+export function AlarmsTableContainer({
   alarms,
   onViewAlarm,
   onEditAlarm,
   onToggleActive,
-}: AlarmsTableProps) {
+}: AlarmsTableContainerProps) {
   const tableData = useAlarmsTable({
     onEditAlarm,
     onToggleActive,
@@ -29,3 +30,5 @@ export function AlarmsTable({
     />
   )
 }
+
+export { AlarmsTable }

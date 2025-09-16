@@ -14,16 +14,16 @@ export function useAlarmsTable({ onEditAlarm, onToggleActive }: UseAlarmsTablePr
   const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
   const [alarmToDeactivate, setAlarmToDeactivate] = useState<AlarmRule | null>(null)
 
-  const handleCreateAlarm = () => {
+  async function handleCreateAlarm() {
     modalRef.current?.open()
   }
 
-  const handleEditAlarm = (alarm: AlarmRule) => {
+  async function handleEditAlarm(alarm: AlarmRule) {
     setSelectedAlarm(alarm)
     editModalRef.current?.open()
   }
 
-  const handleSaveEdit = (data: Partial<AlarmRule>) => {
+  async function handleSaveEdit(data: Partial<AlarmRule>) {
     if (selectedAlarm) {
       onEditAlarm(selectedAlarm.id, data)
       editModalRef.current?.close()
@@ -31,12 +31,12 @@ export function useAlarmsTable({ onEditAlarm, onToggleActive }: UseAlarmsTablePr
     }
   }
 
-  const handleDeactivateClick = (alarm: AlarmRule) => {
+  async function handleDeactivateClick(alarm: AlarmRule) {
     setAlarmToDeactivate(alarm)
     setDeactivateDialogOpen(true)
   }
 
-  const handleConfirmDeactivate = () => {
+  async function handleConfirmDeactivate() {
     if (alarmToDeactivate && onToggleActive) {
       onToggleActive(alarmToDeactivate.id)
     }

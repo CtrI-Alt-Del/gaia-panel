@@ -1,8 +1,6 @@
-import { useLocation } from 'react-router'
 import { useState } from 'react'
-import type { UserDto } from '@/core/dtos/user-dto'
-
-// ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
+import type { UserDto } from '@/core/membership/dtos/user-dto'
+import type { UserFormData } from './user-form'
 
 const mockUsers: UserDto[] = [
   {
@@ -63,42 +61,9 @@ const mockUsers: UserDto[] = [
   },
 ]
 
-export type UsersPageProps = {
-  items: UserDto[]
-  nextCursor: string | null
-  prevCursor: string | null
-  limit: number
-  q: string
-  isActive: string
-}
-
 export function useUsersPage() {
-  const { search } = useLocation()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserDto | undefined>(undefined)
-
-  const searchParams = new URLSearchParams(search)
-  const q = searchParams.get('q') || ''
-  const isActive = searchParams.get('isActive') || 'all'
-  const limit = parseInt(searchParams.get('limit') || '10')
-  const cursor = searchParams.get('cursor')
-
-  const filteredItems = mockUsers.filter((item) => {
-    const matchesName =
-      item.name.toLowerCase().includes(q.toLowerCase()) ||
-      item.email.toLowerCase().includes(q.toLowerCase())
-    const matchesisActive =
-      isActive === 'all' ||
-      (isActive === 'active' && item.isActive === true) ||
-      (isActive === 'inactive' && item.isActive === false)
-    return matchesName && matchesisActive
-  })
-
-  const startIndex = cursor ? parseInt(cursor) : 0
-  const endIndex = startIndex + limit
-  const items = filteredItems.slice(startIndex, endIndex)
-  const nextCursor = endIndex < filteredItems.length ? String(endIndex) : null
-  const prevCursor = startIndex > 0 ? String(Math.max(0, startIndex - limit)) : null
 
   function handleEdit(id: string) {
     const user = mockUsers.find((u) => u.id === id)
@@ -106,10 +71,6 @@ export function useUsersPage() {
       setSelectedUser(user)
       setIsModalOpen(true)
     }
-  }
-
-  function handleToggleisActive(id: string) {
-    console.log('Alternar isActive do usuário:', id)
   }
 
   function handleNewUser() {
@@ -126,20 +87,17 @@ export function useUsersPage() {
     console.log('Usuário atualizado:', updatedUser)
   }
 
+  function handleUserCreated(userData: UserFormData) {
+    console.log('Novo usuário criado:', userData)
+  }
+
   return {
-    items,
-    nextCursor,
-    prevCursor,
-    limit,
-    q,
-    isActive,
-    searchParams,
     isModalOpen,
     selectedUser,
-    onEdit: handleEdit,
-    onToggleisActive: handleToggleisActive,
-    onNewUser: handleNewUser,
-    onCloseModal: handleCloseModal,
-    onUserUpdated: handleUserUpdated,
+    handleEdit,
+    handleNewUser,
+    handleCloseModal,
+    handleUserUpdated,
+    handleUserCreated,
   }
 }

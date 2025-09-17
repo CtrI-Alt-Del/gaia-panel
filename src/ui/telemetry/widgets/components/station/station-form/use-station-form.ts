@@ -20,7 +20,6 @@ const stationFormSchema = z.object({
   longitude: z.coerce
     .number()
     .refine((value) => Number.isFinite(value), "Informe a longitude"),
-  isActive: z.boolean().default(true),
   parameterIds: z.array(z.string()).default([]),
 });
 
@@ -39,7 +38,6 @@ const defaultValues: StationFormData = {
   UID: "",
   latitude: 0,
   longitude: 0,
-  isActive: true,
   parameterIds: [],
 };
 
@@ -59,7 +57,6 @@ export function useStationForm({
         UID: station.UID,
         latitude: station.latitude,
         longitude: station.longitude,
-        isActive: station.isActive ?? true,
         parameterIds: station.parameters.map((p) => p.id),
       };
     }
@@ -131,11 +128,8 @@ export function useStationForm({
     );
   };
 
-  const updateFormField = <K extends Path<StationFormData>>(
-    field: K,
-    value: PathValue<StationFormData, K>
-  ) => {
-    setValue(field, value, { shouldDirty: true, shouldValidate: true });
+  const updateFormField = (field: keyof StationFormData, value: any) => {
+    setValue(field as any, value, { shouldDirty: true, shouldValidate: true });
   };
 
   const selectedParameters = availableParameters.filter((p) =>

@@ -167,22 +167,6 @@ export function StationForm({
           />
         </div>
 
-        <FormField
-          control={form.control}
-          name="isActive"
-          render={({ field }) => (
-            <FormItem className="flex items-center space-x-2">
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormLabel>Estação ativa</FormLabel>
-            </FormItem>
-          )}
-        />
-
         <div className="space-y-3">
           <Label>Parâmetros da Estação</Label>
 

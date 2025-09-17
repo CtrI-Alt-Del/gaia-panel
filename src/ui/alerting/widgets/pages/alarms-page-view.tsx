@@ -28,7 +28,7 @@ export const AlarmsPageView = ({
 }: AlarmsPageViewProps) => {
   const { search } = useLocation()
 
-  const urlWith = (patch: Record<string, string | null>) => {
+  const buildUrl = (patch: Record<string, string | null>) => {
     const p = new URLSearchParams(search)
     p.set('q', filters.search ?? '')
     p.set('status', filters.status)
@@ -87,14 +87,18 @@ export const AlarmsPageView = ({
 
         <nav className='flex items-center gap-2'>
           <Link
-            to={pagination.prevCursor ? urlWith({ cursor: pagination.prevCursor }) : '#'}
-            aria-disabled={!pagination.prevCursor}
-            className={`rounded-full border px-3 py-1.5 text-sm ${pagination.prevCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'}`}
+            to={
+              pagination.previousCursor
+                ? buildUrl({ cursor: pagination.previousCursor })
+                : '#'
+            }
+            aria-disabled={!pagination.previousCursor}
+            className={`rounded-full border px-3 py-1.5 text-sm ${pagination.previousCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'}`}
           >
             Anterior
           </Link>
           <Link
-            to={pagination.nextCursor ? urlWith({ cursor: pagination.nextCursor }) : '#'}
+            to={pagination.nextCursor ? buildUrl({ cursor: pagination.nextCursor }) : '#'}
             aria-disabled={!pagination.nextCursor}
             className={`rounded-full border px-3 py-1.5 text-sm ${pagination.nextCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'}`}
           >

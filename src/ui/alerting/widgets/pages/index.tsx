@@ -26,7 +26,7 @@ export const AlarmsPage = () => {
   const filteredAlarms = filterAlarms(allAlarms, filters)
   const stats = calculateStats(filteredAlarms)
 
-  const { alarms, nextCursor, prevCursor } = getPaginatedAlarms(
+  const { alarms, nextCursor, previousCursor } = getPaginatedAlarms(
     filteredAlarms,
     limit,
     cursor,
@@ -36,7 +36,7 @@ export const AlarmsPage = () => {
     limit,
     cursor,
     nextCursor,
-    prevCursor,
+    previousCursor,
   }
 
   const handleClearError = () => {

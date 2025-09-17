@@ -168,7 +168,7 @@ export function useParametersPage() {
   return {
     items,
     nextCursor,
-    prevCursor,
+    previousCursor,
     limit,
     q,
     isActive,

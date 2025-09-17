@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router'
-import DashboardLayout from '@/ui/global/widgets/layouts/dashboard-layout'
+
+import { DashboardLayout } from '@/ui/global/widgets/layouts'
 
 export default function AppLayout() {
   return (

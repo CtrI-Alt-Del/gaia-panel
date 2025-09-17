@@ -1,9 +1,8 @@
 import { useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-
 import { useToast } from './use-toast'
-import type { RestResponse } from '@/core/responses/rest-response'
+import type { RestResponse } from '@/core/global/responses/rest-response'
 
 type MutateConfig = {
   shouldRevalidate: boolean

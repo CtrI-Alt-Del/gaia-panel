@@ -144,7 +144,7 @@ const urlWith = (params: Record<string, string>) => {
 export function ParametersPageView({
   items,
   nextCursor,
-  prevCursor,
+  previousCursor,
   limit,
   q,
   isActive,

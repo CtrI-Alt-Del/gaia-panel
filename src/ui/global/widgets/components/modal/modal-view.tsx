@@ -1,15 +1,10 @@
-import { type ForwardedRef, type ReactNode, useImperativeHandle, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { X } from 'lucide-react'
 import { cn } from '@/ui/shadcn/utils/cn'
-import { useModal } from './use-modal'
+import type { ModalRef } from './modal-ref'
 
-export interface ModalRef {
-  open: () => void
-  close: () => void
-}
-
-type ModalProps = {
+export type ModalViewProps = {
   title?: string
   children: (closeDialog: () => void) => ReactNode
   trigger?: ReactNode
@@ -19,7 +14,12 @@ type ModalProps = {
   hideScrollbar?: boolean
   onOpen?: () => void
   onClose?: () => void
-  ref?: ForwardedRef<ModalRef>
+  // Valores do hook
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  isAnimating: boolean
+  ref?: React.ForwardedRef<ModalRef>
 }
 
 const sizeClasses = {
@@ -35,7 +35,7 @@ const sizeClasses = {
   full: 'max-w-full mx-4',
 }
 
-export const Modal = ({
+export const ModalView = ({
   title,
   children,
   trigger,
@@ -43,50 +43,14 @@ export const Modal = ({
   isDismissable = true,
   hideCloseButton = false,
   hideScrollbar = false,
-  onOpen,
-  onClose,
-  ref,
-}: ModalProps) => {
-  const { isOpen, open, close, isAnimating } = useModal(onOpen)
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      open,
-      close,
-    }),
-    [open, close],
-  )
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen && isDismissable) {
-        close()
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
-
-      return () => {
-        document.removeEventListener('keydown', handleEscape)
-        document.body.style.overflow = 'unset'
-      }
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen, isDismissable, close])
-
-  useEffect(() => {
-    if (!isOpen && onClose) {
-      onClose()
-    }
-  }, [isOpen, onClose])
-
+  onOpen: _onOpen,
+  onClose: _onClose,
+  isOpen,
+  open,
+  close,
+  isAnimating,
+  ref: _ref,
+}: ModalViewProps) => {
   if (!isOpen) {
     return trigger ? <Slot onClick={open}>{trigger}</Slot> : null
   }

@@ -6,7 +6,7 @@ import {
 import Sidebar from '../components/sidebar'
 import { usePageTitle } from '../../hooks/use-page-title'
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export const DashboardLayoutView = ({ children }: { children: React.ReactNode }) => {
   const pageTitle = usePageTitle()
 
   return (

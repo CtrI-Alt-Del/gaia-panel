@@ -21,7 +21,7 @@ export interface AlarmPagination {
   limit: number
   cursor: string | null
   nextCursor: string | null
-  prevCursor: string | null
+  previousCursor: string | null
 }
 
 export interface AlarmStats {
@@ -169,18 +169,23 @@ export const useAlarms = () => {
     alarms: AlarmRule[],
     limit: number,
     cursor: string | null = null,
-  ): { alarms: AlarmRule[]; nextCursor: string | null; prevCursor: string | null } => {
+  ): {
+    alarms: AlarmRule[]
+    nextCursor: string | null
+    previousCursor: string | null
+  } => {
     const startIndex = cursor ? parseInt(cursor, 10) : 0
     const endIndex = startIndex + limit
 
     const paginatedAlarms = alarms.slice(startIndex, endIndex)
     const nextCursor = endIndex < alarms.length ? endIndex.toString() : null
-    const prevCursor = startIndex > 0 ? Math.max(0, startIndex - limit).toString() : null
+    const previousCursor =
+      startIndex > 0 ? Math.max(0, startIndex - limit).toString() : null
 
     return {
       alarms: paginatedAlarms,
       nextCursor,
-      prevCursor,
+      previousCursor,
     }
   }
 

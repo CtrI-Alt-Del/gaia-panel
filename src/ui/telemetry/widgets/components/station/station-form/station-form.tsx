@@ -1,7 +1,6 @@
 import { Button } from "@/ui/shadcn/components/button";
 import { Input } from "@/ui/shadcn/components/input";
 import { Label } from "@/ui/shadcn/components/label";
-import { Switch } from "@/ui/shadcn/components/switch";
 import { Badge } from "@/ui/shadcn/components/badge";
 import { X, MapPin, Plus } from "lucide-react";
 import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
@@ -137,15 +136,6 @@ export function StationForm({
             placeholder="Ex.: -46.6333"
           />
         </div>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="isActive"
-          checked={formData.isActive}
-          onCheckedChange={(checked) => updateFormField("isActive", checked)}
-        />
-        <Label htmlFor="isActive">Estação ativa</Label>
       </div>
 
       <div className="space-y-3">

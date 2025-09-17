@@ -7,7 +7,6 @@ export interface StationFormData {
   UID: string
   latitude: number
   longitude: number
-  isActive: boolean
   parameterIds: string[]
 }
 
@@ -31,7 +30,6 @@ export function useStationForm({
     UID: '',
     latitude: 0,
     longitude: 0,
-    isActive: true,
     parameterIds: [],
   })
   const [selectedParameterId, setSelectedParameterId] = useState<string>('')
@@ -42,7 +40,6 @@ export function useStationForm({
     UID: '',
     latitude: 0,
     longitude: 0,
-    isActive: true,
     parameterIds: [],
   }
 
@@ -125,7 +122,6 @@ export function useStationForm({
         UID: station.UID,
         latitude: station.latitude,
         longitude: station.longitude,
-        isActive: station.isActive || false,
         parameterIds: station.parameters.map((p) => p.id),
       })
     } else {

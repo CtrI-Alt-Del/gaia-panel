@@ -1,4 +1,4 @@
-import { RestResponse } from '../../../core/responses/rest-response'
+import { RestResponse } from '../../../core/global/responses/rest-response'
 
 export function handleError<ResponseBody>(error: any): RestResponse<ResponseBody> {
   if (error.response) {

@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance } from 'axios'
-import type { RestClient } from '../../core/interfaces/rest-client'
-import { RestResponse } from '../../core/responses/rest-response'
+import type { RestClient } from '../../core/global/interfaces/rest-client'
+import type { RestResponse } from '../../core/global/responses/rest-response'
 import { buildUrl, createRestResponse, handleError } from './utils'
 
 export const AxiosRestClient = (baseUrl?: string): RestClient => {
@@ -16,8 +16,9 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
   return {
     async get<ResponseBody>(url: string): Promise<RestResponse<ResponseBody>> {
       try {
+        console.log(buildUrl(currentBaseUrl, url, queryParams))
         const response = await axiosInstance.get<ResponseBody>(
-          buildUrl(currentBaseUrl, url, queryParams)
+          buildUrl(currentBaseUrl, url, queryParams),
         )
         return createRestResponse<ResponseBody>(response)
       } catch (error) {
@@ -73,7 +74,7 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
     async delete(url: string): Promise<RestResponse> {
       try {
         const response = await axiosInstance.delete(
-          buildUrl(currentBaseUrl, url, queryParams)
+          buildUrl(currentBaseUrl, url, queryParams),
         )
         return createRestResponse(response)
       } catch (error) {
@@ -98,8 +99,14 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
       queryParams[key] = value
     },
 
+    setQueryParams(params: Record<string, string | string[]>): void {
+      Object.assign(queryParams, params)
+    },
+
     clearQueryParams(): void {
-      Object.keys(queryParams).forEach(key => delete queryParams[key])
+      Object.keys(queryParams).forEach((key) => {
+        delete queryParams[key]
+      })
     },
   }
 }

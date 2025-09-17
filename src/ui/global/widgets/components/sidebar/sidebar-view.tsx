@@ -21,7 +21,7 @@ import {
   SidebarMenuItem,
 } from '@/ui/shadcn/components/sidebar'
 import { useLocation } from 'react-router'
-import { ROUTES } from '@/core/constants/routes'
+import { ROUTES } from '@/core/global/constants/routes'
 
 const activeButtonStyles =
   'bg-gradient-to-r from-green-100  to-transparent border-r-4 border-green-500'

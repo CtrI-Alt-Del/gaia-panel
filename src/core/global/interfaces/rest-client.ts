@@ -10,5 +10,6 @@ export interface RestClient {
   setHeader(key: string, value: string): void
   setAuthorization(token: string): void
   setQueryParam(key: string, value: string | string[]): void
+  setQueryParams(params: Record<string, string | string[]>): void
   clearQueryParams(): void
 }

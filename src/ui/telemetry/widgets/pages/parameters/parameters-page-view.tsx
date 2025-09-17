@@ -1,5 +1,5 @@
 import { Link, Form } from 'react-router'
-import type { ParameterDto } from '@/core/dtos/parameter-dto'
+import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
 import { Input } from '@/ui/shadcn/components/input'
 import { Button } from '@/ui/shadcn/components/button'
 import { Badge } from '@/ui/shadcn/components/badge'
@@ -31,7 +31,7 @@ import { ParameterModal } from '@/ui/telemetry/widgets/components/parameter-moda
 export type ParametersPageViewProps = {
   items: ParameterDto[]
   nextCursor: string | null
-  prevCursor: string | null
+  previousCursor: string | null
   limit: number
   q: string
   isActive?: string
@@ -121,7 +121,7 @@ const getBadgeColor = (
   return unitColors[unit] || 'stone'
 }
 
-const urlWith = (params: Record<string, string>) => {
+const buildUrl = (params: Record<string, string>) => {
   const searchParams = new URLSearchParams(window.location.search)
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
@@ -136,7 +136,7 @@ const urlWith = (params: Record<string, string>) => {
 export function ParametersPageView({
   items,
   nextCursor,
-  prevCursor,
+  previousCursor,
   limit,
   q,
   isActive,
@@ -354,16 +354,18 @@ export function ParametersPageView({
               <TableCell colSpan={3} className='text-right'>
                 <nav className='inline-flex items-center gap-2'>
                   <Link
-                    to={prevCursor ? urlWith({ cursor: prevCursor }) : '#'}
-                    aria-disabled={!prevCursor}
+                    to={previousCursor ? buildUrl({ cursor: previousCursor }) : '#'}
+                    aria-disabled={!previousCursor}
                     className={`rounded-full border px-3 py-1.5 text-sm ${
-                      prevCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'
+                      previousCursor
+                        ? 'hover:bg-stone-50'
+                        : 'pointer-events-none opacity-50'
                     }`}
                   >
                     Anterior
                   </Link>
                   <Link
-                    to={nextCursor ? urlWith({ cursor: nextCursor }) : '#'}
+                    to={nextCursor ? buildUrl({ cursor: nextCursor }) : '#'}
                     aria-disabled={!nextCursor}
                     className={`rounded-full border px-3 py-1.5 text-sm ${
                       nextCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'

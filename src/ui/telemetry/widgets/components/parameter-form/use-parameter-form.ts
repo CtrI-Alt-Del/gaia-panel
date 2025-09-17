@@ -5,7 +5,7 @@ import { useRevalidator } from 'react-router'
 import { toast } from 'sonner'
 import { useParameterIcon } from './use-parameter-icon'
 import { TelemetryService } from '@/rest/services/telemetry-service'
-import type { ParameterDto } from '@/core/dtos/parameter-dto'
+import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
 
 const parameterSchema = z.object({
   name: z
@@ -14,11 +14,11 @@ const parameterSchema = z.object({
     .min(2, 'Nome deve ter pelo menos 2 caracteres'),
   unit: z.string().min(1, 'Unidade é obrigatória'),
   factor: z
-    .number("Fator deve ser um número")
+    .number('Fator deve ser um número')
     .min(0.001, 'Fator deve ser maior que 0')
     .max(1000, 'Fator deve ser menor que 1000'),
   offset: z
-    .number("Offset deve ser um número")
+    .number('Offset deve ser um número')
     .min(-1000, 'OffsetInvalid input: deve ser maior que -1000')
     .max(1000, 'Offset deve ser menor que 1000'),
   active: z.boolean(),

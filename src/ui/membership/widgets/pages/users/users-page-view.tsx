@@ -1,4 +1,3 @@
-import { Form } from 'react-router'
 import type { UserDto } from '@/core/membership/dtos/user-dto'
 import { Button } from '@/ui/shadcn/components/button'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
@@ -24,7 +23,6 @@ export type UsersPageViewProps = {
   users: UserDto[]
   nextCursor: string | null
   previousCursor: string | null
-  pageSize: number
   hasNextPage?: boolean
   hasPreviousPage?: boolean
   isModalOpen: boolean
@@ -37,12 +35,10 @@ export type UsersPageViewProps = {
   onUserCreated?: (user: UserFormData) => void
 }
 
-
 export const UsersPageView = ({
   users,
   nextCursor,
   previousCursor,
-  pageSize,
   hasNextPage,
   hasPreviousPage,
   isModalOpen,
@@ -53,13 +49,11 @@ export const UsersPageView = ({
   onCloseModal,
   onUserCreated,
 }: UsersPageViewProps) => {
-
   return (
     <section className='container mx-auto px-4 py-2'>
       <header className='mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'>
         <div>
           <h1 className='text-xl font-semibold'>Usuários</h1>
-          <p className='text-sm text-stone-600'>Filtros por nome, email e status</p>
         </div>
       </header>
 
@@ -67,11 +61,9 @@ export const UsersPageView = ({
         <div className='w-full'>
           <div className='rounded-lg border border-gray-200 bg-white p-4'>
             <form method='get' className='flex flex-wrap items-end gap-2'>
-              <UserNameSearchInput
-                label='Filtrar por nome'
-              />
+              <UserNameSearchInput label='Filtrar por nome' />
               <StatusSelect />
-              <PageSizeSelect variant='pagination' label='Itens por página'   />
+              <PageSizeSelect />
               <Button type='submit' className='h-9'>
                 Aplicar
               </Button>

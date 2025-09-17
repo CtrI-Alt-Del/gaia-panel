@@ -1,30 +1,12 @@
+import { useQueryParamString } from '@/ui/global/hooks/use-query-param-string'
 import { PageSizeSelectView } from './page-size-select-view'
-import { usePageSizeSelect } from './use-page-size-select'
 
 export type PageSizeSelectProps = {
-  label: string
   className?: string
-  id?: string
-  variant?: 'pagination' | 'custom'
 }
 
-export const PageSizeSelect = ({
-  label,
-  className,
-  id,
-  variant = 'pagination',
-}: PageSizeSelectProps) => {
-  const { value } = usePageSizeSelect()
+export const PageSizeSelect = ({ className }: PageSizeSelectProps) => {
+  const [value] = useQueryParamString('pageSize', '10')
 
-  return (
-    <PageSizeSelectView
-      id={id}
-      label={label}
-      value={value}
-      className={className}
-      variant={variant}
-    />
-  )
+  return <PageSizeSelectView value={value} className={className} />
 }
-
-export { usePageSizeSelect }

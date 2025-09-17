@@ -1,4 +1,5 @@
 import { useId } from 'react'
+
 import { Label } from '@/ui/shadcn/components/label'
 import {
   Select,
@@ -14,15 +15,9 @@ export type SelectOption = {
 }
 
 export type PageSizeSelectViewProps = {
-  label: string
-  options?: SelectOption[]
   value?: string | number
-  placeholder?: string
-  error?: string
   disabled?: boolean
   className?: string
-  id?: string
-  variant?: 'pagination' | 'custom'
   onValueChange?: (value: string) => void
 }
 
@@ -34,24 +29,17 @@ const PAGINATION_OPTIONS: SelectOption[] = [
 ]
 
 export const PageSizeSelectView = ({
-  label,
-  options,
   value,
-  error,
   disabled = false,
   className = '',
-  id: customId,
-  variant = 'pagination',
   onValueChange,
 }: PageSizeSelectViewProps) => {
-  const generatedId = useId()
-  const id = customId || generatedId
-  const selectOptions = variant === 'pagination' ? PAGINATION_OPTIONS : options || []
+  const id = useId()
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       <Label htmlFor={id} className='text-xs text-stone-600'>
-        {label}
+        Itens por página
       </Label>
       <Select
         name='pageSize'
@@ -63,14 +51,13 @@ export const PageSizeSelectView = ({
           <SelectValue placeholder='Selecione' />
         </SelectTrigger>
         <SelectContent>
-          {selectOptions.map((option) => (
+          {PAGINATION_OPTIONS.map((option) => (
             <SelectItem key={option.value} value={option.value.toString()}>
               {option.label}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-      {error && <p className='text-xs text-red-500'>{error}</p>}
     </div>
   )
 }

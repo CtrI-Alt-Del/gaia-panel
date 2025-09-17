@@ -16,11 +16,8 @@ export type StatusOption = {
 
 export type StatusSelectViewProps = {
   value?: string
-  placeholder?: string
-  error?: string
   disabled?: boolean
   className?: string
-  id?: string
   onValueChange?: (value: string) => void
 }
 
@@ -32,15 +29,11 @@ const STATUS_OPTIONS: StatusOption[] = [
 
 export const StatusSelectView = ({
   value,
-  placeholder,
-  error,
   disabled = false,
   className = '',
-  id: customId,
   onValueChange,
 }: StatusSelectViewProps) => {
-  const generatedId = useId()
-  const id = customId || generatedId
+  const id = useId()
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -53,8 +46,8 @@ export const StatusSelectView = ({
         onValueChange={onValueChange}
         disabled={disabled}
       >
-        <SelectTrigger id={id} className='w-fit'>
-          <SelectValue placeholder={placeholder || 'Selecione'} />
+        <SelectTrigger className='w-fit'>
+          <SelectValue placeholder='Selecione' />
         </SelectTrigger>
         <SelectContent>
           {STATUS_OPTIONS.map((option) => (
@@ -64,7 +57,6 @@ export const StatusSelectView = ({
           ))}
         </SelectContent>
       </Select>
-      {error && <p className='text-xs text-red-500'>{error}</p>}
     </div>
   )
 }

@@ -1,13 +1,12 @@
+import { useQueryParamString } from '@/ui/global/hooks/use-query-param-string'
 import { StatusSelectView } from './status-select-view'
-import { useStatusSelect } from './use-status-select'
 
 export type StatusSelectProps = {
   className?: string
-  id?: string
 }
 
-export const StatusSelect = ({ className, id }: StatusSelectProps) => {
-  const { value } = useStatusSelect()
+export const StatusSelect = ({ className }: StatusSelectProps) => {
+  const [queryValue] = useQueryParamString('status', 'all')
 
-  return <StatusSelectView id={id} value={value} className={className} />
+  return <StatusSelectView value={queryValue} className={className} />
 }

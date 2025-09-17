@@ -5,6 +5,7 @@ import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Edit, Power, Plus } from "lucide-react";
 import { StationModal } from "../../components/station/station-form";
+import { PaginationSelect } from "@/ui/global/widgets/components";
 
 interface StationsPageViewProps {
   loading: boolean;
@@ -13,7 +14,6 @@ interface StationsPageViewProps {
   cursor: { next: string | null; prev: string | null };
   q: string;
   status: string;
-  activity: string;
   limit: number;
   fromTo: { from: number; to: number };
   setParam: (k: string, v: string | null) => void;
@@ -37,7 +37,6 @@ export default function StationsPageView({
   cursor,
   q,
   status,
-  activity,
   limit,
   fromTo,
   setParam,
@@ -99,37 +98,10 @@ export default function StationsPageView({
                   <option value="inativo">Inativos</option>
                 </select>
               </div>
-              <div className="flex flex-col">
-                <label htmlFor="activity" className="text-xs text-stone-600">
-                  Atividade
-                </label>
-                <select
-                  id="activity"
-                  name="activity"
-                  defaultValue={activity}
-                  className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="Last24h">Últimas 24h</option>
-                  <option value="todos">Qualquer atividade</option>
-                </select>
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="limit" className="text-xs text-stone-600">
-                  Itens por página
-                </label>
-                <select
-                  id="limit"
-                  name="limit"
-                  defaultValue={limit}
-                  className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-gray-500"
-                >
-                  {[5, 10, 20, 50].map((v) => (
-                    <option key={v} value={v}>
-                      {v}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <PaginationSelect
+                value={limit}
+                onValueChange={(value) => setParam("limit", value)}
+              />
               <Button type="submit" className="h-9">
                 Aplicar
               </Button>
@@ -214,11 +186,10 @@ export default function StationsPageView({
                       </button>
                       <button
                         type="button"
-                        className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer border ${
-                          s.isActive
-                            ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border-red-200"
-                            : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border-green-200"
-                        }`}
+                        className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer border ${s.isActive
+                          ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border-red-200"
+                          : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border-green-200"
+                          }`}
                         onClick={() => toggleStationActive(s.id)}
                         title={
                           s.isActive ? "Desativar estação" : "Ativar estação"

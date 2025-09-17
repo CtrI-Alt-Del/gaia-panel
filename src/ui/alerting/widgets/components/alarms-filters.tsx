@@ -1,6 +1,7 @@
 import { Form } from "react-router";
 import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
+import { PaginationSelect } from "@/ui/global/widgets/components";
 
 interface AlarmsFiltersProps {
   searchValue: string;
@@ -44,23 +45,9 @@ export const AlarmsFilters = ({
               <option value="inativo">Inativos</option>
             </select>
           </div>
-          <div className="flex flex-col">
-            <label htmlFor="limit" className="text-xs text-stone-600">
-              Itens por página
-            </label>
-            <select
-              id="limit"
-              name="limit"
-              defaultValue={String(limit ?? 10)}
-              className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              {[5, 10, 20, 50].map((v) => (
-                <option key={v} value={v}>
-                  {v}
-                </option>
-              ))}
-            </select>
-          </div>
+          <PaginationSelect
+            value={limit ?? 10}
+          />
           <Button type="submit" className="h-9">
             Aplicar
           </Button>

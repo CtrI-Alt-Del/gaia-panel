@@ -17,6 +17,7 @@ import {
 import { Power, Edit, Plus } from "lucide-react";
 import { getParameterIcon, getBadgeColor } from "../../utils/parameter-utils";
 import { ParameterModal } from "@/ui/telemetry/widgets/components/parameter/parameter-modal";
+import { PaginationSelect } from "@/ui/global/widgets/components";
 
 export type ParametersPageViewProps = {
   items: ParameterDto[];
@@ -96,23 +97,9 @@ export function ParametersPageView({
                 <option value="inativo">Inativos</option>
               </select>
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="limit" className="text-xs text-stone-600">
-                Itens por página
-              </label>
-              <select
-                id="limit"
-                name="limit"
-                defaultValue={String(limit ?? 10)}
-                className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {[5, 10, 20, 50].map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <PaginationSelect
+              value={limit ?? 10}
+            />
             <Button type="submit" className="h-9">
               Aplicar
             </Button>
@@ -215,13 +202,12 @@ export function ParametersPageView({
                         <button
                           type="button"
                           onClick={() => onToggleisActive(p.id || "")}
-                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
-                            p.isActive
-                              ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200"
-                              : p.isActive
-                                ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                                : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
-                          }`}
+                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${p.isActive
+                            ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200"
+                            : p.isActive
+                              ? "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                              : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                            }`}
                           title={
                             p.isActive
                               ? "Desativar parâmetro"
@@ -254,22 +240,20 @@ export function ParametersPageView({
                   <Link
                     to={prevCursor ? urlWith({ cursor: prevCursor }) : "#"}
                     aria-disabled={!prevCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${
-                      prevCursor
-                        ? "hover:bg-stone-50"
-                        : "pointer-events-none opacity-50"
-                    }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${prevCursor
+                      ? "hover:bg-stone-50"
+                      : "pointer-events-none opacity-50"
+                      }`}
                   >
                     Anterior
                   </Link>
                   <Link
                     to={nextCursor ? urlWith({ cursor: nextCursor }) : "#"}
                     aria-disabled={!nextCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${
-                      nextCursor
-                        ? "hover:bg-stone-50"
-                        : "pointer-events-none opacity-50"
-                    }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${nextCursor
+                      ? "hover:bg-stone-50"
+                      : "pointer-events-none opacity-50"
+                      }`}
                   >
                     Próxima
                   </Link>

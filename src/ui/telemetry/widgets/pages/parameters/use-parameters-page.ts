@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router'
 import { useState } from 'react'
-import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
+import type { ParameterDto } from '@/core/dtos/parameter-dto'
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
@@ -12,7 +12,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: -40.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -22,7 +21,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -32,7 +30,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 300.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -42,7 +39,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 0.0,
     isActive: false,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -52,7 +48,6 @@ const mockParameters: ParameterDto[] = [
     factor: 1.0,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -62,7 +57,6 @@ const mockParameters: ParameterDto[] = [
     factor: 1.0,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -72,7 +66,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 0.0,
     isActive: false,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
   {
@@ -82,7 +75,6 @@ const mockParameters: ParameterDto[] = [
     factor: 0.1,
     offset: 0.0,
     isActive: true,
-    numberOfDecimalPlaces: 1,
     createdAt: new Date(),
   },
 ]
@@ -90,7 +82,7 @@ const mockParameters: ParameterDto[] = [
 export type ParametersPageProps = {
   items: ParameterDto[]
   nextCursor: string | null
-  previousCursor: string | null
+  prevCursor: string | null
   limit: number
   q: string
   isActive: string
@@ -101,6 +93,10 @@ export function useParametersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedParameter, setSelectedParameter] = useState<ParameterDto | undefined>(
     undefined,
+  )
+  const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
+  const [parameterToDeactivate, setParameterToDeactivate] = useState<ParameterDto | null>(
+    null,
   )
 
   const searchParams = new URLSearchParams(search)
@@ -122,7 +118,7 @@ export function useParametersPage() {
   const endIndex = startIndex + limit
   const items = filteredItems.slice(startIndex, endIndex)
   const nextCursor = endIndex < filteredItems.length ? String(endIndex) : null
-  const previousCursor = startIndex > 0 ? String(Math.max(0, startIndex - limit)) : null
+  const prevCursor = startIndex > 0 ? String(Math.max(0, startIndex - limit)) : null
 
   function handleView(id: string) {
     console.log('Visualizar parâmetro:', id)
@@ -154,6 +150,21 @@ export function useParametersPage() {
     console.log('Parâmetro atualizado:', updatedParameter)
   }
 
+  function handleDeactivateClick(parameter: ParameterDto) {
+    setParameterToDeactivate(parameter)
+    setDeactivateDialogOpen(true)
+  }
+
+  function handleConfirmDeactivate() {
+    if (parameterToDeactivate) {
+      console.log('Desativar parâmetro:', parameterToDeactivate.id)
+      // Aqui seria feita a chamada para a API para desativar o parâmetro
+      // Por enquanto, apenas logamos
+      setDeactivateDialogOpen(false)
+      setParameterToDeactivate(null)
+    }
+  }
+
   return {
     items,
     nextCursor,
@@ -170,5 +181,10 @@ export function useParametersPage() {
     onNewParameter: handleNewParameter,
     onCloseModal: handleCloseModal,
     onParameterUpdated: handleParameterUpdated,
+    deactivateDialogOpen,
+    parameterToDeactivate,
+    onDeactivateClick: handleDeactivateClick,
+    onConfirmDeactivate: handleConfirmDeactivate,
+    setDeactivateDialogOpen,
   }
 }

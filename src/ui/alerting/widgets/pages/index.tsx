@@ -1,17 +1,16 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { AlarmsPageView } from './alarms-page-view'
-import { useAlarms } from './use-alarms'
+import { useAlarms } from './use-alarms-page'
 
 export const AlarmsPage = () => {
   const {
     allAlarms,
-    calculateStats,
     filterAlarms,
     getPaginatedAlarms,
     handleViewAlarm,
     handleEditAlarm,
-    handleDeleteAlarm,
+    handleToggleActive,
   } = useAlarms()
   const [searchParams] = useSearchParams()
   const [error, setError] = useState<string | null>(null)
@@ -24,7 +23,6 @@ export const AlarmsPage = () => {
   const filters = { search, status }
 
   const filteredAlarms = filterAlarms(allAlarms, filters)
-  const stats = calculateStats(filteredAlarms)
 
   const { alarms, nextCursor, previousCursor } = getPaginatedAlarms(
     filteredAlarms,
@@ -46,13 +44,12 @@ export const AlarmsPage = () => {
   return (
     <AlarmsPageView
       alarms={alarms}
-      stats={stats}
       filters={filters}
       pagination={pagination}
       error={error}
       onViewAlarm={handleViewAlarm}
       onEditAlarm={handleEditAlarm}
-      onDeleteAlarm={handleDeleteAlarm}
+      onToggleActive={handleToggleActive}
       onClearError={handleClearError}
     />
   )

@@ -1,5 +1,5 @@
 import { Link, Form } from 'react-router'
-import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
+import type { ParameterDto } from '@/core/dtos/parameter-dto'
 import { Input } from '@/ui/shadcn/components/input'
 import { Button } from '@/ui/shadcn/components/button'
 import { Badge } from '@/ui/shadcn/components/badge'
@@ -25,13 +25,15 @@ import {
   Eye,
   Edit,
   Plus,
+  AlertTriangle,
 } from 'lucide-react'
 import { ParameterModal } from '@/ui/telemetry/widgets/components/parameter-modal'
+import { AlertDialog } from '@/ui/global/widgets/components/alert-dialog'
 
 export type ParametersPageViewProps = {
   items: ParameterDto[]
   nextCursor: string | null
-  previousCursor: string | null
+  prevCursor: string | null
   limit: number
   q: string
   isActive?: string
@@ -44,6 +46,12 @@ export type ParametersPageViewProps = {
   onNewParameter?: () => void
   onCloseModal?: () => void
   onParameterUpdated?: (parameter: ParameterDto) => void
+  // Estados para o dialog de confirmação de desativação
+  deactivateDialogOpen: boolean
+  parameterToDeactivate: ParameterDto | null
+  onDeactivateClick: (parameter: ParameterDto) => void
+  onConfirmDeactivate: () => void
+  setDeactivateDialogOpen: (open: boolean) => void
 }
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
@@ -121,7 +129,7 @@ const getBadgeColor = (
   return unitColors[unit] || 'stone'
 }
 
-const buildUrl = (params: Record<string, string>) => {
+const urlWith = (params: Record<string, string>) => {
   const searchParams = new URLSearchParams(window.location.search)
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
@@ -140,7 +148,6 @@ export function ParametersPageView({
   limit,
   q,
   isActive,
-  searchParams,
   isModalOpen,
   selectedParameter,
   onView,
@@ -149,6 +156,11 @@ export function ParametersPageView({
   onNewParameter,
   onCloseModal,
   onParameterUpdated,
+  deactivateDialogOpen,
+  parameterToDeactivate,
+  onDeactivateClick,
+  onConfirmDeactivate,
+  setDeactivateDialogOpen,
 }: ParametersPageViewProps) {
   const { register, errors } = useParametersFilters({
     initialValues: {
@@ -323,7 +335,11 @@ export function ParametersPageView({
                       {onToggleisActive && (
                         <button
                           type='button'
-                          onClick={() => onToggleisActive(p.id || '')}
+                          onClick={() =>
+                            p.isActive
+                              ? onDeactivateClick?.(p)
+                              : onToggleisActive(p.id || '')
+                          }
                           className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
                             p.isActive
                               ? 'bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200'
@@ -354,18 +370,16 @@ export function ParametersPageView({
               <TableCell colSpan={3} className='text-right'>
                 <nav className='inline-flex items-center gap-2'>
                   <Link
-                    to={previousCursor ? buildUrl({ cursor: previousCursor }) : '#'}
-                    aria-disabled={!previousCursor}
+                    to={prevCursor ? urlWith({ cursor: prevCursor }) : '#'}
+                    aria-disabled={!prevCursor}
                     className={`rounded-full border px-3 py-1.5 text-sm ${
-                      previousCursor
-                        ? 'hover:bg-stone-50'
-                        : 'pointer-events-none opacity-50'
+                      prevCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'
                     }`}
                   >
                     Anterior
                   </Link>
                   <Link
-                    to={nextCursor ? buildUrl({ cursor: nextCursor }) : '#'}
+                    to={nextCursor ? urlWith({ cursor: nextCursor }) : '#'}
                     aria-disabled={!nextCursor}
                     className={`rounded-full border px-3 py-1.5 text-sm ${
                       nextCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'
@@ -388,6 +402,64 @@ export function ParametersPageView({
           onUpdated={onParameterUpdated}
         />
       )}
+
+      <AlertDialog
+        open={deactivateDialogOpen}
+        onOpenChange={setDeactivateDialogOpen}
+        title='Confirmar Desativação'
+        description='O parâmetro será desativado e não será mais utilizado nas medições.'
+        confirmText='Desativar Parâmetro'
+        variant='destructive'
+        icon={<AlertTriangle className='w-5 h-5' />}
+        onConfirm={onConfirmDeactivate}
+      >
+        {parameterToDeactivate && (
+          <>
+            <div className='bg-gray-50 rounded-lg p-4 border'>
+              <h4 className='font-medium text-gray-900 mb-2'>
+                Parâmetro a ser desativado:
+              </h4>
+              <div className='space-y-2 text-sm text-gray-600'>
+                <div>
+                  <span className='font-medium'>Nome:</span> {parameterToDeactivate.name}
+                </div>
+                <div>
+                  <span className='font-medium'>Unidade:</span>{' '}
+                  {parameterToDeactivate.unitOfMeasure}
+                </div>
+                <div>
+                  <span className='font-medium'>Fator:</span>{' '}
+                  {parameterToDeactivate.factor}
+                </div>
+                <div>
+                  <span className='font-medium'>Offset:</span>{' '}
+                  {parameterToDeactivate.offset}
+                </div>
+                <div>
+                  <span className='font-medium'>Status:</span>{' '}
+                  <span
+                    className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                      parameterToDeactivate.isActive
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {parameterToDeactivate.isActive ? '○ Ativo' : '• Inativo'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className='mt-4 p-3 bg-red-50 border border-red-200 rounded-lg'>
+              <p className='text-sm text-red-800'>
+                <strong>Atenção:</strong> Ao desativar este parâmetro, ele não será mais
+                utilizado nas medições, mas as configurações serão mantidas e poderá ser
+                reativado posteriormente.
+              </p>
+            </div>
+          </>
+        )}
+      </AlertDialog>
     </section>
   )
 }

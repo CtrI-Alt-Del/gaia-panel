@@ -1,29 +1,27 @@
 import { Link, useLocation } from 'react-router'
 import { AlarmsFilters } from '../components/alarms-filters'
 import { AlarmsTable } from '../components/alarms-table'
-import type { AlarmRule, AlarmFilters, AlarmStats, AlarmPagination } from './use-alarms'
+import type { AlarmRule, AlarmFilters, AlarmPagination } from './use-alarms-page'
 
 interface AlarmsPageViewProps {
   alarms: AlarmRule[]
-  stats: AlarmStats
   filters: AlarmFilters
   pagination: AlarmPagination
   error: string | null
   onViewAlarm: (alarmId: string) => void
   onEditAlarm: (alarmId: string) => void
-  onDeleteAlarm: (alarmId: string) => void
+  onToggleActive: (alarmId: string) => void
   onClearError: () => void
 }
 
 export const AlarmsPageView = ({
   alarms,
-  stats,
   filters,
   pagination,
   error,
   onViewAlarm,
   onEditAlarm,
-  onDeleteAlarm,
+  onToggleActive,
   onClearError,
 }: AlarmsPageViewProps) => {
   const { search } = useLocation()
@@ -72,10 +70,9 @@ export const AlarmsPageView = ({
 
       <AlarmsTable
         alarms={alarms}
-        stats={stats}
         onViewAlarm={onViewAlarm}
         onEditAlarm={onEditAlarm}
-        onDeleteAlarm={onDeleteAlarm}
+        onToggleActive={onToggleActive}
       />
 
       <footer className='mt-4 flex items-center justify-between'>

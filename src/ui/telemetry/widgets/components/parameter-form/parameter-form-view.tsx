@@ -1,126 +1,149 @@
-import { Button } from '@/ui/shadcn/components/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/ui/shadcn/components/form'
 import { Input } from '@/ui/shadcn/components/input'
-import { Label } from '@/ui/shadcn/components/label'
-import { Checkbox } from '@/ui/shadcn/components/checkbox'
-import { useParameterForm } from './use-parameter-form'
-import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
+import { Button } from '@/ui/shadcn/components/button'
 import { Switch } from '@/ui/shadcn/components/switch'
+import { useParameterForm } from './use-parameter-form'
+import type { ParameterFormData } from './parameter-form-schema'
 
-export type ParameterFormViewProps = {
-  parameter?: ParameterDto
+type Props = {
+  onSuccess?: (data: ParameterFormData) => void
   onCancel: () => void
-  onUpdated?: (parameter: ParameterDto) => void
 }
 
-export function ParameterFormView({
-  parameter,
-  onCancel,
-  onUpdated,
-}: ParameterFormViewProps) {
-  const { form, selectedIcon, handleSubmit } = useParameterForm({
-    parameter,
-    onUpdated,
-    onCancel,
-  })
-
-  const {
-    register,
-    watch,
-    setValue,
-    formState: { errors },
-  } = form
-
-  const isEditMode = Boolean(parameter)
+export const ParameterFormView = ({ onSuccess, onCancel }: Props) => {
+  const { form, selectedIcon, handleSubmit, handleCancel, isSubmitting, isValid } =
+    useParameterForm({
+      onSuccess,
+      onCancel,
+    })
 
   return (
-    <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
-      <div className='space-y-2'>
-        <Label htmlFor='name'>Nome *</Label>
-        <Input
-          id='name'
-          {...register('name')}
-          placeholder='Ex: Temperatura do Ar'
-          className={errors.name ? 'border-red-500' : ''}
-        />
-        {errors.name && <p className='text-sm text-red-500'>{errors.name.message}</p>}
-      </div>
-
-      <div className='space-y-2'>
-        <Label htmlFor='unit'>Unidade *</Label>
-        <div className='flex items-center gap-3'>
-          <Input
-            id='unit'
-            {...register('unit')}
-            placeholder='Ex: °C, %, hPa, m/s, W/m², km, W, °'
-            className={`flex-1 ${errors.unit ? 'border-red-500' : ''}`}
+    <div className='space-y-6'>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4'>
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nome</FormLabel>
+                <FormControl>
+                  <Input placeholder='Digite o nome do parâmetro' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <div className='flex items-center gap-2 p-2 bg-gray-50 rounded-lg border'>
-            <span
-              className={`inline-flex size-8 items-center justify-center rounded-lg ring-1 ${selectedIcon.badgeColor}`}
-            >
-              <selectedIcon.Icon className={`size-4 ${selectedIcon.iconColor}`} />
-            </span>
+
+          <FormField
+            control={form.control}
+            name='unitOfMeasure'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Unidade de Medida</FormLabel>
+                <FormControl>
+                  <div className='flex items-center gap-3'>
+                    <Input placeholder='Ex: °C, %, hPa, m/s' {...field} />
+                    <div className='flex items-center gap-2 p-2 bg-gray-50 rounded-lg border'>
+                      <span
+                        className={`inline-flex size-8 items-center justify-center rounded-lg ring-1 ${selectedIcon.badgeColor}`}
+                      >
+                        <selectedIcon.Icon
+                          className={`size-4 ${selectedIcon.iconColor}`}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className='grid grid-cols-2 gap-4'>
+            <FormField
+              control={form.control}
+              name='factor'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fator</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      step='0.001'
+                      placeholder='1.0'
+                      {...field}
+                      onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='offset'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Offset</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      step='0.1'
+                      placeholder='0.0'
+                      {...field}
+                      onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-        </div>
-        {errors.unit && <p className='text-sm text-red-500'>{errors.unit.message}</p>}
-      </div>
-      <div className='grid grid-cols-2 gap-4'>
-        <div className='space-y-2'>
-          <Label htmlFor='factor'>Fator *</Label>
-          <Input
-            id='factor'
-            type='number'
-            step='0.001'
-            {...register('factor', { valueAsNumber: true })}
-            className={errors.factor ? 'border-red-500' : ''}
+
+          <FormField
+            control={form.control}
+            name='isActive'
+            render={({ field }) => (
+              <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
+                <div className='space-y-0.5'>
+                  <FormLabel className='text-base'>Parâmetro Ativo</FormLabel>
+                  <div className='text-sm text-muted-foreground'>
+                    Define se o parâmetro está ativo no sistema
+                  </div>
+                </div>
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+              </FormItem>
+            )}
           />
-          {errors.factor && (
-            <p className='text-sm text-red-500'>{errors.factor.message}</p>
-          )}
-        </div>
 
-        <div className='space-y-2'>
-          <Label htmlFor='offset'>Offset *</Label>
-          <Input
-            id='offset'
-            type='number'
-            step='0.001'
-            {...register('offset', { valueAsNumber: true })}
-            className={errors.offset ? 'border-red-500' : ''}
-          />
-          {errors.offset && (
-            <p className='text-sm text-red-500'>{errors.offset.message}</p>
-          )}
-        </div>
-      </div>
+          <div className='flex gap-3 pt-4'>
+            <Button type='submit' disabled={!isValid || isSubmitting} className='flex-1'>
+              {isSubmitting ? 'Salvando...' : 'Salvar'}
+            </Button>
 
-      <div className='flex items-center space-x-2'>
-        <Switch
-          id='active'
-          checked={watch('active')}
-          onCheckedChange={(checked) => setValue('active', checked as boolean)}
-        />
-        <Label
-          htmlFor='active'
-          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-        >
-          {watch('active') ? 'Ativo' : 'Inativo'}
-        </Label>
-      </div>
-
-      <div className='flex justify-end space-x-3 pt-4'>
-        <Button
-          type='button'
-          variant='outline'
-          onClick={onCancel}
-          className='cursor-pointer'
-        >
-          Cancelar
-        </Button>
-        <Button type='submit' className='min-w-[100px] cursor-pointer'>
-          {isEditMode ? 'Atualizar' : 'Salvar'}
-        </Button>
-      </div>
-    </form>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={handleCancel}
+              disabled={isSubmitting}
+              className='flex-1'
+            >
+              Cancelar
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
   )
 }

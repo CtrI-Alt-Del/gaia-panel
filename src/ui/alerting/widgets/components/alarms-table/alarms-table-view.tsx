@@ -63,6 +63,10 @@ export function AlarmsTableView({
       <Modal
         ref={modalRef}
         title='Criar Novo Alarme'
+        isOpen={false}
+        open={() => {}}
+        close={() => {}}
+        isAnimating={false}
         size='lg'
         hideScrollbar={true}
         onOpen={() => console.log('Modal de novo alarme aberto')}
@@ -74,6 +78,10 @@ export function AlarmsTableView({
       <Modal
         ref={editModalRef}
         title='Editar Alarme'
+        isOpen={false}
+        open={() => {}}
+        close={() => {}}
+        isAnimating={false}
         size='lg'
         hideScrollbar={true}
         onOpen={() => console.log('Modal de edição aberto')}
@@ -91,8 +99,8 @@ export function AlarmsTableView({
       </Modal>
 
       <AlertDialog
-        open={deactivateDialogOpen}
-        onOpenChange={setDeactivateDialogOpen}
+        onOpen={() => setDeactivateDialogOpen(true)}
+        onClose={() => setDeactivateDialogOpen(false)}
         title='Confirmar Desativação'
         description='O alarme será desativado e não enviará mais notificações.'
         confirmText='Desativar Alarme'

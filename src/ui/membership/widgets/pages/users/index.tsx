@@ -2,27 +2,36 @@ import { useLoaderData } from 'react-router'
 import { useUsersPage } from './use-users-page'
 import { UsersPageView } from './users-page-view'
 import type { loader } from '@/app/routes/membership/users-route'
+import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 
 export const UsersPage = () => {
-  const { users, nextCursor, previousCursor, pageSize, hasNextPage, hasPreviousPage } = useLoaderData<typeof loader>()
-  const { isModalOpen, selectedUser, handleEdit, handleNewUser, handleCloseModal, handleUserUpdated, handleUserCreated } = useUsersPage()
+  const {
+    users,
+    nextCursor,
+    previousCursor,
+    hasNextPage,
+    hasPreviousPage,
+    membershipService,
+  } = useLoaderData<typeof loader>()
+  const { selectedUser, handleEdit, handleCloseModal, handleUserUpdated } = useUsersPage({
+    users,
+  })
 
-  
+  const { isLoading } = useUiProvider()
+
   return (
-    <UsersPageView 
-      users={users} 
-      nextCursor={nextCursor} 
-      previousCursor={previousCursor} 
-      pageSize={pageSize}
+    <UsersPageView
+      users={users}
+      nextCursor={nextCursor}
+      previousCursor={previousCursor}
       hasNextPage={hasNextPage}
       hasPreviousPage={hasPreviousPage}
-      isModalOpen={isModalOpen}
-      selectedUser={selectedUser}
+      isLoading={isLoading}
       onEdit={handleEdit}
-      onNewUser={handleNewUser}
       onCloseModal={handleCloseModal}
       onUserUpdated={handleUserUpdated}
-      onUserCreated={handleUserCreated}
+      selectedUser={selectedUser}
+      membershipService={membershipService}
     />
   )
 }

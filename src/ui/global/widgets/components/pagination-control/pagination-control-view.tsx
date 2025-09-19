@@ -17,12 +17,6 @@ export const PaginationControlView = ({
   onbuildUrl,
   className = '',
 }: PaginationControlViewProps) => {
-  console.log('PaginationControlView', {
-    previousCursor,
-    nextCursor,
-    hasNextPage,
-    hasPreviousPage,
-  })
   return (
     <div className={`text-right ${className}`}>
       <nav className='inline-flex items-center gap-2'>

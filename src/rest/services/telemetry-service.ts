@@ -1,35 +1,21 @@
 import type { RestClient } from '@/core/global/interfaces'
-import type { RestResponse } from '@/core/global/responses/rest-response'
-import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
+import type { TelemetryService as ITelemetryService } from '@/core/telemetry/interfaces'
+import type { ParametersListingParams } from '@/core/telemetry/types'
 
-export const TelemetryService = (restClient: RestClient) => {
+export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
-    async fetchParameters(): Promise<RestResponse<ParameterDto[]>> {
-      return await restClient.get<ParameterDto[]>('/telemetry/parameters')
-    },
-
-    async createParameter(
-      parameter: Omit<ParameterDto, 'id'>,
-    ): Promise<RestResponse<ParameterDto>> {
-      return await restClient.post<ParameterDto>('/telemetry/parameters', parameter)
-    },
-
-    async updateParameter(
-      id: string,
-      parameter: Partial<ParameterDto>,
-    ): Promise<RestResponse<ParameterDto>> {
-      return await restClient.patch<ParameterDto>(
-        `/telemetry/parameters/${id}`,
-        parameter,
-      )
-    },
-
-    async deleteParameter(id: string): Promise<RestResponse> {
-      return await restClient.delete(`/telemetry/parameters/${id}`)
-    },
-
-    async fetchParameterById(id: string): Promise<RestResponse<ParameterDto>> {
-      return await restClient.get<ParameterDto>(`/telemetry/parameters/${id}`)
+    async fetchParameters(params: ParametersListingParams) {
+      if (params.name) restClient.setQueryParam('name', params.name)
+      if (params.unitOfMeasure)
+        restClient.setQueryParam('unitOfMeasure', params.unitOfMeasure)
+      if (params.isActive)
+        restClient.setQueryParam('isActive', params.isActive.toString())
+      if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
+      if (params.previousCursor)
+        restClient.setQueryParam('previousCursor', params.previousCursor)
+      if (params.pageSize)
+        restClient.setQueryParam('pageSize', params.pageSize.toString())
+      return await restClient.get('/telemetry/parameters')
     },
   }
 }

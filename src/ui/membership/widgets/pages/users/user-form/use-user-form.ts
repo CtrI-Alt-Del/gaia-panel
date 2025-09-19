@@ -1,51 +1,76 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
-import { userFormSchema, type UserFormData } from './user-form-schema'
 
-type UseUserFormProps = {
-  onSuccess?: (data: UserFormData) => void
+import type { UserDto } from '@/core/membership/dtos/user-dto'
+import { RestResponse } from '@/core/global/responses'
+import type { ToastProvider, UiProvider } from '@/core/global/interfaces'
+import type { MembershipService } from '@/core/membership/interfaces'
+
+import { userSchema } from '@/validation/membership'
+
+type Props = {
+  userDto?: UserDto
+  membershipService: MembershipService
+  uiProvider: UiProvider
+  toastProvider: ToastProvider
+  onSuccess?: () => void
   onCancel: () => void
 }
 
-export function useUserForm({ onSuccess, onCancel }: UseUserFormProps) {
-  const form = useForm<UserFormData>({
-    resolver: zodResolver(userFormSchema),
+export function useUserForm({
+  onSuccess,
+  onCancel,
+  userDto,
+  membershipService,
+  uiProvider,
+  toastProvider,
+}: Props) {
+  const form = useForm({
+    resolver: zodResolver(userSchema),
     defaultValues: {
-      name: '',
-      email: '',
+      name: userDto?.name || '',
+      email: userDto?.email || '',
     },
+    mode: 'onSubmit',
   })
 
   const { formState } = form
-  const isSubmitting = formState.isSubmitting
   const isValid = formState.isValid
 
-  async function handleSubmit(data: UserFormData) {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      toast.success('Usuário salvo com sucesso!')
-
-      form.reset()
-
-      onSuccess?.(data)
-    } catch (error) {
-      console.error('Erro ao salvar usuário:', error)
-      toast.error('Erro inesperado ao salvar usuário')
-    }
+  function handleCancel() {
+    onCancel()
   }
 
-  function handleCancel() {
-    form.reset()
-    onCancel()
+  async function handleSubmit(data: UserDto) {
+    const isEdition = Boolean(userDto?.id)
+
+    let response = new RestResponse()
+    if (isEdition) {
+      data.id = userDto?.id
+      response = await membershipService.updateUser(data)
+    } else {
+      response = await membershipService.createUser(data)
+    }
+
+    if (response.isFailure) {
+      toastProvider.showError(response.errorMessage)
+    }
+
+    if (response.isSuccessful) {
+      toastProvider.showSuccess(
+        isEdition ? 'Usuário atualizado com sucesso!' : 'Usuário criado com sucesso!',
+      )
+      await uiProvider.reload()
+      onSuccess?.()
+    }
   }
 
   return {
     form,
-    handleSubmit,
-    handleCancel,
-    isSubmitting,
     isValid,
+    handleCancel,
+    handleSubmit: form.handleSubmit(handleSubmit),
   }
 }
+
+// joao@gmail.com

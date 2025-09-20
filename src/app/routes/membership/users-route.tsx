@@ -13,9 +13,9 @@ export const searchParams = {
   pageSize: parseAsInteger.withDefault(10),
 }
 
-export const middleware = [RestMiddleware]
-
 export const loadSearchParams = createLoader(searchParams)
+
+export const middleware = [RestMiddleware]
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const { membershipService } = context.get(restContext)

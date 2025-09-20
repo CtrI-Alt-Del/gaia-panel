@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router'
-import { AlarmsFilters } from '../components/alarms-filters'
-import { AlarmsTable } from '../components/alarms-table'
-import type { AlarmRule, AlarmFilters, AlarmPagination } from './use-alarms-page'
+import { AlarmsFilters } from '../../components/alarms-filters'
+import { AlarmsTable } from '../../components/alarms-table'
+import type { AlarmRule, AlarmFilters, AlarmPagination } from '../use-alarms-page'
 
 interface AlarmsPageViewProps {
   alarms: AlarmRule[]

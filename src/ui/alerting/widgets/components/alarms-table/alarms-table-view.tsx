@@ -1,5 +1,5 @@
 import { Plus, AlertTriangle } from 'lucide-react'
-import type { AlarmRule } from '../../pages/use-alarms-page'
+import type { AlarmRule } from '../../pages/alarms-old/use-alarms-page'
 import { Button } from '@/ui/shadcn/components/button'
 import { Modal, type ModalRef } from '@/ui/global/widgets/components/modal'
 import { AlertDialog } from '@/ui/global/widgets/components/alert-dialog'

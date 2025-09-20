@@ -1,5 +1,5 @@
 import { Edit, Power } from 'lucide-react'
-import type { AlarmRule } from '../../pages/use-alarms-page'
+import type { AlarmRule } from '../../pages/alarms-old/use-alarms-page'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
 import {
   getIcon,

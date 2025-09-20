@@ -11,4 +11,8 @@ export class UsersFaker {
       ...baseDto,
     }
   }
+
+  static fakeMany(count: number = 10, baseDto?: Partial<UserDto>): UserDto[] {
+    return Array.from({ length: count }, () => this.fakeDto(baseDto))
+  }
 }

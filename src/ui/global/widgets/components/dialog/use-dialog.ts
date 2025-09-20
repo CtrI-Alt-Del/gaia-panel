@@ -22,7 +22,6 @@ export const useDialog = (onOpenDialog?: () => void, onCloseDialog?: () => void)
     }, 300)
   }, [])
 
-  // Handle escape key and body scroll
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen) {
@@ -46,7 +45,6 @@ export const useDialog = (onOpenDialog?: () => void, onCloseDialog?: () => void)
     }
   }, [isOpen, close])
 
-  // Handle onClose callback
   useEffect(() => {
     if (!isOpen && onCloseDialog) {
       onCloseDialog()

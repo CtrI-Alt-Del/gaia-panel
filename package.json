@@ -8,11 +8,13 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "prepare": "husky",
-    "test": "vitest"
+    "test": "vitest",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@conform-to/react": "^1.10.1",
     "@conform-to/zod": "^1.10.1",
+    "@faker-js/faker": "^10.0.0",
     "@hookform/resolvers": "^5.2.1",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -61,6 +63,7 @@
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "vitest-mock-extended": "^3.1.0"
   }
 }

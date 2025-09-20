@@ -1,3 +1,7 @@
+import { useFetcher } from 'react-router'
+
+import { Input } from '@/ui/shadcn/components/input'
+import { Button } from '@/ui/shadcn/components/button'
 import {
   Form,
   FormControl,
@@ -6,26 +10,56 @@ import {
   FormLabel,
   FormMessage,
 } from '@/ui/shadcn/components/form'
-import { Input } from '@/ui/shadcn/components/input'
-import { Button } from '@/ui/shadcn/components/button'
 import { useUserForm } from './use-user-form'
-import type { UserFormData } from './user-form-schema'
+import type { UserDto } from '@/core/membership/dtos/user-dto'
+import { ROUTES } from '@/core/global/constants/routes'
+import type { MembershipService } from '@/core/membership/interfaces'
+import type { ToastProvider, UiProvider } from '@/core/global/interfaces'
 
 type Props = {
-  onSuccess?: (data: UserFormData) => void
+  onSuccess?: () => void
   onCancel: () => void
+  userDto?: UserDto
+  membershipService: MembershipService
+  uiProvider: UiProvider
+  toastProvider: ToastProvider
 }
 
-export const UserFormView = ({ onSuccess, onCancel }: Props) => {
-  const { form, handleSubmit, handleCancel, isSubmitting, isValid } = useUserForm({
+export const UserFormView = ({
+  onSuccess,
+  onCancel,
+  userDto,
+  membershipService,
+  uiProvider,
+  toastProvider,
+}: Props) => {
+  const fetcher = useFetcher()
+  const isEdition = Boolean(userDto?.id)
+  const { form, isValid, handleCancel, handleSubmit } = useUserForm({
     onSuccess,
     onCancel,
+    userDto,
+    membershipService,
+    uiProvider,
+    toastProvider,
   })
 
   return (
     <div className='space-y-6'>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4'>
+        <fetcher.Form
+          method='post'
+          action={
+            isEdition
+              ? ROUTES.api.membership.updateUser
+              : ROUTES.api.membership.createUser
+          }
+          className='space-y-4'
+          onSubmit={handleSubmit}
+        >
+          {isEdition && userDto?.id && (
+            <input type='hidden' name='id' value={userDto.id} />
+          )}
           <FormField
             control={form.control}
             name='name'
@@ -59,21 +93,29 @@ export const UserFormView = ({ onSuccess, onCancel }: Props) => {
           />
 
           <div className='flex gap-3 pt-4'>
-            <Button type='submit' disabled={!isValid || isSubmitting} className='flex-1'>
-              {isSubmitting ? 'Salvando...' : 'Salvar'}
+            <Button
+              type='submit'
+              disabled={!isValid || fetcher.state === 'submitting'}
+              className='flex-1'
+            >
+              {fetcher.state === 'submitting'
+                ? 'Salvando...'
+                : isEdition
+                  ? 'Atualizar'
+                  : 'Salvar'}
             </Button>
 
             <Button
               type='button'
               variant='outline'
               onClick={handleCancel}
-              disabled={isSubmitting}
+              disabled={fetcher.state === 'submitting'}
               className='flex-1'
             >
               Cancelar
             </Button>
           </div>
-        </form>
+        </fetcher.Form>
       </Form>
     </div>
   )

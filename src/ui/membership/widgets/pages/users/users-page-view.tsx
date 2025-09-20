@@ -2,26 +2,13 @@ import { Form } from 'react-router'
 
 import type { UserDto } from '@/core/membership/dtos/user-dto'
 import { Button } from '@/ui/shadcn/components/button'
-import { StatusPill } from '@/ui/shadcn/components/status-pill'
-import {
-  Table,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableBody,
-  TableCell,
-  TableFooter,
-} from '@/ui/shadcn/components/table'
-import { Edit, Plus } from 'lucide-react'
-import { UserAvatar } from '@/ui/global/widgets/components/user-avatar'
-import { UserTableSkeleton } from '@/ui/membership/widgets/pages/users/user-table-skeleton'
+import { Plus } from 'lucide-react'
 import { PageSizeSelect } from '@/ui/global/widgets/components/page-size-select'
 import { StatusSelect } from '@/ui/global/widgets/components/status-select'
-import { PaginationControl } from '@/ui/global/widgets/components/pagination-control'
 import { UserNameSearchInput } from './user-name-search-input'
 import { UserForm } from './user-form'
 import { Dialog } from '@/ui/global/widgets/components/dialog'
-import { UserStatusButton } from './user-status-button'
+import { UsersTable } from './users-table'
 
 export type UsersPageViewProps = {
   users: UserDto[]
@@ -93,113 +80,17 @@ export const UsersPageView = ({
           </Dialog>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nome</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Data de Criação</TableHead>
-              <TableHead className='text-center'>Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {isLoading ? (
-              Array.from({ length: 5 }, (_, index) => {
-                const skeletonId = `user-skeleton-${Date.now()}-${index}`
-                return <UserTableSkeleton key={skeletonId} />
-              })
-            ) : users.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} className='text-center text-stone-500 py-10'>
-                  Nenhum usuário encontrado.
-                </TableCell>
-              </TableRow>
-            ) : (
-              users.map((user) => {
-                return (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <div className='flex items-center gap-3'>
-                        <UserAvatar name={user.name} size='md' />
-                        <div className='leading-tight'>
-                          <div className='font-medium'>{user.name}</div>
-                        </div>
-                      </div>
-                    </TableCell>
-
-                    <TableCell>
-                      <div className='text-sm text-stone-700'>{user.email}</div>
-                    </TableCell>
-
-                    <TableCell>
-                      <StatusPill
-                        active={user.isActive || false}
-                        activeText='Ativo'
-                        inactiveText='Inativo'
-                      />
-                    </TableCell>
-
-                    <TableCell className='text-sm text-stone-600'>
-                      {user.createdAt
-                        ? new Date(user.createdAt).toLocaleDateString('pt-BR')
-                        : '-'}
-                    </TableCell>
-
-                    <TableCell className='text-right'>
-                      <div className='flex gap-2 justify-center'>
-                        {onEdit && (
-                          <Dialog
-                            onClose={onCloseModal || (() => {})}
-                            title='Editar Usuário'
-                            description='Edite as informações do usuário'
-                            size='md'
-                            trigger={
-                              <button
-                                type='button'
-                                onClick={() => onEdit(String(user.id))}
-                                className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200'
-                                title='Editar usuário'
-                              >
-                                <Edit className='w-4 h-4' />
-                              </button>
-                            }
-                          >
-                            {(closeDialog) => (
-                              <UserForm
-                                onSuccess={closeDialog}
-                                onCancel={closeDialog}
-                                userDto={selectedUser}
-                              />
-                            )}
-                          </Dialog>
-                        )}
-                        <UserStatusButton
-                          userId={String(user.id)}
-                          isActive={user.isActive || false}
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )
-              })
-            )}
-          </TableBody>
-
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={5}>
-                <PaginationControl
-                  previousCursor={previousCursor}
-                  nextCursor={nextCursor}
-                  hasNextPage={hasNextPage}
-                  hasPreviousPage={hasPreviousPage}
-                />
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+        <UsersTable
+          users={users}
+          nextCursor={nextCursor}
+          previousCursor={previousCursor}
+          hasNextPage={hasNextPage}
+          hasPreviousPage={hasPreviousPage}
+          isLoading={isLoading}
+          selectedUser={selectedUser}
+          onEdit={onEdit}
+          onCloseModal={onCloseModal}
+        />
       </div>
     </section>
   )

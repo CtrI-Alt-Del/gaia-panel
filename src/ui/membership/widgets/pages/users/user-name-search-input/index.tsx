@@ -1,5 +1,5 @@
 import { UserNameSearchInputView } from './user-name-search-input-view'
-import { useUserNameSearchInput } from './use-user-name-search-input'
+import { useQueryParamString } from '@/ui/global/hooks/use-query-param-string'
 
 export type UserNameSearchInputProps = {
   label: string
@@ -14,11 +14,11 @@ export const UserNameSearchInput = ({
   className,
   id,
 }: UserNameSearchInputProps) => {
-  const { value } = useUserNameSearchInput()
+  const [queryValue] = useQueryParamString('name', '')
 
   return (
     <UserNameSearchInputView
-      value={value}
+      value={queryValue}
       label={label}
       placeholder={placeholder}
       className={className}

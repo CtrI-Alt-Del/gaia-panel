@@ -15,21 +15,8 @@ export function useUsersPage({ users }: UseUsersPageProps) {
     }
   }
 
-  function handleUserUpdated(updatedUser: UserDto) {
-    console.log('Usuário atualizado:', updatedUser)
-  }
-
-  function handleUserCreated(userData: UserDto) {
-    console.log('Novo usuário criado:', userData)
-  }
-
-  function handleCloseModal() {}
-
   return {
     selectedUser,
     handleEdit,
-    handleCloseModal,
-    handleUserUpdated,
-    handleUserCreated,
   }
 }

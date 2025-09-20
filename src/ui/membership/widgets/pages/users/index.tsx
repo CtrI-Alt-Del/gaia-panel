@@ -5,15 +5,9 @@ import type { loader } from '@/app/routes/membership/users-route'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 
 export const UsersPage = () => {
-  const {
-    users,
-    nextCursor,
-    previousCursor,
-    hasNextPage,
-    hasPreviousPage,
-    membershipService,
-  } = useLoaderData<typeof loader>()
-  const { selectedUser, handleEdit, handleCloseModal, handleUserUpdated } = useUsersPage({
+  const { users, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+    useLoaderData<typeof loader>()
+  const { selectedUser, handleEdit } = useUsersPage({
     users,
   })
 
@@ -28,10 +22,7 @@ export const UsersPage = () => {
       hasPreviousPage={hasPreviousPage}
       isLoading={isLoading}
       onEdit={handleEdit}
-      onCloseModal={handleCloseModal}
-      onUserUpdated={handleUserUpdated}
       selectedUser={selectedUser}
-      membershipService={membershipService}
     />
   )
 }

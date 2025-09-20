@@ -1,4 +1,4 @@
-import type { AlarmRule } from '../../pages/use-alarms-page'
+import type { AlarmRule } from '../../pages/alarms-old/use-alarms-page'
 import { TableBody } from './table-body'
 
 interface AlarmsTableProps {

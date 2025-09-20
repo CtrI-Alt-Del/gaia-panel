@@ -2,7 +2,7 @@ import { AlarmsTableView } from './alarms-table-view'
 import { useAlarmsTable } from './use-alarms-table'
 import { AlarmsTable } from './alarms-table'
 import { TableBody } from './table-body'
-import type { AlarmRule } from '../../pages/use-alarms-page'
+import type { AlarmRule } from '../../pages/alarms-old/use-alarms-page'
 
 interface AlarmsTableContainerProps {
   alarms: AlarmRule[]

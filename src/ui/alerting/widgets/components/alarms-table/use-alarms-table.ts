@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import type { ModalRef } from '@/ui/global/widgets/components/modal'
-import type { AlarmRule } from '../../pages/use-alarms-page'
+import type { AlarmRule } from '../../pages/alarms-old/use-alarms-page'
 
 export interface UseAlarmsTableProps {
   onEditAlarm: (alarmId: string, data: Partial<AlarmRule>) => void

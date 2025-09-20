@@ -24,7 +24,7 @@ export const PaginationControl = ({
       nextCursor={nextCursor}
       hasNextPage={hasNextPage}
       hasPreviousPage={hasPreviousPage}
-      onbuildUrl={buildUrl}
+      onBuildUrl={buildUrl}
       className={className}
     />
   )

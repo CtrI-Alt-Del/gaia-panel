@@ -18,6 +18,7 @@ export type DialogSize =
 export type DialogViewProps = {
   title?: string
   description?: string
+  icon?: ReactNode
   children: (closeDialog: () => void) => ReactNode
   trigger?: ReactNode
   size?: DialogSize
@@ -50,6 +51,7 @@ const sizeClasses: Record<DialogSize, string> = {
 export const DialogView = ({
   title,
   description,
+  icon,
   children,
   trigger,
   size = 'md',
@@ -94,7 +96,7 @@ export const DialogView = ({
                   : 'opacity-0 scale-90 translate-y-8',
               )}
             >
-              {showHeader && (title || description || !hideCloseButton) && (
+              {showHeader && (title || description || icon || !hideCloseButton) && (
                 <div
                   className={cn(
                     'flex items-start justify-between p-6 border-b border-gray-200 transition-all duration-300 ease-out',
@@ -103,12 +105,13 @@ export const DialogView = ({
                 >
                   <div className='flex-1 pr-4 text-left'>
                     {title && (
-                      <h2 className='text-lg font-semibold text-gray-900 mb-1 text-left'>
-                        {title}
-                      </h2>
+                      <div className='flex items-center gap-3 mb-2'>
+                        {icon && <div className='p-2 bg-blue-50 rounded-lg'>{icon}</div>}
+                        <h2 className='text-2xl font-bold text-gray-900'>{title}</h2>
+                      </div>
                     )}
                     {description && (
-                      <p className='text-sm text-gray-600 text-left'>{description}</p>
+                      <p className='text-gray-600 text-sm'>{description}</p>
                     )}
                   </div>
                   {!hideCloseButton && (

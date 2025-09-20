@@ -1,8 +1,5 @@
-import { SidebarView } from "./sidebar-view";
+import { SidebarView } from './sidebar-view'
 
 export default function Sidebar() {
-  return (
-    <SidebarView 
-    />
-  )
+  return <SidebarView />
 }

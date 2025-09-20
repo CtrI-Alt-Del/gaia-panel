@@ -8,6 +8,7 @@ import {
 } from '@/ui/shadcn/components/dialog'
 import { Button } from '@/ui/shadcn/components/button'
 import { AlertTriangle } from 'lucide-react'
+import { cn } from '@/ui/shadcn/utils/cn'
 
 export type AlertDialogVariant = 'destructive' | 'warning' | 'default'
 
@@ -52,9 +53,7 @@ export function getVariantStyles(variant: AlertDialogVariant): AlertDialogStyles
   }
 }
 
-interface AlertDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+export type AlertDialogViewProps = {
   title: string
   description: string
   confirmText: string
@@ -62,12 +61,15 @@ interface AlertDialogProps {
   variant?: AlertDialogVariant
   icon?: React.ReactNode
   children?: React.ReactNode
-  onConfirm: () => void
+  onConfirm?: () => void
+  // Valores do hook
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  isAnimating: boolean
 }
 
-export function AlertDialog({
-  open,
-  onOpenChange,
+export const AlertDialogView = ({
   title,
   description,
   confirmText,
@@ -76,13 +78,21 @@ export function AlertDialog({
   icon,
   children,
   onConfirm,
-}: AlertDialogProps) {
+  isOpen,
+  close,
+  isAnimating,
+}: AlertDialogViewProps) => {
   const styles = getVariantStyles(variant)
   const defaultIcon = <AlertTriangle className='w-5 h-5' />
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-[425px]'>
+    <Dialog open={isOpen} onOpenChange={close}>
+      <DialogContent
+        className={cn(
+          'sm:max-w-[425px]',
+          isAnimating ? 'opacity-100 scale-100' : 'opacity-0 scale-95',
+        )}
+      >
         <DialogHeader>
           <div className='flex items-center gap-3'>
             <div
@@ -104,17 +114,15 @@ export function AlertDialog({
         {children && <div className='py-4'>{children}</div>}
 
         <DialogFooter className='flex gap-3'>
-          <Button
-            type='button'
-            variant='outline'
-            onClick={() => onOpenChange(false)}
-            className='px-4 py-2'
-          >
+          <Button type='button' variant='outline' onClick={close} className='px-4 py-2'>
             {cancelText}
           </Button>
           <Button
             type='button'
-            onClick={onConfirm}
+            onClick={() => {
+              onConfirm?.()
+              close()
+            }}
             className={`px-4 py-2 text-white ${styles.buttonBg}`}
           >
             {confirmText}

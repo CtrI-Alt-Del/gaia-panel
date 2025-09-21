@@ -1,5 +1,9 @@
 export const ROUTES = {
   root: '/',
+  auth: {
+    signUp: '/auth/sign-up',
+    signIn: '/auth/sign-in',
+  },
   dashboard: '/dashboard',
   stations: '/stations',
   parameters: '/parameters',
@@ -8,11 +12,4 @@ export const ROUTES = {
   configuration: '/configuration',
   profile: '/profile',
   users: '/users',
-  api: {
-    membership: {
-      createUser: '/api/membership/users/create-user',
-      updateUser: '/api/membership/users/update-user',
-      deleteUser: '/api/membership/users/delete-user',
-    },
-  },
 }

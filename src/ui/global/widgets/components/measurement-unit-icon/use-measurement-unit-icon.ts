@@ -10,7 +10,7 @@ export function useMeasurementUnitIcon(unit: string) {
 
   const iconClasses = useMemo(() => {
     const baseClasses =
-      'w-8 h-8 flex items-center justify-center rounded-md opacity-75 border'
+      'w-8 h-8 flex items-center justify-center rounded-xl opacity-50 border'
 
     switch (config.color) {
       case 'orange':

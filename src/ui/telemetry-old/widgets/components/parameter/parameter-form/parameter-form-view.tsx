@@ -12,9 +12,7 @@ export type ParameterFormViewProps = {
 
 export function ParameterFormView({
   parameter,
-  parameter,
   onCancel,
-  onUpdated,
   onUpdated,
 }: ParameterFormViewProps) {
   const { form, selectedIcon, handleSubmit } = useParameterForm({

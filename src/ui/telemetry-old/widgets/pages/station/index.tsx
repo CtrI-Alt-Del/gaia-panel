@@ -1,7 +1,7 @@
 import { useStation } from './use-station-page'
 import StationPageView from './station-page-view'
 
-export default function StationPage() {
+export const StationPage = () => {
   const props = useStation()
-  return <StationPageView {...props} />
+  // return <StationPageView {...props} />
 }

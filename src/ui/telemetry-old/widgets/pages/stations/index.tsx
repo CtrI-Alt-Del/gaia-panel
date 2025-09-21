@@ -1,7 +1,7 @@
-import { useStations } from "./use-stations-page";
-import StationsPageView from "./stations-page-view";
+import { useStationsPage } from './use-stations-page'
+import StationsPageView from './stations-page-view'
 
-export default function StationsPage() {
-  const props = useStations();
-  return <StationsPageView {...props} />;
+export const StationsPage = () => {
+  const props = useStationsPage()
+  return <StationsPageView {...props} />
 }

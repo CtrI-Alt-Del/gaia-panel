@@ -1,4 +1,4 @@
-import { AlarmsPage } from '@/ui/alerting/widgets/pages'
+import { AlarmsPage } from '@/ui/alerting/widgets/pages/alarms'
 
 const AlarmsRoute = () => {
   return <AlarmsPage />

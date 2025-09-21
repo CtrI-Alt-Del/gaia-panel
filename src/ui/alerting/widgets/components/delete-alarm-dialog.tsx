@@ -8,7 +8,7 @@ import {
 } from '@/ui/shadcn/components/dialog'
 import { Button } from '@/ui/shadcn/components/button'
 import { AlertTriangle } from 'lucide-react'
-import type { AlarmRule } from '../pages/use-alarms'
+import type { AlarmRule } from '../pages/alarms/use-alarms-page'
 
 interface DeleteAlarmDialogProps {
   open: boolean
@@ -57,11 +57,10 @@ export function DeleteAlarmDialog({
               <div>
                 <span className='font-medium'>Severidade:</span>{' '}
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                    alarm.severity === 'critical'
-                      ? 'bg-red-100 text-red-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${alarm.severity === 'critical'
+                    ? 'bg-red-100 text-red-800'
+                    : 'bg-yellow-100 text-yellow-800'
+                    }`}
                 >
                   {alarm.severity === 'critical' ? '▲ Crítico' : '○ Alarme'}
                 </span>
@@ -69,11 +68,10 @@ export function DeleteAlarmDialog({
               <div>
                 <span className='font-medium'>Status:</span>{' '}
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                    alarm.status === 'active'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${alarm.status === 'active'
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-gray-100 text-gray-800'
+                    }`}
                 >
                   {alarm.status === 'active' ? '○ Ativo' : '• Inativo'}
                 </span>

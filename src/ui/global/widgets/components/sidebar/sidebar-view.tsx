@@ -21,7 +21,7 @@ import {
   SidebarMenuItem,
 } from '@/ui/shadcn/components/sidebar'
 import { useLocation } from 'react-router'
-import { ROUTES } from '@/core/constants/ROUTES'
+import { ROUTES } from '@/core/global/constants/routes'
 
 const activeButtonStyles =
   'bg-gradient-to-r from-green-100  to-transparent border-r-4 border-green-500'
@@ -147,7 +147,7 @@ export function SidebarView() {
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive className={buttonStyles}>
+                <SidebarMenuButton asChild className={buttonStyles}>
                   <a
                     href={ROUTES.alerts}
                     className={
@@ -203,6 +203,37 @@ export function SidebarView() {
                       }
                     >
                       Relatórios
+                    </span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className={buttonStyles}>
+                  <a
+                    href={ROUTES.users}
+                    className={
+                      currentPath === ROUTES.users
+                        ? activeButtonStyles
+                        : inactiveButtonStyles
+                    }
+                    aria-current={currentPath === ROUTES.users ? 'page' : undefined}
+                  >
+                    <User
+                      className={
+                        currentPath === ROUTES.users
+                          ? activeIconStyles
+                          : inactiveIconStyles
+                      }
+                    />
+                    <span
+                      className={
+                        currentPath === ROUTES.users
+                          ? activeTextStyles
+                          : inactiveTextStyles
+                      }
+                    >
+                      Usuários
                     </span>
                   </a>
                 </SidebarMenuButton>

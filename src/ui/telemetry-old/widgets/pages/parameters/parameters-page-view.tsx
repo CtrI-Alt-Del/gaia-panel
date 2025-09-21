@@ -6,7 +6,6 @@ import { Badge } from "@/ui/shadcn/components/badge";
 import { StatusPill } from "@/ui/shadcn/components/status-pill";
 import {
   Table,
-  TableCaption,
   TableHead,
   TableHeader,
   TableRow,
@@ -36,21 +35,21 @@ export type ParametersPageViewProps = {
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
 const urlWith = (params: Record<string, string>) => {
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = new URLSearchParams(window.location.search)
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
-      searchParams.set(key, value);
+      searchParams.set(key, value)
     } else {
-      searchParams.delete(key);
+      searchParams.delete(key)
     }
-  });
-  return `?${searchParams.toString()}`;
-};
+  })
+  return `?${searchParams.toString()}`
+}
 
 export function ParametersPageView({
   items,
   nextCursor,
-  prevCursor,
+  previousCursor,
   limit,
   q,
   isActive,
@@ -59,13 +58,26 @@ export function ParametersPageView({
   onToggleisActive,
   onNewParameter,
   onCloseModal,
+  onParameterUpdated,
+  deactivateDialogOpen,
+  parameterToDeactivate,
+  onDeactivateClick,
+  onConfirmDeactivate,
+  setDeactivateDialogOpen,
 }: ParametersPageViewProps) {
+  const { register, errors } = useParametersFilters({
+    initialValues: {
+      q,
+      isActive: isActive || 'all',
+      limit,
+    },
+  })
   return (
-    <section className="container mx-auto p-4 pt-16">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <section className='container mx-auto px-4 py-2'>
+      <header className='mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'>
         <div>
-          <h1 className="text-xl font-semibold">Parâmetros Meteorológicos</h1>
-          <p className="text-sm text-stone-600">Filtros por nome e status</p>
+          <h1 className='text-xl font-semibold'>Parâmetros Meteorológicos</h1>
+          <p className='text-sm text-stone-600'>Filtros por nome e status</p>
         </div>
 
         <div className="flex flex-wrap items-end gap-2">
@@ -105,6 +117,9 @@ export function ParametersPageView({
             </Button>
           </Form>
 
+      <div className='rounded-lg border border-stone-200'>
+        <div className='flex items-center justify-between p-4 border-b border-stone-200'>
+          <h2 className='text-lg font-medium'>Parâmetros Meteorológicos</h2>
           {onNewParameter && (
             <Button
               onClick={onNewParameter}
@@ -115,30 +130,24 @@ export function ParametersPageView({
             </Button>
           )}
         </div>
-      </div>
 
-      <div className="rounded-lg border border-stone-200">
         <Table>
-          <TableCaption>Parâmetros Meteorológicos</TableCaption>
-
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
               <TableHead>Unidade</TableHead>
+              <TableHead>Unidade</TableHead>
               <TableHead>Fator</TableHead>
               <TableHead>Offset</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-center">Ações</TableHead>
+              <TableHead className='text-center'>Ações</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {items.length === 0 && (
               <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="text-center text-stone-500 py-10"
-                >
+                <TableCell colSpan={6} className='text-center text-stone-500 py-10'>
                   Nenhum parâmetro encontrado.
                 </TableCell>
               </TableRow>
@@ -149,13 +158,13 @@ export function ParametersPageView({
                 Icon: IconComponent,
                 iconColor,
                 badgeColor,
-              } = getParameterIcon(p.name);
-              const color = getBadgeColor(p.unitOfMeasure);
+              } = getParameterIcon(p.name)
+              const color = getBadgeColor(p.unitOfMeasure)
 
               return (
                 <TableRow key={p.id}>
                   <TableCell>
-                    <div className="flex items-center gap-3">
+                    <div className='flex items-center gap-3'>
                       <span
                         className={`inline-flex size-9 items-center justify-center rounded-xl ring-1 ${badgeColor}`}
                       >
@@ -179,8 +188,8 @@ export function ParametersPageView({
                     </Badge>
                   </TableCell>
 
-                  <TableCell className="tabular-nums">{p.factor}</TableCell>
-                  <TableCell className="tabular-nums">{p.offset}</TableCell>
+                  <TableCell className='tabular-nums'>{p.factor}</TableCell>
+                  <TableCell className='tabular-nums'>{p.offset}</TableCell>
 
                   <TableCell>
                     <StatusPill active={p.isActive || false} />
@@ -190,12 +199,12 @@ export function ParametersPageView({
                     <div className="flex gap-2 justify-center">
                       {onEdit && (
                         <button
-                          type="button"
-                          onClick={() => onEdit(p.id || "")}
-                          className="inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200"
-                          title="Editar parâmetro"
+                          type='button'
+                          onClick={() => onEdit(p.id || '')}
+                          className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200'
+                          title='Editar parâmetro'
                         >
-                          <Edit className="w-4 h-4" />
+                          <Edit className='w-4 h-4' />
                         </button>
                       )}
                       {onToggleisActive && (
@@ -210,17 +219,23 @@ export function ParametersPageView({
                             }`}
                           title={
                             p.isActive
-                              ? "Desativar parâmetro"
-                              : "Ativar parâmetro"
+                              ? onDeactivateClick?.(p)
+                              : onToggleisActive(p.id || '')
                           }
+                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
+                            p.isActive
+                              ? 'bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200'
+                              : 'bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200'
+                          }`}
+                          title={p.isActive ? 'Desativar parâmetro' : 'Ativar parâmetro'}
                         >
-                          <Power className="w-4 h-4" />
+                          <Power className='w-4 h-4' />
                         </button>
                       )}
                     </div>
                   </TableCell>
                 </TableRow>
-              );
+              )
             })}
           </TableBody>
 
@@ -235,25 +250,23 @@ export function ParametersPageView({
                     ? "ativos"
                     : "inativos"}
               </TableCell>
-              <TableCell colSpan={3} className="text-right">
-                <nav className="inline-flex items-center gap-2">
+              <TableCell colSpan={3} className='text-right'>
+                <nav className='inline-flex items-center gap-2'>
                   <Link
-                    to={prevCursor ? urlWith({ cursor: prevCursor }) : "#"}
+                    to={prevCursor ? urlWith({ cursor: prevCursor }) : '#'}
                     aria-disabled={!prevCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${prevCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      prevCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'
+                    }`}
                   >
                     Anterior
                   </Link>
                   <Link
-                    to={nextCursor ? urlWith({ cursor: nextCursor }) : "#"}
+                    to={nextCursor ? urlWith({ cursor: nextCursor }) : '#'}
                     aria-disabled={!nextCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${nextCursor
-                      ? "hover:bg-stone-50"
-                      : "pointer-events-none opacity-50"
-                      }`}
+                    className={`rounded-full border px-3 py-1.5 text-sm ${
+                      nextCursor ? 'hover:bg-stone-50' : 'pointer-events-none opacity-50'
+                    }`}
                   >
                     Próxima
                   </Link>
@@ -267,6 +280,64 @@ export function ParametersPageView({
       {onCloseModal && (
         <ParameterModal isOpen={isModalOpen} onClose={onCloseModal} />
       )}
+
+      <AlertDialog
+        open={deactivateDialogOpen}
+        onOpenChange={setDeactivateDialogOpen}
+        title='Confirmar Desativação'
+        description='O parâmetro será desativado e não será mais utilizado nas medições.'
+        confirmText='Desativar Parâmetro'
+        variant='destructive'
+        icon={<AlertTriangle className='w-5 h-5' />}
+        onConfirm={onConfirmDeactivate}
+      >
+        {parameterToDeactivate && (
+          <>
+            <div className='bg-gray-50 rounded-lg p-4 border'>
+              <h4 className='font-medium text-gray-900 mb-2'>
+                Parâmetro a ser desativado:
+              </h4>
+              <div className='space-y-2 text-sm text-gray-600'>
+                <div>
+                  <span className='font-medium'>Nome:</span> {parameterToDeactivate.name}
+                </div>
+                <div>
+                  <span className='font-medium'>Unidade:</span>{' '}
+                  {parameterToDeactivate.unitOfMeasure}
+                </div>
+                <div>
+                  <span className='font-medium'>Fator:</span>{' '}
+                  {parameterToDeactivate.factor}
+                </div>
+                <div>
+                  <span className='font-medium'>Offset:</span>{' '}
+                  {parameterToDeactivate.offset}
+                </div>
+                <div>
+                  <span className='font-medium'>Status:</span>{' '}
+                  <span
+                    className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                      parameterToDeactivate.isActive
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {parameterToDeactivate.isActive ? '○ Ativo' : '• Inativo'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className='mt-4 p-3 bg-red-50 border border-red-200 rounded-lg'>
+              <p className='text-sm text-red-800'>
+                <strong>Atenção:</strong> Ao desativar este parâmetro, ele não será mais
+                utilizado nas medições, mas as configurações serão mantidas e poderá ser
+                reativado posteriormente.
+              </p>
+            </div>
+          </>
+        )}
+      </AlertDialog>
     </section>
-  );
+  )
 }

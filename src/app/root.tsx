@@ -7,9 +7,10 @@ import {
   ScrollRestoration,
 } from 'react-router'
 
-import type { Route } from "./+types/root";
-import "@/ui/global/styles/global.css";
-import { Toaster } from "@/ui/shadcn/components/sonner";
+import type { Route } from './+types/root'
+import '@/ui/global/styles/global.css'
+import { Toaster } from '@/ui/shadcn/components/sonner'
+import { NuqsAdapter } from 'nuqs/adapters/react'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -34,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <NuqsAdapter>{children}</NuqsAdapter>
         <ScrollRestoration />
         <Scripts />
         <Toaster />

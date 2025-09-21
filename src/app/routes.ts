@@ -3,6 +3,7 @@ import { ROUTES } from '../core/global/constants/routes'
 
 export default [
   index('routes/auth/login.tsx'),
+  route(ROUTES.auth.signUp, 'routes/auth/sign-up-route.tsx'),
   layout('layouts/app-layout.tsx', [
     route(ROUTES.dashboard, 'routes/telemetry/dashboard.tsx'),
     route(ROUTES.stations, 'routes/telemetry/stations.tsx'),

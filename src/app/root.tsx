@@ -6,11 +6,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router'
+import { rootAuthLoader } from '@clerk/react-router/ssr.server'
+import { ClerkProvider } from '@clerk/react-router'
+import { NuqsAdapter } from 'nuqs/adapters/react'
+import { ptBR } from '@clerk/localizations'
 
 import type { Route } from './+types/root'
 import '@/ui/global/styles/global.css'
 import { Toaster } from '@/ui/shadcn/components/sonner'
-import { NuqsAdapter } from 'nuqs/adapters/react'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -44,8 +47,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function App() {
-  return <Outlet />
+export async function loader(args: Route.LoaderArgs) {
+  return rootAuthLoader(args, {})
+}
+
+const App = ({ loaderData }: Route.ComponentProps) => {
+  return (
+    <ClerkProvider loaderData={loaderData} localization={ptBR}>
+      <Outlet />
+    </ClerkProvider>
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -76,3 +87,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     </main>
   )
 }
+
+
+export default App

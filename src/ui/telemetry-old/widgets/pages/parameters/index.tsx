@@ -1,8 +1,10 @@
 import { ParametersPageView } from './parameters-page-view'
 import { useParametersPage } from './use-parameters-page'
 
-export default function Parameters() {
+export const ParametersPage = () => {
   const parametersData = useParametersPage()
+
+  console.log(parametersData)
 
   return <ParametersPageView {...parametersData} />
 }

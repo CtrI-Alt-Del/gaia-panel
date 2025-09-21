@@ -1,10 +1,8 @@
 import { Button } from '@/ui/shadcn/components/button'
 import { Input } from '@/ui/shadcn/components/input'
 import { Label } from '@/ui/shadcn/components/label'
-import { Checkbox } from '@/ui/shadcn/components/checkbox'
 import { useParameterForm } from './use-parameter-form'
-import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
-import { Switch } from '@/ui/shadcn/components/switch'
+import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
 
 export type ParameterFormViewProps = {
   parameter?: ParameterDto
@@ -25,8 +23,6 @@ export function ParameterFormView({
 
   const {
     register,
-    watch,
-    setValue,
     formState: { errors },
   } = form
 
@@ -92,20 +88,6 @@ export function ParameterFormView({
             <p className='text-sm text-red-500'>{errors.offset.message}</p>
           )}
         </div>
-      </div>
-
-      <div className='flex items-center space-x-2'>
-        <Switch
-          id='active'
-          checked={watch('active')}
-          onCheckedChange={(checked) => setValue('active', checked as boolean)}
-        />
-        <Label
-          htmlFor='active'
-          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-        >
-          {watch('active') ? 'Ativo' : 'Inativo'}
-        </Label>
       </div>
 
       <div className='flex justify-end space-x-3 pt-4'>

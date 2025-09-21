@@ -24,18 +24,23 @@ export type ParameterIconType = {
 export function getParameterIconFromUnit(unit: string): ParameterIconType {
   const unitLower = unit.toLowerCase();
 
-  // Temperatura - Múltiplas escalas e variações
   if (
     unitLower.includes("°c") ||
     unitLower.includes("celsius") ||
-    (unitLower.includes("c") && !unitLower.includes("cm") && !unitLower.includes("°c")) ||
+    (unitLower.includes("c") &&
+      !unitLower.includes("cm") &&
+      !unitLower.includes("°c")) ||
     unitLower.includes("fahrenheit") ||
     unitLower.includes("f") ||
     unitLower.includes("°f") ||
     unitLower.includes("kelvin") ||
     (unitLower.includes("k") && !unitLower.includes("km")) ||
     unitLower.includes("rankine") ||
-    (unitLower.includes("r") && !unitLower.includes("rh") && !unitLower.includes("bar") && !unitLower.includes("°f") && !unitLower.includes("°c")) ||
+    (unitLower.includes("r") &&
+      !unitLower.includes("rh") &&
+      !unitLower.includes("bar") &&
+      !unitLower.includes("°f") &&
+      !unitLower.includes("°c")) ||
     unitLower.includes("reaumur") ||
     unitLower.includes("réaumur") ||
     unitLower.includes("temp") ||
@@ -72,7 +77,6 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
     };
   }
 
-  // Umidade Relativa e Absoluta
   if (
     unitLower.includes("%") ||
     unitLower.includes("umidade") ||
@@ -106,7 +110,6 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
     };
   }
 
-  // Pressão Atmosférica - Múltiplas unidades e tipos
   if (
     unitLower.includes("hpa") ||
     unitLower.includes("pa") ||
@@ -150,7 +153,6 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
     };
   }
 
-  // Vento - Velocidade e Intensidade
   if (
     unitLower.includes("m/s") ||
     unitLower.includes("km/h") ||
@@ -196,7 +198,6 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
     };
   }
 
-  // Direção do Vento e Navegação
   if (
     unitLower.includes("°") ||
     unitLower.includes("graus") ||
@@ -249,7 +250,6 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
     };
   }
 
-  // Radiação Solar, UV e Energia Solar
   if (
     unitLower.includes("w/m²") ||
     unitLower.includes("w/m2") ||
@@ -323,7 +323,6 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
     };
   }
 
-  // Precipitação e Hidrometeorologia
   if (
     unitLower.includes("mm") ||
     unitLower.includes("cm") ||
@@ -450,7 +449,12 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
 
   // Visibilidade e Neblina
   if (
-    (unitLower.includes("m") && !unitLower.includes("mm") && !unitLower.includes("cm") && !unitLower.includes("m/s") && !unitLower.includes("w/m") && !unitLower.includes("mol/m")) ||
+    (unitLower.includes("m") &&
+      !unitLower.includes("mm") &&
+      !unitLower.includes("cm") &&
+      !unitLower.includes("m/s") &&
+      !unitLower.includes("w/m") &&
+      !unitLower.includes("mol/m")) ||
     unitLower.includes("visibilidade") ||
     unitLower.includes("visibility") ||
     unitLower.includes("horizontal_visibility") ||
@@ -650,7 +654,6 @@ export function getParameterIconFromUnit(unit: string): ParameterIconType {
     };
   }
 
-  // Padrão para unidades não reconhecidas
   return {
     Icon: Cloud,
     iconColor: "text-gray-400",
@@ -678,7 +681,6 @@ export function getBadgeColorFromUnit(
   | "gray" {
   const unitLower = unit.toLowerCase();
 
-  // Temperatura
   if (
     unitLower.includes("°c") ||
     unitLower.includes("°f") ||
@@ -692,8 +694,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("cold")
   )
     return "red";
-  
-  // Umidade
+
   if (
     unitLower.includes("%") ||
     unitLower.includes("umidade") ||
@@ -702,8 +703,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("moisture")
   )
     return "blue";
-  
-  // Pressão
+
   if (
     unitLower.includes("hpa") ||
     unitLower.includes("pa") ||
@@ -713,8 +713,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("pressão")
   )
     return "purple";
-  
-  // Vento
+
   if (
     unitLower.includes("m/s") ||
     unitLower.includes("km/h") ||
@@ -724,8 +723,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("knots")
   )
     return "gray";
-  
-  // Direção
+
   if (
     unitLower.includes("°") ||
     unitLower.includes("graus") ||
@@ -736,8 +734,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("bearing")
   )
     return "sky";
-  
-  // Radiação Solar
+
   if (
     unitLower.includes("w/m²") ||
     unitLower.includes("w/m2") ||
@@ -748,8 +745,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("solar")
   )
     return "yellow";
-  
-  // Precipitação
+
   if (
     unitLower.includes("mm") ||
     unitLower.includes("cm") ||
@@ -760,8 +756,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("hail")
   )
     return "teal";
-  
-  // Energia
+
   if (
     unitLower.includes("watt") ||
     unitLower.includes("w") ||
@@ -772,8 +767,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("kwh")
   )
     return "orange";
-  
-  // Visibilidade
+
   if (
     unitLower.includes("km") ||
     unitLower.includes("visibilidade") ||
@@ -782,8 +776,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("mist")
   )
     return "indigo";
-  
-  // Altitude
+
   if (
     unitLower.includes("altitude") ||
     unitLower.includes("elevation") ||
@@ -791,8 +784,7 @@ export function getBadgeColorFromUnit(
     unitLower.includes("sea_level")
   )
     return "slate";
-  
-  // Qualidade do Ar
+
   if (
     unitLower.includes("air_quality") ||
     unitLower.includes("qualidade_ar") ||

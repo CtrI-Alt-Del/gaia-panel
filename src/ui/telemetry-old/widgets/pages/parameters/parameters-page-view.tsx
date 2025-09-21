@@ -1,10 +1,9 @@
 import { Link, Form } from 'react-router'
-import type { ParameterDto } from '@/core/dtos/parameter-dto'
+import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
 import { Input } from '@/ui/shadcn/components/input'
 import { Button } from '@/ui/shadcn/components/button'
 import { Badge } from '@/ui/shadcn/components/badge'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
-import { useParametersFilters } from './use-parameters-filters'
 import {
   Table,
   TableHead,
@@ -14,21 +13,11 @@ import {
   TableCell,
   TableFooter,
 } from '@/ui/shadcn/components/table'
-import {
-  Power,
-  Thermometer,
-  Droplets,
-  Wind,
-  Sun,
-  Cloud,
-  Gauge,
-  Eye,
-  Edit,
-  Plus,
-  AlertTriangle,
-} from 'lucide-react'
-import { ParameterModal } from '@/ui/telemetry/widgets/components/parameter-modal'
-import { AlertDialog } from '@/ui/global/widgets/components/alert-dialog'
+import { Power, Edit, Plus, AlertTriangle } from 'lucide-react'
+import { getParameterIcon, getBadgeColor } from '../../utils/parameter-utils'
+import { ParameterModal } from '@/ui/telemetry-old/widgets/components/parameter/parameter-modal'
+import { PaginationSelect } from '@/ui/global/widgets/components'
+import { AlertDialogView } from '@/ui/global/widgets/components/alert-dialog/alert-dialog-view'
 
 export type ParametersPageViewProps = {
   items: ParameterDto[]
@@ -37,97 +26,20 @@ export type ParametersPageViewProps = {
   limit: number
   q: string
   isActive?: string
-  searchParams: URLSearchParams
   isModalOpen: boolean
-  selectedParameter?: ParameterDto
-  onView?: (id: string) => void
   onEdit?: (id: string) => void
   onToggleisActive?: (id: string) => void
   onNewParameter?: () => void
   onCloseModal?: () => void
-  onParameterUpdated?: (parameter: ParameterDto) => void
-  // Estados para o dialog de confirmação de desativação
-  deactivateDialogOpen: boolean
-  parameterToDeactivate: ParameterDto | null
-  onDeactivateClick: (parameter: ParameterDto) => void
-  onConfirmDeactivate: () => void
-  setDeactivateDialogOpen: (open: boolean) => void
+  onParameterUpdated?: () => void
+  deactivateDialogOpen?: boolean
+  parameterToDeactivate?: ParameterDto | null
+  onDeactivateClick?: (parameter: ParameterDto) => void
+  onConfirmDeactivate?: () => void
+  setDeactivateDialogOpen?: (open: boolean) => void
 }
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
-
-const getParameterIcon = (name: string) => {
-  const lowerName = name.toLowerCase()
-  if (lowerName.includes('temperatura'))
-    return {
-      Icon: Thermometer,
-      iconColor: 'text-red-500',
-      badgeColor: 'bg-red-50 ring-red-200',
-      iconBgColor: 'bg-red-100',
-    }
-  if (lowerName.includes('umidade') || lowerName.includes('precipitação'))
-    return {
-      Icon: Droplets,
-      iconColor: 'text-blue-500',
-      badgeColor: 'bg-blue-50 ring-blue-200',
-      iconBgColor: 'bg-blue-100',
-    }
-  if (lowerName.includes('vento'))
-    return {
-      Icon: Wind,
-      iconColor: 'text-gray-500',
-      badgeColor: 'bg-gray-50 ring-gray-200',
-      iconBgColor: 'bg-gray-100',
-    }
-  if (lowerName.includes('radiação') || lowerName.includes('uv'))
-    return {
-      Icon: Sun,
-      iconColor: 'text-yellow-500',
-      badgeColor: 'bg-yellow-50 ring-yellow-200',
-      iconBgColor: 'bg-yellow-100',
-    }
-  if (lowerName.includes('pressão'))
-    return {
-      Icon: Gauge,
-      iconColor: 'text-purple-500',
-      badgeColor: 'bg-purple-50 ring-purple-200',
-      iconBgColor: 'bg-purple-100',
-    }
-  return {
-    Icon: Cloud,
-    iconColor: 'text-gray-400',
-    badgeColor: 'bg-gray-50 ring-gray-200',
-    iconBgColor: 'bg-gray-100',
-  }
-}
-
-const getBadgeColor = (
-  unit: string,
-):
-  | 'stone'
-  | 'blue'
-  | 'sky'
-  | 'teal'
-  | 'green'
-  | 'yellow'
-  | 'orange'
-  | 'red'
-  | 'violet' => {
-  const unitColors: Record<
-    string,
-    'stone' | 'blue' | 'sky' | 'teal' | 'green' | 'yellow' | 'orange' | 'red' | 'violet'
-  > = {
-    '°C': 'blue',
-    '%': 'green',
-    hPa: 'violet',
-    'm/s': 'orange',
-    '°': 'sky',
-    'W/m²': 'yellow',
-    mm: 'teal',
-    índice: 'red',
-  }
-  return unitColors[unit] || 'stone'
-}
 
 const urlWith = (params: Record<string, string>) => {
   const searchParams = new URLSearchParams(window.location.search)
@@ -144,31 +56,21 @@ const urlWith = (params: Record<string, string>) => {
 export function ParametersPageView({
   items,
   nextCursor,
-  previousCursor,
+  prevCursor,
   limit,
   q,
   isActive,
   isModalOpen,
-  selectedParameter,
-  onView,
   onEdit,
   onToggleisActive,
   onNewParameter,
   onCloseModal,
-  onParameterUpdated,
-  deactivateDialogOpen,
-  parameterToDeactivate,
+  deactivateDialogOpen = false,
+  parameterToDeactivate = null,
   onDeactivateClick,
   onConfirmDeactivate,
   setDeactivateDialogOpen,
 }: ParametersPageViewProps) {
-  const { register, errors } = useParametersFilters({
-    initialValues: {
-      q,
-      isActive: isActive || 'all',
-      limit,
-    },
-  })
   return (
     <section className='container mx-auto px-4 py-2'>
       <header className='mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'>
@@ -176,67 +78,43 @@ export function ParametersPageView({
           <h1 className='text-xl font-semibold'>Parâmetros Meteorológicos</h1>
           <p className='text-sm text-stone-600'>Filtros por nome e status</p>
         </div>
-      </header>
 
-      <div className='mb-6'>
-        <div className='w-full'>
-          <div className='rounded-lg border border-gray-200 bg-white p-4'>
-            <Form method='get' replace className='flex flex-wrap items-end gap-2'>
-              <div className='flex flex-col'>
-                <label htmlFor='q' className='text-xs text-stone-600'>
-                  Filtrar por nome
-                </label>
-                <Input
-                  id='q'
-                  {...register('q')}
-                  placeholder='Ex.: Temperatura'
-                  className='h-9 w-56'
-                />
-                {errors.q && <p className='text-xs text-red-500'>{errors.q.message}</p>}
-              </div>
-              <div className='flex flex-col'>
-                <label htmlFor='isActive' className='text-xs text-stone-600'>
-                  Status
-                </label>
-                <select
-                  id='isActive'
-                  {...register('isActive')}
-                  className='h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500'
-                >
-                  <option value='all'>Todos</option>
-                  <option value='active'>Ativos</option>
-                  <option value='inactive'>Inativos</option>
-                </select>
-                {errors.isActive && (
-                  <p className='text-xs text-red-500'>{errors.isActive.message}</p>
-                )}
-              </div>
-              <div className='flex flex-col'>
-                <label htmlFor='limit' className='text-xs text-stone-600'>
-                  Itens por página
-                </label>
-                <select
-                  id='limit'
-                  {...register('limit', { valueAsNumber: true })}
-                  className='h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-gray-500'
-                >
-                  {[5, 10, 20, 50].map((v) => (
-                    <option key={v} value={v}>
-                      {v}
-                    </option>
-                  ))}
-                </select>
-                {errors.limit && (
-                  <p className='text-xs text-red-500'>{errors.limit.message}</p>
-                )}
-              </div>
-              <Button type='submit' className='h-9'>
-                Aplicar
-              </Button>
-            </Form>
-          </div>
+        <div className='flex flex-wrap items-end gap-2'>
+          <Form method='get' replace className='flex flex-wrap items-end gap-2'>
+            <div className='flex flex-col'>
+              <label htmlFor='q' className='text-xs text-stone-600'>
+                Filtrar por nome
+              </label>
+              <Input
+                id='q'
+                name='q'
+                defaultValue={q}
+                placeholder='Ex.: Temperatura'
+                className='h-9 w-56'
+              />
+            </div>
+            <div className='flex flex-col'>
+              <label htmlFor='isActive' className='text-xs text-stone-600'>
+                Status
+              </label>
+              <select
+                id='isActive'
+                name='isActive'
+                defaultValue={isActive || 'all'}
+                className='h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500'
+              >
+                <option value='all'>Todos</option>
+                <option value='ativo'>Ativos</option>
+                <option value='inativo'>Inativos</option>
+              </select>
+            </div>
+            <PaginationSelect value={limit ?? 10} />
+            <Button type='submit' className='h-9'>
+              Aplicar
+            </Button>
+          </Form>
         </div>
-      </div>
+      </header>
 
       <div className='rounded-lg border border-stone-200'>
         <div className='flex items-center justify-between p-4 border-b border-stone-200'>
@@ -253,6 +131,7 @@ export function ParametersPageView({
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
+              <TableHead>Unidade</TableHead>
               <TableHead>Unidade</TableHead>
               <TableHead>Fator</TableHead>
               <TableHead>Offset</TableHead>
@@ -298,7 +177,7 @@ export function ParametersPageView({
                   </TableCell>
 
                   <TableCell>
-                    <Badge color={color} className='capitalize'>
+                    <Badge color={color as any} className='capitalize'>
                       {p.unitOfMeasure}
                     </Badge>
                   </TableCell>
@@ -312,16 +191,6 @@ export function ParametersPageView({
 
                   <TableCell className='text-right'>
                     <div className='flex gap-2 justify-center'>
-                      {onView && (
-                        <button
-                          type='button'
-                          onClick={() => onView(p.id || '')}
-                          className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 hover:text-blue-800 border border-blue-200'
-                          title='Visualizar parâmetro'
-                        >
-                          <Eye className='w-4 h-4' />
-                        </button>
-                      )}
                       {onEdit && (
                         <button
                           type='button'
@@ -335,11 +204,13 @@ export function ParametersPageView({
                       {onToggleisActive && (
                         <button
                           type='button'
-                          onClick={() =>
-                            p.isActive
-                              ? onDeactivateClick?.(p)
-                              : onToggleisActive(p.id || '')
-                          }
+                          onClick={() => {
+                            if (p.isActive && onDeactivateClick) {
+                              onDeactivateClick(p)
+                            } else {
+                              onToggleisActive(p.id || '')
+                            }
+                          }}
                           className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${
                             p.isActive
                               ? 'bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border border-red-200'
@@ -363,7 +234,7 @@ export function ParametersPageView({
                 Mostrando até {limit} itens • Nome: {q ? `"${q}"` : 'nenhum'} • Status:{' '}
                 {isActive === 'all'
                   ? 'todos'
-                  : isActive === 'active'
+                  : isActive === 'ativo'
                     ? 'ativos'
                     : 'inativos'}
               </TableCell>
@@ -394,18 +265,13 @@ export function ParametersPageView({
         </Table>
       </div>
 
-      {onCloseModal && (
-        <ParameterModal
-          isOpen={isModalOpen}
-          onClose={onCloseModal}
-          parameter={selectedParameter}
-          onUpdated={onParameterUpdated}
-        />
-      )}
+      {onCloseModal && <ParameterModal isOpen={isModalOpen} onClose={onCloseModal} />}
 
-      <AlertDialog
-        open={deactivateDialogOpen}
-        onOpenChange={setDeactivateDialogOpen}
+      <AlertDialogView
+        isOpen={deactivateDialogOpen}
+        open={() => setDeactivateDialogOpen?.(true)}
+        close={() => setDeactivateDialogOpen?.(false)}
+        isAnimating={false}
         title='Confirmar Desativação'
         description='O parâmetro será desativado e não será mais utilizado nas medições.'
         confirmText='Desativar Parâmetro'
@@ -459,7 +325,7 @@ export function ParametersPageView({
             </div>
           </>
         )}
-      </AlertDialog>
+      </AlertDialogView>
     </section>
   )
 }

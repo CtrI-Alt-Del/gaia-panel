@@ -1,24 +1,22 @@
-import { useState } from "react";
-import type { AlarmDto } from "@/core/alerting/dtos/alarm-dto";
+import { useState } from 'react'
+import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 
 type UseAlarmsPageProps = {
-  alarms: AlarmDto[];
-};
+  alarms: AlarmDto[]
+}
 
 export function useAlarmsPage({ alarms }: UseAlarmsPageProps) {
-  const [selectedAlarm, setSelectedAlarm] = useState<AlarmDto | undefined>(
-    undefined
-  );
+  const [selectedAlarm, setSelectedAlarm] = useState<AlarmDto | undefined>(undefined)
 
   function handleEdit(id: string) {
-    const alarm = alarms.find((a) => String(a.id) === id);
+    const alarm = alarms.find((a) => String(a.id) === id)
     if (alarm) {
-      setSelectedAlarm(alarm);
+      setSelectedAlarm(alarm)
     }
   }
 
   return {
     selectedAlarm,
     handleEdit,
-  };
+  }
 }

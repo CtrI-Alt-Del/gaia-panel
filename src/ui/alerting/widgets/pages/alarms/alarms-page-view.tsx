@@ -58,7 +58,7 @@ export const AlarmsPageView = ({
       <div className='rounded-lg border border-stone-200'>
         <div className='flex items-end justify-end p-4 border-b border-stone-200'>
           <Dialog
-            onClose={onCloseModal || (() => { })}
+            onClose={onCloseModal || (() => {})}
             title='Novo Alarme'
             icon={<Bell className='w-4 h-4' />}
             description='Preencha os dados para criar um novo alarme'

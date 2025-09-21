@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/shadcn/components/select'
-import type { AlarmRule } from '../pages/alarms/use-alarms-page'
+import type { AlarmRule } from '../pages/alarms-old/use-alarms-page'
 
 const editAlarmSchema = z.object({
   name: z.string().min(3, { message: 'Inclua no mínimo 3 caracteres' }),

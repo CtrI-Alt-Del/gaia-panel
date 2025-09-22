@@ -1,11 +1,9 @@
 import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
-import type { Route } from './+types/users'
 
-import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
-import { MembershipService } from '@/rest/services/membership-service'
+import type { Route } from './+types/users-route'
 import { UsersPage } from '@/ui/membership/widgets/pages/users'
-import { ENV } from '@/core/global/constants'
-
+import { RestMiddleware } from '@/app/middlewares/rest-middleware'
+import { restContext } from '@/app/contexts/rest-context'
 
 export const searchParams = {
   name: parseAsString,
@@ -17,12 +15,14 @@ export const searchParams = {
 
 export const loadSearchParams = createLoader(searchParams)
 
-export const loader = async ({ request }: Route.ActionArgs) => {
+export const middleware = [RestMiddleware]
+
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  const { membershipService } = context.get(restContext)
   const { nextCursor, previousCursor, pageSize, name, status } = loadSearchParams(request)
 
-  const restClient = AxiosRestClient()
-  restClient.setBaseUrl(ENV.serverAppUrl)
-  const service = MembershipService(restClient)
+  const service = membershipService
+
   const response = await service.fetchUsers({
     nextCursor,
     previousCursor,
@@ -31,8 +31,6 @@ export const loader = async ({ request }: Route.ActionArgs) => {
     status: status ?? undefined,
   })
 
-  console.log('response', response)
-
   return {
     users: response.body.items,
     nextCursor: response.body.nextCursor,
@@ -40,8 +38,8 @@ export const loader = async ({ request }: Route.ActionArgs) => {
     pageSize: response.body.pageSize,
     hasNextPage: response.body.hasNextPage,
     hasPreviousPage: response.body.hasPreviousPage,
+    membershipService,
   }
 }
-
 
 export default UsersPage

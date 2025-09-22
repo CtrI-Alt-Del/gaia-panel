@@ -1,5 +1,9 @@
 export const ROUTES = {
   root: '/',
+  auth: {
+    signUp: '/auth/sign-up',
+    signIn: '/auth/sign-in',
+  },
   dashboard: '/dashboard',
   stations: '/stations',
   parameters: '/parameters',

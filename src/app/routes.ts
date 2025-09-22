@@ -3,6 +3,7 @@ import { ROUTES } from '../core/global/constants/routes'
 
 export default [
   index('routes/auth/login.tsx'),
+  route(ROUTES.auth.signUp, 'routes/auth/sign-up-route.tsx'),
   layout('layouts/app-layout.tsx', [
     route(ROUTES.dashboard, 'routes/telemetry/dashboard.tsx'),
     route(ROUTES.stations, 'routes/telemetry/stations.tsx'),
@@ -10,7 +11,7 @@ export default [
     route(ROUTES.configuration, 'routes/membership/configuration.tsx'),
     route(ROUTES.profile, 'routes/membership/profile.tsx'),
     route(ROUTES.parameters, 'routes/telemetry/parameters.tsx'),
-    route(ROUTES.alerts, 'routes/alerting/alarms.tsx'),
+    route(ROUTES.alerts, 'routes/alerting/alarms-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
   ]),
 ] satisfies RouteConfig

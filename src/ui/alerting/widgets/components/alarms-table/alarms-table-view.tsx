@@ -1,5 +1,5 @@
 import { Plus, AlertTriangle } from 'lucide-react'
-import type { AlarmRule } from '../../pages/use-alarms-page'
+import type { AlarmRule } from '../../pages/alarms-old/use-alarms-page'
 import { Button } from '@/ui/shadcn/components/button'
 import { Modal, type ModalRef } from '@/ui/global/widgets/components/modal'
 import { AlertDialog } from '@/ui/global/widgets/components/alert-dialog'
@@ -63,6 +63,10 @@ export function AlarmsTableView({
       <Modal
         ref={modalRef}
         title='Criar Novo Alarme'
+        isOpen={false}
+        open={() => {}}
+        close={() => {}}
+        isAnimating={false}
         size='lg'
         hideScrollbar={true}
         onOpen={() => console.log('Modal de novo alarme aberto')}
@@ -74,6 +78,10 @@ export function AlarmsTableView({
       <Modal
         ref={editModalRef}
         title='Editar Alarme'
+        isOpen={false}
+        open={() => {}}
+        close={() => {}}
+        isAnimating={false}
         size='lg'
         hideScrollbar={true}
         onOpen={() => console.log('Modal de edição aberto')}
@@ -91,8 +99,8 @@ export function AlarmsTableView({
       </Modal>
 
       <AlertDialog
-        open={deactivateDialogOpen}
-        onOpenChange={setDeactivateDialogOpen}
+        onOpen={() => setDeactivateDialogOpen(true)}
+        onClose={() => setDeactivateDialogOpen(false)}
         title='Confirmar Desativação'
         description='O alarme será desativado e não enviará mais notificações.'
         confirmText='Desativar Alarme'

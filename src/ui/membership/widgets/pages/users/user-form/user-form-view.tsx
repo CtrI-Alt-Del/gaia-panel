@@ -47,16 +47,7 @@ export const UserFormView = ({
   return (
     <div className='space-y-6'>
       <Form {...form}>
-        <fetcher.Form
-          method='post'
-          action={
-            isEdition
-              ? ROUTES.api.membership.updateUser
-              : ROUTES.api.membership.createUser
-          }
-          className='space-y-4'
-          onSubmit={handleSubmit}
-        >
+        <fetcher.Form method='post' className='space-y-4' onSubmit={handleSubmit}>
           {isEdition && userDto?.id && (
             <input type='hidden' name='id' value={userDto.id} />
           )}

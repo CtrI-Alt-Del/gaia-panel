@@ -2,15 +2,15 @@ import { type RouteConfig, index, route, layout } from '@react-router/dev/routes
 import { ROUTES } from '../core/global/constants/routes'
 
 export default [
-  index('routes/auth/login.tsx'),
+  index('routes/auth/login-route.tsx'),
   route(ROUTES.auth.signUp, 'routes/auth/sign-up-route.tsx'),
   layout('layouts/app-layout.tsx', [
-    route(ROUTES.dashboard, 'routes/telemetry/dashboard.tsx'),
-    route(ROUTES.stations, 'routes/telemetry/stations.tsx'),
-    route(ROUTES.reports, 'routes/telemetry/reports.tsx'),
-    route(ROUTES.configuration, 'routes/membership/configuration.tsx'),
-    route(ROUTES.profile, 'routes/membership/profile.tsx'),
-    route(ROUTES.parameters, 'routes/telemetry/parameters.tsx'),
+    route(ROUTES.dashboard, 'routes/telemetry/dashboard-route.tsx'),
+    route(ROUTES.stations, 'routes/telemetry/stations-route.tsx'),
+    route(ROUTES.reports, 'routes/telemetry/reports-route.tsx'),
+    route(ROUTES.configuration, 'routes/membership/configuration-route.tsx'),
+    route(ROUTES.profile, 'routes/membership/profile-route.tsx'),
+    route(ROUTES.parameters, 'routes/telemetry/parameters-route.tsx'),
     route(ROUTES.alerts, 'routes/alerting/alarms-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
   ]),

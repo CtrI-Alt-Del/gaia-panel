@@ -193,7 +193,6 @@ export function useStationsPage() {
         longitude: data.longitude,
         lastReadAt: new Date(),
         parameters: mockParameters.filter((p) => data.parameterIds.includes(p.id)),
-        isActive: data.isActive,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -210,7 +209,6 @@ export function useStationsPage() {
           UID: data.UID,
           latitude: data.latitude,
           longitude: data.longitude,
-          isActive: data.isActive,
           parameters: mockParameters.filter((p) => data.parameterIds.includes(p.id)),
           updatedAt: new Date(),
         }

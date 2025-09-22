@@ -1,3 +1,3 @@
-import { ParametersPage } from '@/ui/telemetry-old/widgets/pages/parameters'
+import { ParametersPage } from "@/ui/telemetry/widgets/pages/parameters";
 
-export default ParametersPage
+export default ParametersPage;

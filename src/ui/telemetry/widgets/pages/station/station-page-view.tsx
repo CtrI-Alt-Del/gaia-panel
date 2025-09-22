@@ -5,8 +5,8 @@ import {
   DetailsTab,
   MeasureTab,
   ParametersTab,
-} from "../../components/station";
-import { StationModal } from "../../components/station/station-form";
+} from "../../../../telemetry/widgets/components/station";
+import { StationModal } from "../../../../telemetry/widgets/components/station/station-form";
 
 interface StationPageViewProps {
   station: StationDto | null;

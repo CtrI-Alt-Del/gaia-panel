@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import type { StationDto } from '@/core/dtos/telemetry/station-dto'
 import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
-import type { StationFormData } from '../../components/station/station-form'
+import type { StationFormData } from '../../../../telemetry/widgets/components/station/station-form'
 
 // Mock de parâmetros disponíveis
 const mockParameters: ParameterDto[] = [

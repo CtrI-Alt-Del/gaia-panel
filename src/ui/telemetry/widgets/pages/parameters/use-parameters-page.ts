@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router'
 import { useState } from 'react'
-import type { ParameterDto } from '@/core/dtos/parameter-dto'
+import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
@@ -91,13 +91,6 @@ export type ParametersPageProps = {
 export function useParametersPage() {
   const { search } = useLocation()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedParameter, setSelectedParameter] = useState<ParameterDto | undefined>(
-    undefined,
-  )
-  const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
-  const [parameterToDeactivate, setParameterToDeactivate] = useState<ParameterDto | null>(
-    null,
-  )
 
   const searchParams = new URLSearchParams(search)
   const q = searchParams.get('q') || ''
@@ -109,8 +102,8 @@ export function useParametersPage() {
     const matchesName = item.name.toLowerCase().includes(q.toLowerCase())
     const matchesisActive =
       isActive === 'all' ||
-      (isActive === 'active' && item.isActive === true) ||
-      (isActive === 'inactive' && item.isActive === false)
+      (isActive === 'ativo' && item.isActive === true) ||
+      (isActive === 'inativo' && item.isActive === false)
     return matchesName && matchesisActive
   })
 
@@ -120,16 +113,8 @@ export function useParametersPage() {
   const nextCursor = endIndex < filteredItems.length ? String(endIndex) : null
   const prevCursor = startIndex > 0 ? String(Math.max(0, startIndex - limit)) : null
 
-  function handleView(id: string) {
-    console.log('Visualizar parâmetro:', id)
-  }
-
   function handleEdit(id: string) {
-    const parameter = mockParameters.find((p) => p.id === id)
-    if (parameter) {
-      setSelectedParameter(parameter)
-      setIsModalOpen(true)
-    }
+    console.log('Editar parâmetro:', id)
   }
 
   function handleToggleisActive(id: string) {
@@ -137,54 +122,25 @@ export function useParametersPage() {
   }
 
   function handleNewParameter() {
-    setSelectedParameter(undefined)
     setIsModalOpen(true)
   }
 
   function handleCloseModal() {
     setIsModalOpen(false)
-    setSelectedParameter(undefined)
-  }
-
-  function handleParameterUpdated(updatedParameter: ParameterDto) {
-    console.log('Parâmetro atualizado:', updatedParameter)
-  }
-
-  function handleDeactivateClick(parameter: ParameterDto) {
-    setParameterToDeactivate(parameter)
-    setDeactivateDialogOpen(true)
-  }
-
-  function handleConfirmDeactivate() {
-    if (parameterToDeactivate) {
-      console.log('Desativar parâmetro:', parameterToDeactivate.id)
-      // Aqui seria feita a chamada para a API para desativar o parâmetro
-      // Por enquanto, apenas logamos
-      setDeactivateDialogOpen(false)
-      setParameterToDeactivate(null)
-    }
   }
 
   return {
     items,
     nextCursor,
-    previousCursor,
+    prevCursor,
     limit,
     q,
     isActive,
     searchParams,
     isModalOpen,
-    selectedParameter,
-    onView: handleView,
     onEdit: handleEdit,
     onToggleisActive: handleToggleisActive,
     onNewParameter: handleNewParameter,
     onCloseModal: handleCloseModal,
-    onParameterUpdated: handleParameterUpdated,
-    deactivateDialogOpen,
-    parameterToDeactivate,
-    onDeactivateClick: handleDeactivateClick,
-    onConfirmDeactivate: handleConfirmDeactivate,
-    setDeactivateDialogOpen,
   }
 }

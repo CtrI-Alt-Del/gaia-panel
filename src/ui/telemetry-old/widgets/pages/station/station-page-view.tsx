@@ -39,17 +39,17 @@ export default function StationPageView({
   parameterId,
   limit,
   uniqueParams,
+  isModalOpen,
+  availableParameters,
   setTab,
   setParam,
   loadMeasure,
   timeAgo,
   formatDateTime,
   toggleStationActive,
-  isModalOpen,
   onEditStation,
   onCloseModal,
   handleStationSubmit,
-  availableParameters,
 }: StationPageViewProps) {
   if (!station) return <div className="p-6">Carregando…</div>;
 

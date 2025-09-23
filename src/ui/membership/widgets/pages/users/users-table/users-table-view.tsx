@@ -80,7 +80,7 @@ export const UsersTableView = ({
                 </TableCell>
 
                 <TableCell>
-                  <div className='text-sm text-stone-700'>{user.email}</div>
+                  <div className='text-sm text-muted-foreground'>{user.email}</div>
                 </TableCell>
 
                 <TableCell>
@@ -91,7 +91,7 @@ export const UsersTableView = ({
                   />
                 </TableCell>
 
-                <TableCell className='text-sm text-stone-600'>
+                <TableCell className='text-sm text-muted-foreground'>
                   {user.createdAt
                     ? new Date(user.createdAt).toLocaleDateString('pt-BR')
                     : '-'}
@@ -109,7 +109,7 @@ export const UsersTableView = ({
                           <button
                             type='button'
                             onClick={() => onEdit(String(user.id))}
-                            className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200'
+                            className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-muted-foreground hover:text-accent-foreground border border-gray-200'
                             title='Editar usuário'
                           >
                             <Edit className='w-4 h-4' />

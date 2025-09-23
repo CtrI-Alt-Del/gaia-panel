@@ -11,7 +11,7 @@ export default [
     route(ROUTES.configuration, 'routes/membership/configuration-route.tsx'),
     route(ROUTES.profile, 'routes/membership/profile-route.tsx'),
     route(ROUTES.parameters, 'routes/telemetry/parameters-route.tsx'),
-    route(ROUTES.alerts, 'routes/alerting/alarms-route.tsx'),
+    route(ROUTES.alarms, 'routes/alerting/alarms-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
   ]),
 ] satisfies RouteConfig

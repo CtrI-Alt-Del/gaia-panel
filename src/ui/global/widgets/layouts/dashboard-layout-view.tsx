@@ -3,7 +3,7 @@ import {
   SidebarTrigger,
   SidebarInset,
 } from '@/ui/shadcn/components/sidebar'
-import Sidebar from '../components/sidebar'
+import { Sidebar } from '../components/sidebar'
 import { usePageTitle } from '../../hooks/use-page-title'
 import { PageBackgroundView } from '../components/page-background/page-background-view'
 

@@ -5,8 +5,8 @@ import {
   DetailsTab,
   MeasureTab,
   ParametersTab,
-} from "../../components/station";
-import { StationModal } from "../../components/station/station-form";
+} from "../../../../telemetry/widgets/components/station";
+import { StationModal } from "../../../../telemetry/widgets/components/station/station-form";
 
 interface StationPageViewProps {
   station: StationDto | null;
@@ -39,17 +39,17 @@ export default function StationPageView({
   parameterId,
   limit,
   uniqueParams,
+  isModalOpen,
+  availableParameters,
   setTab,
   setParam,
   loadMeasure,
   timeAgo,
   formatDateTime,
   toggleStationActive,
-  isModalOpen,
   onEditStation,
   onCloseModal,
   handleStationSubmit,
-  availableParameters,
 }: StationPageViewProps) {
   if (!station) return <div className="p-6">Carregando…</div>;
 

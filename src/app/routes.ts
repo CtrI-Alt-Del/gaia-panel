@@ -7,6 +7,7 @@ export default [
   layout('layouts/app-layout.tsx', [
     route(ROUTES.dashboard, 'routes/telemetry/dashboard-route.tsx'),
     route(ROUTES.stations, 'routes/telemetry/stations-route.tsx'),
+    route(ROUTES.station, 'routes/telemetry/station-route.tsx'),
     route(ROUTES.reports, 'routes/telemetry/reports-route.tsx'),
     route(ROUTES.configuration, 'routes/membership/configuration-route.tsx'),
     route(ROUTES.profile, 'routes/membership/profile-route.tsx'),

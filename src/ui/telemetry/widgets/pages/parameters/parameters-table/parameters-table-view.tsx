@@ -2,7 +2,6 @@ import { Edit, Power, AlertTriangle } from "lucide-react";
 
 import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
 import { StatusPill } from "@/ui/shadcn/components/status-pill";
-import { Badge } from "@/ui/shadcn/components/badge";
 import {
   Table,
   TableHead,
@@ -12,10 +11,7 @@ import {
   TableCell,
   TableFooter,
 } from "@/ui/shadcn/components/table";
-import {
-  getParameterIcon,
-  getBadgeColor,
-} from "../../../utils/parameter-utils";
+import { getParameterIcon } from "../../../utils/parameter-utils";
 import { PaginationControl } from "@/ui/global/widgets/components/pagination-control";
 import { Dialog } from "@/ui/global/widgets/components/dialog";
 import { ParameterForm } from "../parameter-form/parameter-form-view";
@@ -103,7 +99,6 @@ export const ParametersTableView = ({
                 iconColor,
                 badgeColor,
               } = getParameterIcon(parameter.name);
-              const color = getBadgeColor(parameter.unitOfMeasure);
 
               return (
                 <TableRow key={parameter.id}>
@@ -127,9 +122,9 @@ export const ParametersTableView = ({
                   </TableCell>
 
                   <TableCell>
-                    <Badge color={color as any} className="capitalize">
+                    <div className="text-sm text-stone-700">
                       {parameter.unitOfMeasure}
-                    </Badge>
+                    </div>
                   </TableCell>
 
                   <TableCell className="tabular-nums">
@@ -140,7 +135,11 @@ export const ParametersTableView = ({
                   </TableCell>
 
                   <TableCell>
-                    <StatusPill active={parameter.isActive || false} />
+                    <StatusPill
+                      active={parameter.isActive || false}
+                      activeText="Ativo"
+                      inactiveText="Inativo"
+                    />
                   </TableCell>
 
                   <TableCell className="text-right">

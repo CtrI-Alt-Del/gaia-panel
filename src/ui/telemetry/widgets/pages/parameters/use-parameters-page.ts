@@ -9,10 +9,6 @@ export function useParametersPage({ parameters }: UseParametersPageProps) {
   const [selectedParameter, setSelectedParameter] = useState<ParameterDto | undefined>(
     undefined,
   )
-  const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false)
-  const [parameterToDeactivate, setParameterToDeactivate] = useState<ParameterDto | null>(
-    null,
-  )
 
   function handleEdit(id: string) {
     const parameter = parameters.find((p) => String(p.id) === id)
@@ -21,29 +17,14 @@ export function useParametersPage({ parameters }: UseParametersPageProps) {
     }
   }
 
-  function handleDeactivateClick(parameter: ParameterDto) {
-    setParameterToDeactivate(parameter)
-    setDeactivateDialogOpen(true)
-  }
-
-  function handleConfirmDeactivate() {
-    console.log('Desativando parâmetro:', parameterToDeactivate)
-    setDeactivateDialogOpen(false)
-    setParameterToDeactivate(null)
-  }
-
   function handleToggleActive(id: string) {
     console.log('Alternando status do parâmetro:', id)
+    // TODO: Implementar lógica de toggle quando o serviço estiver disponível
   }
 
   return {
     selectedParameter,
-    deactivateDialogOpen,
-    parameterToDeactivate,
-    setDeactivateDialogOpen,
-    handleEdit,
-    handleDeactivateClick,
-    handleConfirmDeactivate,
-    handleToggleActive,
+    onEdit: handleEdit,
+    onToggleActive: handleToggleActive,
   }
 }

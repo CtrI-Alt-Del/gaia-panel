@@ -7,8 +7,6 @@ export const ParametersPage = () => {
 
   const parametersData = useParametersPage({ parameters: mockParameters });
 
-  console.log(parametersData);
-
   return (
     <ParametersPageView
       parameters={mockParameters}

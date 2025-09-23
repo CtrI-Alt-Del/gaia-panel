@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import { PageSizeSelect } from "@/ui/global/widgets/components/page-size-select";
 import { StatusSelect } from "@/ui/global/widgets/components/status-select";
 import { ParameterNameSearchInput } from "./parameter-name-search-input";
-import { ParameterForm } from "./parameter-form/parameter-form-view";
+import { ParameterForm } from "./parameter-form";
 import { Dialog } from "@/ui/global/widgets/components/dialog";
 import { ParametersTableView } from "./parameters-table/parameters-table-view";
 
@@ -22,11 +22,6 @@ export type ParametersPageViewProps = {
   onCloseModal?: () => void;
   onParameterUpdated?: (parameter: ParameterDto) => void;
   onToggleActive?: (id: string) => void;
-  onDeactivateClick?: (parameter: ParameterDto) => void;
-  onConfirmDeactivate?: () => void;
-  deactivateDialogOpen?: boolean;
-  parameterToDeactivate?: ParameterDto | null;
-  setDeactivateDialogOpen?: (open: boolean) => void;
 };
 
 export const ParametersPageView = ({
@@ -37,15 +32,10 @@ export const ParametersPageView = ({
   hasPreviousPage,
   isLoading,
   selectedParameter,
-  deactivateDialogOpen = false,
-  parameterToDeactivate = null,
   onEdit,
   onCloseModal,
   onParameterUpdated,
   onToggleActive,
-  onDeactivateClick,
-  onConfirmDeactivate,
-  setDeactivateDialogOpen,
 }: ParametersPageViewProps) => {
   return (
     <section className="container mx-auto px-4 py-2">
@@ -101,11 +91,6 @@ export const ParametersPageView = ({
           onCloseModal={onCloseModal}
           onParameterUpdated={onParameterUpdated}
           onToggleActive={onToggleActive}
-          onDeactivateClick={onDeactivateClick}
-          onConfirmDeactivate={onConfirmDeactivate}
-          deactivateDialogOpen={deactivateDialogOpen}
-          parameterToDeactivate={parameterToDeactivate}
-          setDeactivateDialogOpen={setDeactivateDialogOpen}
         />
       </div>
     </section>

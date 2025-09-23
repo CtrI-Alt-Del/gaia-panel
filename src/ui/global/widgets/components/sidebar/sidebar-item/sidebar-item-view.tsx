@@ -28,7 +28,7 @@ export const SidebarItemView = ({
           href={href}
           className={cn(
             'flex items-center justify-between px-3 hover:bg-purple-100/50 cursor-pointer transition-colors rounded-sm',
-            isActive && 'bg-purple-200/75',
+            isActive && 'bg-purple-200/50',
           )}
           aria-current={isActive ? 'page' : undefined}
         >

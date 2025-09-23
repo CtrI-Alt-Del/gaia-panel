@@ -1,3 +1,3 @@
-import { StationPage } from '@/ui/telemetry-old/widgets/pages/station'
+import { StationPage } from "@/ui/telemetry/widgets/pages/station";
 
-export default StationPage
+export default StationPage;

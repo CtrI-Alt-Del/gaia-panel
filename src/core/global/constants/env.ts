@@ -5,5 +5,5 @@ const envSchema = z.object({
 })
 
 export const ENV = envSchema.parse({
-  serverAppUrl: import.meta.env.VITE_SERVER_APP_URL,
+  serverAppUrl: import.meta.env.VITE_SERVER_APP_URL || 'http://localhost:3000',
 })

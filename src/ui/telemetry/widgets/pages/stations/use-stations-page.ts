@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import type { StationDto } from '@/core/dtos/telemetry/station-dto'
 import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
-import type { StationFormData } from '../../components/station/station-form'
+import type { StationFormData } from '../../../../telemetry/widgets/components/station/station-form'
 
 // Mock de parâmetros disponíveis
 const mockParameters: ParameterDto[] = [
@@ -193,7 +193,6 @@ export function useStationsPage() {
         longitude: data.longitude,
         lastReadAt: new Date(),
         parameters: mockParameters.filter((p) => data.parameterIds.includes(p.id)),
-        isActive: data.isActive,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -210,7 +209,6 @@ export function useStationsPage() {
           UID: data.UID,
           latitude: data.latitude,
           longitude: data.longitude,
-          isActive: data.isActive,
           parameters: mockParameters.filter((p) => data.parameterIds.includes(p.id)),
           updatedAt: new Date(),
         }

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import type { StationDto } from '@/core/dtos/telemetry/station-dto'
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
-import type { StationFormData } from '../../components/station/station-form/station-form'
+import type { StationFormData } from '../../../../telemetry/widgets/components/station/station-form/use-station-form'
 
 // Mock de parâmetros disponíveis
 const mockParameters = [
@@ -146,6 +146,12 @@ export function useStation() {
     setLoading(false)
   }
 
+  async function loadMeasure() {
+    setLoading(true)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    setLoading(false)
+  }
+
   const uniqueParams = useMemo(() => {
     const set = new Map<string, string>()
     mockMeasurements.forEach((r) => {
@@ -213,6 +219,7 @@ export function useStation() {
     setParam,
     loadStation,
     loadRecords,
+    loadMeasure,
     timeAgo,
     formatDateTime,
     toggleStationActive,

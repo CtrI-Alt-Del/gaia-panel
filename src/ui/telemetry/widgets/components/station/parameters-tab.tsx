@@ -8,7 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui/shadcn/components/table";
-import { getParameterIcon, getBadgeColor } from "../../utils/parameter-utils";
+import {
+  getParameterIcon,
+  getBadgeColor,
+} from "../../../../telemetry/widgets/utils/parameter-utils";
 import type { StationDto } from "@/core/dtos/telemetry/station-dto";
 
 interface ParametersTabProps {

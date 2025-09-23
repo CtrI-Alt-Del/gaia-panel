@@ -4,7 +4,7 @@ import { StatusPill } from "@/ui/shadcn/components/status-pill";
 import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Edit, Power, Plus } from "lucide-react";
-import { StationModal } from "../../components/station/station-form";
+import { StationModal } from "../../../../telemetry/widgets/components/station/station-form";
 import { PaginationSelect } from "@/ui/global/widgets/components";
 
 interface StationsPageViewProps {
@@ -186,10 +186,11 @@ export default function StationsPageView({
                       </button>
                       <button
                         type="button"
-                        className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer border ${s.isActive
-                          ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border-red-200"
-                          : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border-green-200"
-                          }`}
+                        className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer border ${
+                          s.isActive
+                            ? "bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 border-red-200"
+                            : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border-green-200"
+                        }`}
                         onClick={() => toggleStationActive(s.id)}
                         title={
                           s.isActive ? "Desativar estação" : "Ativar estação"

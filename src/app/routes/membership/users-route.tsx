@@ -1,11 +1,10 @@
 import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
-import type { Route } from './+types/users'
+import type { Route } from './+types/users-route'
 
 import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
 import { MembershipService } from '@/rest/services/membership-service'
 import { UsersPage } from '@/ui/membership/widgets/pages/users'
 import { ENV } from '@/core/global/constants'
-
 
 export const searchParams = {
   name: parseAsString,

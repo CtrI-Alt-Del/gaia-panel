@@ -8,7 +8,7 @@ import {
 import { StationForm } from "./station-form";
 import type { StationDto } from "@/core/dtos/telemetry/station-dto";
 import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
-import type { StationFormData } from "./station-form";
+import type { StationFormData } from "./use-station-form";
 
 export type StationModalProps = {
   isOpen: boolean;

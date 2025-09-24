@@ -12,7 +12,7 @@ import {
 } from "@/ui/shadcn/components/form";
 import { X, MapPin, Plus } from "lucide-react";
 import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
-import type { StationDto } from "@/core/dtos/telemetry/station-dto";
+import type { StationDto } from "@/core/telemetry/dtos/station-dto";
 import { useStationForm, type StationFormData } from "./use-station-form";
 
 interface StationFormProps {

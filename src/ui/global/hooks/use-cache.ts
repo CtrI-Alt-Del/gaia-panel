@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { useToast } from './use-toast'
+import { useToastProvider } from './use-toast'
 import type { RestResponse } from '@/core/global/responses/rest-response'
 
 type MutateConfig = {
@@ -42,7 +42,7 @@ export function useCache<CacheData>({
 }: CacheConfig<CacheData>): Cache<CacheData> {
   const queryClient = useQueryClient()
   const queryKey = dependencies ? [key, ...dependencies] : [key]
-  const toast = useToast()
+  const toast = useToastProvider()
   const {
     data,
     error,

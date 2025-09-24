@@ -2,7 +2,7 @@ import { type RouteConfig, index, route, layout } from '@react-router/dev/routes
 import { ROUTES } from '../core/global/constants/routes'
 
 export default [
-  index('routes/auth/login-route.tsx'),
+  index('routes/auth/sign-in-route.tsx'),
   route(ROUTES.auth.signUp, 'routes/auth/sign-up-route.tsx'),
   layout('layouts/app-layout.tsx', [
     route(ROUTES.dashboard, 'routes/telemetry/dashboard-route.tsx'),

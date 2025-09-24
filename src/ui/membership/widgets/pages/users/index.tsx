@@ -10,7 +10,6 @@ export const UsersPage = () => {
   const { selectedUser, handleEdit } = useUsersPage({
     users,
   })
-
   const { isLoading } = useUiProvider()
 
   return (

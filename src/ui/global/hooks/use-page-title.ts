@@ -8,6 +8,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/reports': 'Relatórios',
   '/configuration': 'Configuração',
   '/profile': 'Perfil',
+  '/users': 'Usuários',
 }
 
 export function usePageTitle() {

@@ -35,16 +35,10 @@ export const UsersPageView = ({
   onCloseModal,
 }: UsersPageViewProps) => {
   return (
-    <section className='container mx-auto px-4 py-2'>
-      <header className='mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'>
-        <div>
-          <h1 className='text-xl font-semibold'>Usuários</h1>
-        </div>
-      </header>
-
+    <div className='container mx-auto px-4 py-2'>
       <div className='mb-6'>
         <div className='w-full'>
-          <div className='rounded-lg border border-gray-200 bg-white p-4'>
+          <div className='rounded-lg border border-accent bg-card p-4'>
             <Form
               preventScrollReset
               method='get'
@@ -61,9 +55,8 @@ export const UsersPageView = ({
         </div>
       </div>
 
-      <div className='rounded-lg border border-stone-200'>
-        <div className='flex items-center justify-between p-4 border-b border-stone-200'>
-          <h2 className='text-lg font-medium'>Usuários</h2>
+      <div className='rounded-lg border bg-card border-accent'>
+        <div className='flex items-center justify-between p-4 border-b border-accent'>
           <Dialog
             onClose={onCloseModal || (() => {})}
             title='Novo Usuário'
@@ -92,6 +85,6 @@ export const UsersPageView = ({
           onCloseModal={onCloseModal}
         />
       </div>
-    </section>
+    </div>
   )
 }

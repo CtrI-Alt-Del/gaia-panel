@@ -13,7 +13,7 @@ export const UserStatusButton = ({ userId, isActive }: Props) => {
   const { membershipService } = useRest()
   const toastProvider = useToastProvider()
   const uiProvider = useUiProvider()
-  const { isLoading, handleConfirm } = useUserStatusButton({
+  const { handleConfirm } = useUserStatusButton({
     userId,
     isUserActive: isActive,
     membershipService,
@@ -25,7 +25,6 @@ export const UserStatusButton = ({ userId, isActive }: Props) => {
     <UserStatusButtonView
       isActive={isActive}
       onConfirm={handleConfirm}
-      isLoading={isLoading}
     />
   )
 }

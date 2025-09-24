@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from '@/ui/shadcn/components/select'
 import { Textarea } from '@/ui/shadcn/components/textarea'
-import { AlertCircle, Bell, Settings } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import type { UseFormRegister, FieldErrors } from 'react-hook-form'
 import type { AlarmFormData } from './alarm-form-schema'
 

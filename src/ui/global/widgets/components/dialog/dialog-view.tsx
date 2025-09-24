@@ -88,7 +88,7 @@ export const DialogView = ({
           <div className='fixed inset-0 z-50 flex items-center justify-center p-4'>
             <div
               className={cn(
-                'relative w-full bg-white rounded-lg shadow-2xl transition-all duration-300 ease-out transform',
+                'relative w-full bg-card rounded-lg shadow-2xl transition-all duration-300 ease-out transform',
                 sizeClasses[size],
                 size === 'full' ? 'h-[90vh]' : 'max-h-[90vh]',
                 isAnimating
@@ -99,7 +99,7 @@ export const DialogView = ({
               {showHeader && (title || description || icon || !hideCloseButton) && (
                 <div
                   className={cn(
-                    'flex items-start justify-between p-6 border-b border-gray-200 transition-all duration-300 ease-out',
+                    'flex items-start justify-between p-6 border-b border-accent transition-all duration-300 ease-out',
                     isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2',
                   )}
                 >
@@ -107,11 +107,13 @@ export const DialogView = ({
                     {title && (
                       <div className='flex items-center gap-3 mb-2'>
                         {icon && <div className='p-2 bg-blue-50 rounded-lg'>{icon}</div>}
-                        <h2 className='text-2xl font-bold text-gray-900'>{title}</h2>
+                        <h2 className='text-2xl font-bold text-accent-foreground'>
+                          {title}
+                        </h2>
                       </div>
                     )}
                     {description && (
-                      <p className='text-gray-600 text-sm'>{description}</p>
+                      <p className='text-muted-foreground text-sm'>{description}</p>
                     )}
                   </div>
                   {!hideCloseButton && (
@@ -119,7 +121,7 @@ export const DialogView = ({
                       type='button'
                       onClick={close}
                       onKeyDown={(e) => e.key === 'Enter' && close()}
-                      className='text-gray-400 hover:text-gray-600 transition-all duration-200 hover:scale-110 cursor-pointer p-1 rounded-md hover:bg-gray-100 flex-shrink-0'
+                      className='text-muted-foreground hover:text-accent-foreground transition-all duration-200 hover:scale-110 cursor-pointer p-1 rounded-md hover:bg-accent flex-shrink-0'
                       aria-label='Fechar dialog'
                     >
                       <X className='w-5 h-5' />

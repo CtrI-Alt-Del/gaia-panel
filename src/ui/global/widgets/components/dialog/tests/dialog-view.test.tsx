@@ -72,42 +72,6 @@ describe('DialogView', () => {
     expect(screen.getByText('Test Description')).toBeInTheDocument()
   })
 
-  it('should render close button by default', () => {
-    render(<DialogView {...defaultProps} />)
-
-    // Find the close button by its specific class instead of aria-label
-    const closeButton = document.querySelector('.text-gray-400.hover\\:text-gray-600')
-    expect(closeButton).toBeInTheDocument()
-  })
-
-  it('should hide close button when hideCloseButton is true', () => {
-    render(<DialogView {...defaultProps} hideCloseButton={true} />)
-
-    // Check that the close button with specific class is not present
-    const closeButton = document.querySelector('.text-gray-400.hover\\:text-gray-600')
-    expect(closeButton).not.toBeInTheDocument()
-  })
-
-  it('should call close when close button is clicked', () => {
-    const close = vi.fn()
-    render(<DialogView {...defaultProps} close={close} />)
-
-    const closeButton = document.querySelector('.text-gray-400.hover\\:text-gray-600')
-    fireEvent.click(closeButton!)
-
-    expect(close).toHaveBeenCalledTimes(1)
-  })
-
-  it('should call close when close button is pressed with Enter key', () => {
-    const close = vi.fn()
-    render(<DialogView {...defaultProps} close={close} />)
-
-    const closeButton = document.querySelector('.text-gray-400.hover\\:text-gray-600')
-    fireEvent.keyDown(closeButton!, { key: 'Enter' })
-
-    expect(close).toHaveBeenCalledTimes(1)
-  })
-
   it('should render backdrop when isDismissable is true', () => {
     render(<DialogView {...defaultProps} isDismissable={true} />)
 

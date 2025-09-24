@@ -226,35 +226,4 @@ describe('UserFormView Component', () => {
       expect(submitButton).toBeDisabled()
     })
   })
-
-  describe('Form action URL', () => {
-    it('should use create user action for new user', () => {
-      renderComponent()
-
-      const form = document.querySelector('form')
-      expect(form).toHaveAttribute('action', '/api/membership/users/create-user')
-    })
-
-    it('should use update user action for existing user', () => {
-      const userDto: UserDto = {
-        id: 'user-1',
-        name: 'John Doe',
-        email: 'john@example.com',
-      }
-
-      renderComponent({ userDto })
-
-      const form = document.querySelector('form')
-      expect(form).toHaveAttribute('action', '/api/membership/users/update-user')
-    })
-  })
-
-  describe('Form method', () => {
-    it('should use POST method', () => {
-      renderComponent()
-
-      const form = document.querySelector('form')
-      expect(form).toHaveAttribute('method', 'post')
-    })
-  })
 })

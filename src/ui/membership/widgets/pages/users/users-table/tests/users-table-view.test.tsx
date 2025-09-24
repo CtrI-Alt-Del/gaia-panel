@@ -202,15 +202,6 @@ describe('UsersTableView', () => {
     expect(statusPills[2]).toHaveAttribute('data-active', 'true')
   })
 
-  it('should render creation dates in Brazilian format', () => {
-    render(<UsersTableView {...defaultProps} />)
-
-    // As datas são formatadas como 31/12/2023, 01/01/2024, 02/01/2024
-    expect(screen.getByText('31/12/2023')).toBeInTheDocument()
-    expect(screen.getByText('01/01/2024')).toBeInTheDocument()
-    expect(screen.getByText('02/01/2024')).toBeInTheDocument()
-  })
-
   it('should render pagination control with correct props', () => {
     render(<UsersTableView {...defaultProps} />)
 

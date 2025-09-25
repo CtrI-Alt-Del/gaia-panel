@@ -12,8 +12,9 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/localizations": "^3.25.1",
-    "@clerk/react-router": "^1.10.0",
+    "@clerk/react-router": "^1.10.2",
     "@conform-to/react": "^1.10.1",
     "@conform-to/zod": "^1.10.1",
     "@faker-js/faker": "^10.0.0",

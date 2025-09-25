@@ -3,6 +3,7 @@ import type { UserDto } from '../dtos/user-dto'
 import type { UsersListingParams } from '../types'
 
 export interface MembershipService {
+  fetchUser(userId: string): Promise<RestResponse<UserDto>>
   fetchUsers(
     params: UsersListingParams,
   ): Promise<RestResponse<PaginationResponse<UserDto>>>

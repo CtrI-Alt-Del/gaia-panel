@@ -2,13 +2,11 @@ import {
   ChartLine,
   Bell,
   SlidersHorizontal,
-  ChevronUp,
   RadioTower,
   BarChart3,
   Users,
   ClipboardClock,
 } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/ui/shadcn/components/avatar'
 import {
   Sidebar,
   SidebarContent,
@@ -18,12 +16,14 @@ import {
 } from '@/ui/shadcn/components/sidebar'
 import { ROUTES } from '@/core/global/constants/routes'
 import { SidebarItem } from './sidebar-item'
+import { UserInfo } from '../user-info'
 
 type Props = {
   currentPath: string
+  isUserOwner: boolean
 }
 
-export const SidebarView = ({ currentPath }: Props) => {
+export const SidebarView = ({ currentPath, isUserOwner }: Props) => {
   return (
     <Sidebar className='w-64 bg-card min-h-screen'>
       <SidebarHeader className='p-6 bg-card'>
@@ -90,35 +90,21 @@ export const SidebarView = ({ currentPath }: Props) => {
 
           <div className='h-px bg-purple-200 my-4' />
 
-          <SidebarMenu>
-            <SidebarItem
-              icon={<Users />}
-              label='Usuários'
-              href={ROUTES.users}
-              isActive={currentPath === ROUTES.users}
-            />
-          </SidebarMenu>
+          {isUserOwner && (
+            <SidebarMenu>
+              <SidebarItem
+                icon={<Users />}
+                label='Usuários'
+                href={ROUTES.users}
+                isActive={currentPath === ROUTES.users}
+              />
+            </SidebarMenu>
+          )}
         </div>
       </SidebarContent>
 
       <SidebarFooter className='p-4 bg-card border-card'>
-        <div className='border-t border-white pt-2'>
-          <div className='flex items-center gap-3'>
-            <Avatar className='w-10 h-10'>
-              <AvatarImage src='https://github.com/shadcn.png' alt='Thigszin' />
-              <AvatarFallback className='bg-gradient-to-br from-white to-purple-300 text-purple-600 font-medium'>
-                T
-              </AvatarFallback>
-            </Avatar>
-
-            <div className='flex-1 min-w-0'>
-              <p className='text-sm font-medium text-foreground truncate'>Thigszin</p>
-              <p className='text-xs text-muted-foreground truncate'>Administrador</p>
-            </div>
-
-            <ChevronUp className='w-4 h-4 text-muted-foreground' />
-          </div>
-        </div>
+        <UserInfo />
       </SidebarFooter>
     </Sidebar>
   )

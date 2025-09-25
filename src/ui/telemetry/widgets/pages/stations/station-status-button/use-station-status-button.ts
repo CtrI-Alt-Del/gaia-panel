@@ -1,40 +1,53 @@
-import { useCallback } from 'react'
+import type { TelemetryService } from "@/core/telemetry/interfaces/telemetry-service";
+import type { UiProvider, ToastProvider } from "@/core/global/interfaces";
 
 type UseStationStatusButtonProps = {
-  stationId: string
-  isStationActive: boolean
-  telemetryService: any
-  uiProvider: any
-  toastProvider: any
-}
+  stationId: string;
+  isStationActive: boolean;
+  telemetryService: TelemetryService;
+  toastProvider: ToastProvider;
+  uiProvider: UiProvider;
+};
 
-export const useStationStatusButton = ({
+export function useStationStatusButton({
   stationId,
   isStationActive,
   telemetryService,
-  uiProvider,
   toastProvider,
-}: UseStationStatusButtonProps) => {
-  const handleConfirm = useCallback(async () => {
-    try {
-      uiProvider.setLoading(true)
-
-      if (isStationActive) {
-        await telemetryService.deactivateStation(stationId)
-        toastProvider.showSuccess('Estação desativada com sucesso!')
-      } else {
-        await telemetryService.activateStation(stationId)
-        toastProvider.showSuccess('Estação ativada com sucesso!')
-      }
-    } catch (error) {
-      console.error('Erro ao alterar status da estação:', error)
-      toastProvider.showError('Erro ao alterar status da estação')
-    } finally {
-      uiProvider.setLoading(false)
+  uiProvider,
+}: UseStationStatusButtonProps) {
+  async function handleActivate() {
+    const response = await telemetryService.activateStation(stationId);
+    if (response.isFailure) {
+      toastProvider.showError(response.errorMessage);
     }
-  }, [stationId, isStationActive, telemetryService, uiProvider, toastProvider])
+    if (response.isSuccessful) {
+      toastProvider.showSuccess("Estação ativada com sucesso!");
+      await uiProvider.reload();
+    }
+  }
+
+  async function handleDeactivate() {
+    const response = await telemetryService.deactivateStation(stationId);
+
+    if (response.isFailure) {
+      toastProvider.showError(response.errorMessage);
+    }
+    if (response.isSuccessful) {
+      toastProvider.showSuccess("Estação desativada com sucesso!");
+      await uiProvider.reload();
+    }
+  }
+
+  function handleConfirm() {
+    if (isStationActive) {
+      handleDeactivate();
+    } else {
+      handleActivate();
+    }
+  }
 
   return {
     handleConfirm,
-  }
+  };
 }

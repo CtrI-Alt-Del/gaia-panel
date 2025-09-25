@@ -10,13 +10,13 @@ type Props = {
 };
 
 export const StationStatusButton = ({ stationId, isActive }: Props) => {
-  const { membershipService } = useRest();
+  const { telemetryService } = useRest();
   const toastProvider = useToastProvider();
   const uiProvider = useUiProvider();
   const { handleConfirm } = useStationStatusButton({
     stationId,
     isStationActive: isActive,
-    telemetryService: membershipService, // Temporariamente usando membershipService
+    telemetryService,
     uiProvider,
     toastProvider,
   });

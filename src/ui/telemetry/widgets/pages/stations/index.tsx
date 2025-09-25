@@ -3,6 +3,8 @@ import { useStationsPage } from "./use-stations-page";
 import { StationsPageView } from "./stations-page-view";
 import type { loader } from "@/app/routes/telemetry/stations-route";
 import { useUiProvider } from "@/ui/global/hooks/use-ui-provider";
+import { useRest } from "@/ui/global/hooks/use-rest";
+import { useToastProvider } from "@/ui/global/hooks/use-toast";
 
 export const StationsPage = () => {
   const { stations, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
@@ -10,7 +12,9 @@ export const StationsPage = () => {
   const { selectedStation, handleEdit } = useStationsPage({
     stations,
   });
-  const { isLoading } = useUiProvider();
+  const { isLoading, reload } = useUiProvider();
+  const { telemetryService } = useRest();
+  const toastProvider = useToastProvider();
 
   return (
     <StationsPageView
@@ -22,6 +26,9 @@ export const StationsPage = () => {
       isLoading={isLoading}
       onEdit={handleEdit}
       selectedStation={selectedStation}
+      telemetryService={telemetryService}
+      uiProvider={{ isLoading, reload }}
+      toastProvider={toastProvider}
     />
   );
 };

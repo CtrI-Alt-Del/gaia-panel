@@ -4,6 +4,11 @@ import { StatusPill } from "@/ui/shadcn/components/status-pill";
 import { Button } from "@/ui/shadcn/components/button";
 import { Edit } from "lucide-react";
 import { StationStatusButton } from "../station-status-button";
+import { Dialog } from "@/ui/global/widgets/components/dialog";
+import { StationForm } from "../station-form";
+import type { TelemetryService } from "@/core/telemetry/interfaces/telemetry-service";
+import type { UiProvider } from "@/core/global/interfaces/ui-provider";
+import type { ToastProvider } from "@/core/global/interfaces/toast-provider";
 
 type StationsTableViewProps = {
   stations: StationDto[];
@@ -15,6 +20,9 @@ type StationsTableViewProps = {
   selectedStation?: StationDto;
   onEdit?: (id: string) => void;
   onCloseModal?: () => void;
+  telemetryService: TelemetryService;
+  uiProvider: UiProvider;
+  toastProvider: ToastProvider;
 };
 
 export const StationsTableView = ({
@@ -22,7 +30,12 @@ export const StationsTableView = ({
   hasNextPage,
   hasPreviousPage,
   isLoading,
+  selectedStation,
   onEdit,
+  onCloseModal,
+  telemetryService,
+  uiProvider,
+  toastProvider,
 }: StationsTableViewProps) => {
   return (
     <div className="overflow-x-auto">
@@ -92,14 +105,35 @@ export const StationsTableView = ({
                 </td>
                 <td className="p-3 text-right">
                   <div className="flex gap-2 justify-center">
-                    <button
-                      type="button"
-                      onClick={() => onEdit?.(String(station.id))}
-                      className="inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-muted-foreground hover:text-accent-foreground border border-gray-200"
-                      title="Editar estação"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
+                    {onEdit && (
+                      <Dialog
+                        onClose={onCloseModal || (() => { })}
+                        title="Editar Estação"
+                        description="Edite as informações da estação"
+                        size="md"
+                        trigger={
+                          <button
+                            type="button"
+                            onClick={() => onEdit(String(station.id))}
+                            className="inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-muted-foreground hover:text-accent-foreground border border-gray-200"
+                            title="Editar estação"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                        }
+                      >
+                        {(closeDialog) => (
+                          <StationForm
+                            onSuccess={closeDialog}
+                            onCancel={closeDialog}
+                            stationDto={selectedStation}
+                            telemetryService={telemetryService}
+                            uiProvider={uiProvider}
+                            toastProvider={toastProvider}
+                          />
+                        )}
+                      </Dialog>
+                    )}
                     <StationStatusButton
                       stationId={station.id}
                       isActive={station.status || false}

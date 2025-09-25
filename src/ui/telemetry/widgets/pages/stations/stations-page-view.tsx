@@ -9,6 +9,9 @@ import { StationNameSearchInput } from "./station-name-search-input";
 import { StationForm } from "./station-form";
 import { Dialog } from "@/ui/global/widgets/components/dialog";
 import { StationsTable } from "./stations-table";
+import type { TelemetryService } from "@/core/telemetry/interfaces/telemetry-service";
+import type { UiProvider } from "@/core/global/interfaces/ui-provider";
+import type { ToastProvider } from "@/core/global/interfaces/toast-provider";
 
 export type StationsPageViewProps = {
   stations: StationDto[];
@@ -21,6 +24,9 @@ export type StationsPageViewProps = {
   onEdit?: (id: string) => void;
   onCloseModal?: () => void;
   onStationUpdated?: (station: StationDto) => void;
+  telemetryService: TelemetryService;
+  uiProvider: UiProvider;
+  toastProvider: ToastProvider;
 };
 
 export const StationsPageView = ({
@@ -33,6 +39,9 @@ export const StationsPageView = ({
   selectedStation,
   onEdit,
   onCloseModal,
+  telemetryService,
+  uiProvider,
+  toastProvider,
 }: StationsPageViewProps) => {
   return (
     <div className="container mx-auto px-4 py-2">
@@ -58,7 +67,7 @@ export const StationsPageView = ({
       <div className="rounded-lg border bg-card border-accent">
         <div className="flex items-center justify-between p-4 border-b border-accent">
           <Dialog
-            onClose={onCloseModal || (() => {})}
+            onClose={onCloseModal || (() => { })}
             title="Nova Estação"
             description="Preencha os dados para criar uma nova estação"
             size="md"
@@ -70,7 +79,13 @@ export const StationsPageView = ({
             }
           >
             {(closeDialog) => (
-              <StationForm onSuccess={closeDialog} onCancel={closeDialog} />
+              <StationForm
+                onSuccess={closeDialog}
+                onCancel={closeDialog}
+                telemetryService={telemetryService}
+                uiProvider={uiProvider}
+                toastProvider={toastProvider}
+              />
             )}
           </Dialog>
         </div>
@@ -85,6 +100,9 @@ export const StationsPageView = ({
           selectedStation={selectedStation}
           onEdit={onEdit}
           onCloseModal={onCloseModal}
+          telemetryService={telemetryService}
+          uiProvider={uiProvider}
+          toastProvider={toastProvider}
         />
       </div>
     </div>

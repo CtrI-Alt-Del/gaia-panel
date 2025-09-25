@@ -9,33 +9,26 @@ type UseAlarmFormProps = {
 }
 
 export function useAlarmForm({ onSuccess, onCancel }: UseAlarmFormProps = {}) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<AlarmFormData>({
+  const form = useForm<AlarmFormData>({
     resolver: zodResolver(alarmFormSchema),
     defaultValues: {
+      stationId: '',
+      parameterId: '',
       message: '',
-      level: 'warning',
-      operation: '>',
+      level: undefined,
+      operation: undefined,
       threshold: '',
     },
   })
 
-  function buildAlarmDto(data: AlarmFormData): AlarmDto {
+  function buildAlarmDto(data: AlarmFormData) {
+    console.log('Dados do formulário para DTO:', data)
     return {
       message: data.message.trim(),
-      parameter: {
-        id: 'temp-parameter-id', // TODO: Implementar seleção de parâmetro
-        entity: {
-          name: 'temp-entity', // TODO: Implementar seleção de entidade
-          unitOfMeasure: 'temp-unit', // TODO: Implementar seleção de unidade
-        },
-      },
+      parameterId: data.parameterId,
+      stationId: data.stationId,
       rule: {
-        threshold: BigInt(Math.round(parseFloat(data.threshold) * 100)), // Convert to cents for precision
+        threshold: data.threshold,
         operation: data.operation,
       },
       level: data.level,
@@ -48,13 +41,9 @@ export function useAlarmForm({ onSuccess, onCancel }: UseAlarmFormProps = {}) {
       const alarmDto = buildAlarmDto(data)
       console.log('Criando alarme:', alarmDto)
 
-      // TODO: Implementar criação de alarme via RPC
-      // await createAlarmAction(alarmDto)
-
-      // Simular delay de API
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      reset()
+      form.reset()
       onSuccess?.()
     } catch (error) {
       console.error('Erro ao criar alarme:', error)
@@ -62,15 +51,13 @@ export function useAlarmForm({ onSuccess, onCancel }: UseAlarmFormProps = {}) {
   }
 
   function handleCancel() {
-    reset()
+    form.reset()
     onCancel?.()
   }
 
   return {
-    register,
-    handleSubmit: handleSubmit(onSubmit),
+    form,
+    handleSubmit: form.handleSubmit(onSubmit),
     handleCancel,
-    errors,
-    isSubmitting,
   }
 }

@@ -1,4 +1,5 @@
 import type { UseFormReturn } from 'react-hook-form'
+
 import {
   Form,
   FormControl,
@@ -9,6 +10,13 @@ import {
 } from '@/ui/shadcn/components/form'
 import { Input } from '@/ui/shadcn/components/input'
 import { Button } from '@/ui/shadcn/components/button'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/ui/shadcn/components/card'
 import { GaiaLogo } from '@/ui/global/widgets/components/gaia-logo'
 
 type SignInFormData = {
@@ -32,89 +40,122 @@ export const SignInPageView = ({
   onForgotPassword,
 }: Props) => {
   return (
-    <div className='min-h-screen bg-background flex flex-col'>
-      <header className='flex justify-start p-6'>
-        <GaiaLogo width={96} height={96} />
-      </header>
-
-      <main className='flex-1 flex items-center justify-center px-4'>
-        <div className='w-full max-w-md space-y-8'>
-          <div className='text-center'>
-            <h1 className='text-3xl font-bold text-foreground'>Entrar na sua Conta</h1>
+    <div className='min-h-screen w-full grid grid-cols-2'>
+      <div className='h-full flex items-center justify-center'>
+        <div className='w-full max-w-md space-y-6'>
+          <div className='flex justify-center'>
+            <GaiaLogo width={120} height={120} />
           </div>
 
-          <Form {...form}>
-            <form onSubmit={onSubmit} className='space-y-6'>
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Endereço de Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='email'
-                        placeholder='Digite seu email'
-                        className='py-6'
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <Card className='bg-white border-gray-200 shadow-2xl'>
+            <CardHeader className='space-y-2 text-center pb-3'>
+              <CardTitle className='text-3xl font-bold text-gray-900'>
+                Entrar na sua Conta
+              </CardTitle>
+              <CardDescription className='text-gray-600 text-sm'>
+                Entre na sua conta inserindo suas informações abaixo.
+              </CardDescription>
+            </CardHeader>
 
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Senha</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='password'
-                        placeholder='Digite sua senha'
-                        className='py-6'
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <CardContent className='space-y-6'>
+              <Form {...form}>
+                <form onSubmit={onSubmit} className='space-y-6'>
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='text-gray-900 text-sm font-medium'>
+                          Endereço de E-mail
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type='email'
+                            placeholder='Digite seu e-mail'
+                            className='py-6 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-purple-500 focus:ring-purple-500'
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <div className='text-right'>
-                <Button
-                  type='button'
-                  variant='link'
-                  onClick={onForgotPassword}
-                  disabled={isLoading}
-                  className='p-0 h-auto text-sm text-primary hover:text-primary/80'
-                >
-                  Esqueceu a senha?
-                </Button>
-              </div>
+                  <FormField
+                    control={form.control}
+                    name='password'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='text-gray-900 text-sm font-medium'>
+                          Senha
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type='password'
+                            placeholder='Digite sua senha'
+                            className='py-6 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-purple-500 focus:ring-purple-500'
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              {error && (
-                <div className='p-3 bg-destructive/10 border border-destructive/20 rounded-lg'>
-                  <p className='text-sm text-destructive'>{error}</p>
-                </div>
-              )}
+                  <div className='flex justify-between items-center'>
+                    <Button
+                      type='button'
+                      variant='link'
+                      onClick={onForgotPassword}
+                      disabled={isLoading}
+                      className='p-0 h-auto text-sm text-purple-600 hover:text-purple-700'
+                    >
+                      Esqueceu a senha?
+                    </Button>
+                  </div>
 
-              <Button
-                type='submit'
-                disabled={isLoading || !form.formState.isValid}
-                className='w-full py-6'
-                size='lg'
+                  {error && (
+                    <div className='p-3 bg-red-50 border border-red-200 rounded-lg'>
+                      <p className='text-sm text-red-600'>{error}</p>
+                    </div>
+                  )}
+
+                  <Button
+                    type='submit'
+                    disabled={isLoading || !form.formState.isValid}
+                    className='w-full text-white font-medium py-3'
+                    size='lg'
+                  >
+                    {isLoading ? 'Entrando...' : 'Entrar'}
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+
+          <div className='text-center space-y-2'>
+            <p className='text-sm text-gray-500'>
+              © 2025 Gaia Web. Todos os direitos reservados.
+            </p>
+            <div className='flex justify-center space-x-6 text-sm'>
+              <a
+                href='https://tecsus.com.br/'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-purple-600 hover:text-purple-700 transition-colors'
               >
-                {isLoading ? 'Entrando...' : 'Entrar'}
-              </Button>
-            </form>
-          </Form>
+                Tecsus
+              </a>
+            </div>
+          </div>
         </div>
-      </main>
+      </div>
+
+      <div className='h-full flex items-center justify-center'>
+        <img src='/images/rainy-city.svg' alt='Rainy City' width={750} height={750} />
+      </div>
     </div>
   )
 }

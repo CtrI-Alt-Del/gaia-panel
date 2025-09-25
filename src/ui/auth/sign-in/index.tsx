@@ -1,8 +1,18 @@
+import { useAuthProvider } from '@/ui/global/hooks/use-auth-provider'
 import { SignInPageView } from './sign-in-page-view'
-import { useSignIn } from './use-sign-in'
+import { useSignInPage } from './use-sign-in-page'
+import { useRouter } from '@/ui/global/hooks/use-router'
+import { useToastProvider } from '@/ui/global/hooks/use-toast'
 
 export const SignInPage = () => {
-  const { form, isLoading, error, onSubmit, onForgotPassword } = useSignIn()
+  const authProvider = useAuthProvider()
+  const toastProvider = useToastProvider()
+  const routerProvider = useRouter()
+  const { form, isLoading, error, onSubmit, onForgotPassword } = useSignInPage({
+    authProvider,
+    toastProvider,
+    routerProvider,
+  })
 
   return (
     <SignInPageView

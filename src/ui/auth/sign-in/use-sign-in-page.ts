@@ -3,23 +3,34 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
+import type { AuthProvider } from '@/core/auth/interfaces'
+import type { ToastProvider } from '@/core/global/interfaces'
+import type { RouterProvider } from '@/core/global/interfaces/router-provider'
+import { ROUTES } from '@/core/global/constants/routes'
+
 const signInSchema = z.object({
   email: z.string().min(1, 'Email é obrigatório').email('Email inválido'),
   password: z
     .string()
     .min(1, 'Senha é obrigatória')
-    .min(6, 'Senha deve ter pelo menos 6 caracteres'),
+    .min(8, 'Senha deve ter pelo menos 6 caracteres'),
 })
 
 type SignInFormData = z.infer<typeof signInSchema>
 
-export function useSignIn() {
+type Params = {
+  authProvider: AuthProvider
+  toastProvider: ToastProvider
+  routerProvider: RouterProvider
+}
+
+export function useSignInPage({ authProvider, toastProvider, routerProvider }: Params) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
 
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
     defaultValues: {
       email: '',
       password: '',
@@ -31,23 +42,20 @@ export function useSignIn() {
     setError(undefined)
 
     try {
-      // TODO: Implementar lógica de autenticação com Clerk
-      // await signIn({ email: data.email, password: data.password })
-      console.log('Sign in attempt:', data)
-
-      // Simular delay de rede
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // TODO: Redirecionar após login bem-sucedido
-    } catch {
-      setError('Email ou senha inválidos')
+      const isSuccessful = await authProvider.signIn(data.email, data.password)
+      if (isSuccessful) {
+        routerProvider.goTo(ROUTES.users)
+        return
+      }
+      toastProvider.showError('Email ou senha inválidos')
+    } catch (error) {
+      console.log('error', error)
     } finally {
       setIsLoading(false)
     }
   }
 
   function handleForgotPassword() {
-    // TODO: Implementar lógica de recuperação de senha
     const email = form.getValues('email')
     console.log('Forgot password for:', email)
   }

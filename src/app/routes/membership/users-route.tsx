@@ -30,8 +30,6 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { nextCursor, previousCursor, pageSize, name, status } = loadSearchParams(request)
   const { user } = context.get(membershipContext)
 
-  console.log('loader', { user })
-
   const { userId } = context.get(authContext)
   const { membershipService } = context.get(restContext)
   const response = await membershipService.fetchUsers({

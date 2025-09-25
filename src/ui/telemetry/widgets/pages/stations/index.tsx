@@ -5,6 +5,7 @@ import type { loader } from "@/app/routes/telemetry/stations-route";
 import { useUiProvider } from "@/ui/global/hooks/use-ui-provider";
 import { useRest } from "@/ui/global/hooks/use-rest";
 import { useToastProvider } from "@/ui/global/hooks/use-toast";
+import { useCache } from "@/ui/global/hooks/use-cache";
 
 export const StationsPage = () => {
   const { stations, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
@@ -15,6 +16,10 @@ export const StationsPage = () => {
   const { isLoading, reload } = useUiProvider();
   const { telemetryService } = useRest();
   const toastProvider = useToastProvider();
+  const availableParameters = useCache({
+    key: 'parameters',
+    fetcher: () => telemetryService.fetchParameters(),
+  });
 
   return (
     <StationsPageView
@@ -26,6 +31,7 @@ export const StationsPage = () => {
       isLoading={isLoading}
       onEdit={handleEdit}
       selectedStation={selectedStation}
+      availableParameters={availableParameters.data ?? []}
       telemetryService={telemetryService}
       uiProvider={{ isLoading, reload }}
       toastProvider={toastProvider}

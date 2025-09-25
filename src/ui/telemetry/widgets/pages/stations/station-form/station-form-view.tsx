@@ -1,7 +1,10 @@
 import { Button } from "@/ui/shadcn/components/button";
 import { Input } from "@/ui/shadcn/components/input";
 import { Label } from "@/ui/shadcn/components/label";
+import { LocationPickerView } from "@/ui/global/widgets/components/location-picker";
+import { ParameterSelectorView } from "@/ui/global/widgets/components/parameter-selector";
 import type { StationDto } from "@/core/telemetry/dtos/station-dto";
+import type { ParameterDto } from "@/core/telemetry/dtos/parameter-dto";
 import type { TelemetryService } from "@/core/telemetry/interfaces/telemetry-service";
 import type { UiProvider } from "@/core/global/interfaces/ui-provider";
 import type { ToastProvider } from "@/core/global/interfaces/toast-provider";
@@ -11,6 +14,7 @@ type Props = {
   onSuccess: () => void;
   onCancel: () => void;
   stationDto?: StationDto;
+  availableParameters: ParameterDto[] | undefined;
   telemetryService: TelemetryService;
   uiProvider: UiProvider;
   toastProvider: ToastProvider;
@@ -20,6 +24,7 @@ export const StationFormView = ({
   onSuccess,
   onCancel,
   stationDto,
+  availableParameters,
   telemetryService,
   uiProvider,
   toastProvider,
@@ -69,38 +74,51 @@ export const StationFormView = ({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="latitude">Latitude</Label>
-            <Input
-              id="latitude"
-              type="number"
-              step="any"
-              {...form.register("latitude", { valueAsNumber: true })}
-              placeholder="Ex.: -23.5505"
-            />
-            {form.formState.errors.latitude && (
-              <p className="text-sm text-red-500">
-                {form.formState.errors.latitude.message}
-              </p>
-            )}
-          </div>
+        {/* Localização */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Localização</h3>
+          <LocationPickerView
+            latitude={form.watch("latitude")}
+            longitude={form.watch("longitude")}
+            address={form.watch("address")}
+            onLocationChange={(lat, lng, address) => {
+              form.setValue("latitude", lat, { shouldValidate: true });
+              form.setValue("longitude", lng, { shouldValidate: true });
+              form.setValue("address", address, { shouldValidate: true });
+            }}
+          />
+          {form.formState.errors.latitude && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.latitude.message}
+            </p>
+          )}
+          {form.formState.errors.longitude && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.longitude.message}
+            </p>
+          )}
+          {form.formState.errors.address && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.address.message}
+            </p>
+          )}
+        </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="longitude">Longitude</Label>
-            <Input
-              id="longitude"
-              type="number"
-              step="any"
-              {...form.register("longitude", { valueAsNumber: true })}
-              placeholder="Ex.: -46.6333"
-            />
-            {form.formState.errors.longitude && (
-              <p className="text-sm text-red-500">
-                {form.formState.errors.longitude.message}
-              </p>
-            )}
-          </div>
+        {/* Parâmetros */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Parâmetros</h3>
+          <ParameterSelectorView
+            availableParameters={availableParameters}
+            selectedParameterIds={form.watch("parameterIds") || []}
+            onSelectionChange={(parameterIds) => {
+              form.setValue("parameterIds", parameterIds, { shouldValidate: true });
+            }}
+          />
+          {form.formState.errors.parameterIds && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.parameterIds.message}
+            </p>
+          )}
         </div>
 
         <div className="flex gap-3 pt-4">

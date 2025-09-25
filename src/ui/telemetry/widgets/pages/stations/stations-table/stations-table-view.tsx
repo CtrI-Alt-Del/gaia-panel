@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import type { StationDto } from "@/core/telemetry/dtos/station-dto";
+import type { ParameterDto } from "@/core/telemetry/dtos/parameter-dto";
 import { StatusPill } from "@/ui/shadcn/components/status-pill";
 import { Edit } from "lucide-react";
 import { StationStatusButton } from "../station-status-button";
@@ -27,6 +28,7 @@ type StationsTableViewProps = {
   hasPreviousPage?: boolean;
   isLoading?: boolean;
   selectedStation?: StationDto;
+  availableParameters: ParameterDto[] | undefined;
   onEdit?: (id: string) => void;
   onCloseModal?: () => void;
   telemetryService: TelemetryService;
@@ -42,6 +44,7 @@ export const StationsTableView = ({
   hasPreviousPage,
   isLoading,
   selectedStation,
+  availableParameters,
   onEdit,
   onCloseModal,
   telemetryService,
@@ -122,6 +125,7 @@ export const StationsTableView = ({
                           onSuccess={closeDialog}
                           onCancel={closeDialog}
                           stationDto={selectedStation}
+                          availableParameters={availableParameters}
                           telemetryService={telemetryService}
                           uiProvider={uiProvider}
                           toastProvider={toastProvider}

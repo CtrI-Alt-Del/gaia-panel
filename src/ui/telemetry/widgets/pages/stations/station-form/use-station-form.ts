@@ -31,8 +31,10 @@ export function useStationForm({
       uid: stationDto?.uid || "",
       latitude: stationDto?.latitude || 0,
       longitude: stationDto?.longitude || 0,
+      address: stationDto?.address || "",
+      parameterIds: stationDto?.parameterIds || [],
     },
-    mode: "onSubmit",
+    mode: "onChange",
   });
 
   const { formState } = form;
@@ -47,6 +49,8 @@ export function useStationForm({
     uid: string;
     latitude: number;
     longitude: number;
+    address: string;
+    parameterIds: string[];
   }) {
     const isEdition = Boolean(stationDto?.id);
 
@@ -55,26 +59,36 @@ export function useStationForm({
       const stationData: StationDto = {
         ...data,
         id: stationDto.id,
-        quantityOfParameters: stationDto.quantityOfParameters,
+        quantityOfParameters: data.parameterIds.length,
         status: stationDto.status,
         lastMeasurement: stationDto.lastMeasurement,
-        address: stationDto.address,
       };
+      console.log('Updating station - payload:', stationData);
       response = await telemetryService.updateStation(stationData);
     } else {
-      const stationData: StationDto = {
-        ...data,
-        id: "",
-        quantityOfParameters: 0,
+      const createPayload = {
+        name: data.name,
+        uid: data.uid,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        address: data.address,
+        parameterIds: data.parameterIds,
+        quantityOfParameters: data.parameterIds.length,
         status: false,
-        lastMeasurement: "",
-        address: "",
-      };
-      response = await telemetryService.createStation(stationData);
+        lastMeasurement: '',
+      } as any;
+
+      console.log('Creating station - payload:', createPayload);
+      response = await telemetryService.createStation(createPayload as any);
     }
 
     if (response.isFailure) {
-      toastProvider.showError(response.errorMessage);
+      try {
+        toastProvider.showError(response.errorMessage);
+      } catch (err) {
+        toastProvider.showError('Erro ao salvar estação (ver console)');
+        console.error('Failed response:', response);
+      }
     }
 
     if (response.isSuccessful) {

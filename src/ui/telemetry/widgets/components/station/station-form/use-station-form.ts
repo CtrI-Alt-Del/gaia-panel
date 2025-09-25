@@ -9,7 +9,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
-import type { StationDto } from "@/core/dtos/telemetry/station-dto";
+import type { StationDto } from "@/core/telemetry/dtos/station-dto";
 
 const stationFormSchema = z.object({
   name: z.string().min(1, "Informe o nome da estacao"),
@@ -54,10 +54,10 @@ export function useStationForm({
     if (mode === "edit" && station) {
       return {
         name: station.name,
-        UID: station.UID,
+        UID: station.uid,
         latitude: station.latitude,
         longitude: station.longitude,
-        parameterIds: station.parameters.map((p) => p.id),
+        parameterIds: station.parameterIds
       };
     }
     return { ...defaultValues, parameterIds: [] };

@@ -1,6 +1,7 @@
 import { Form } from "react-router";
 
 import type { StationDto } from "@/core/telemetry/dtos/station-dto";
+import type { ParameterDto } from "@/core/telemetry/dtos/parameter-dto";
 import { Button } from "@/ui/shadcn/components/button";
 import { Plus } from "lucide-react";
 import { PageSizeSelect } from "@/ui/global/widgets/components/page-size-select";
@@ -21,6 +22,7 @@ export type StationsPageViewProps = {
   hasPreviousPage?: boolean;
   isLoading?: boolean;
   selectedStation?: StationDto;
+  availableParameters: ParameterDto[] | undefined;
   onEdit?: (id: string) => void;
   onCloseModal?: () => void;
   onStationUpdated?: (station: StationDto) => void;
@@ -37,6 +39,7 @@ export const StationsPageView = ({
   hasPreviousPage,
   isLoading,
   selectedStation,
+  availableParameters,
   onEdit,
   onCloseModal,
   telemetryService,
@@ -82,6 +85,7 @@ export const StationsPageView = ({
               <StationForm
                 onSuccess={closeDialog}
                 onCancel={closeDialog}
+                availableParameters={availableParameters}
                 telemetryService={telemetryService}
                 uiProvider={uiProvider}
                 toastProvider={toastProvider}
@@ -98,6 +102,7 @@ export const StationsPageView = ({
           hasPreviousPage={hasPreviousPage}
           isLoading={isLoading}
           selectedStation={selectedStation}
+          availableParameters={availableParameters}
           onEdit={onEdit}
           onCloseModal={onCloseModal}
           telemetryService={telemetryService}

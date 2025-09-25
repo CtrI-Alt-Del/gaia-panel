@@ -8,4 +8,7 @@ export const stationSchema = z.object({
     .number()
     .min(-180)
     .max(180, "Longitude deve estar entre -180 e 180"),
+  address: z.string().min(1, "Endereço é obrigatório"),
+  // Allow station to be created without parameters (empty array allowed)
+  parameterIds: z.array(z.string()).default([]),
 });

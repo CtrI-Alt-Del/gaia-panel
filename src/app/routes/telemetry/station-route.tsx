@@ -21,17 +21,12 @@ export const loader = async ({ params }: Route.ActionArgs) => {
     service.fetchStationParameters(stationId),
   ]);
 
-  console.log("station response", stationResponse);
-  console.log("parameters response", parametersResponse);
-
-  // Verificar se a estação foi encontrada
   if (!stationResponse.isSuccessful) {
     throw new Response(stationResponse.errorMessage, {
       status: stationResponse.statusCode,
     });
   }
 
-  // Verificar se os parâmetros foram encontrados
   if (!parametersResponse.isSuccessful) {
     throw new Response(parametersResponse.errorMessage, {
       status: parametersResponse.statusCode,

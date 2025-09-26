@@ -17,6 +17,7 @@ export type SelectOption = {
 export type PageSizeSelectViewProps = {
   value?: string | number
   className?: string
+  onValueChange?: (value: string) => void
 }
 
 const PAGINATION_OPTIONS: SelectOption[] = [
@@ -29,6 +30,7 @@ const PAGINATION_OPTIONS: SelectOption[] = [
 export const PageSizeSelectView = ({
   value,
   className = '',
+  onValueChange,
 }: PageSizeSelectViewProps) => {
   const id = useId()
 
@@ -37,7 +39,7 @@ export const PageSizeSelectView = ({
       <Label htmlFor={id} className='text-xs text-stone-600'>
         Itens por página
       </Label>
-      <Select name='pageSize' defaultValue={value?.toString()}>
+      <Select name='pageSize' value={value?.toString()} onValueChange={onValueChange}>
         <SelectTrigger id={id} className='w-fit'>
           <SelectValue placeholder='Selecione' />
         </SelectTrigger>

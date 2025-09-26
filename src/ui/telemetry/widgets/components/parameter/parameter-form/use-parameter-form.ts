@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { useRevalidator } from 'react-router'
 import { toast } from 'sonner'
 import { useParameterIcon } from './use-parameter-icon'
-import { TelemetryService } from '@/rest/services/telemetry-service'
+import { useRest } from '@/ui/global/hooks/use-rest'
 import type { ParameterDto } from '@/core/dtos/telemetry/parameter-dto'
 
 const parameterSchema = z.object({
@@ -37,6 +37,7 @@ export function useParameterForm({
   onCancel,
 }: UseParameterFormProps) {
   const revalidator = useRevalidator()
+  const { telemetryService } = useRest()
   const isEditMode = !!parameter
 
   const form = useForm<ParameterFormData>({
@@ -57,21 +58,22 @@ export function useParameterForm({
       let response: any
 
       if (isEditMode && parameter?.id) {
-        // response = await TelemetryService.updateParameter(parameter.id, {
-        //   name: data.name,
-        //   unitOfMeasure: data.unit,
-        //   factor: data.factor,
-        //   offset: data.offset,
-        //   isActive: true,
-        // })
+        response = await telemetryService.updateParameter({
+          id: parameter.id,
+          name: data.name,
+          unitOfMeasure: data.unit,
+          factor: data.factor,
+          offset: data.offset,
+          isActive: true,
+        })
       } else {
-        // response = await TelemetryService.createParameter({
-        //   name: data.name,
-        //   unitOfMeasure: data.unit,
-        //   factor: data.factor,
-        //   offset: data.offset,
-        //   isActive: true,
-        // })
+        response = await telemetryService.createParameter({
+          name: data.name,
+          unitOfMeasure: data.unit,
+          factor: data.factor,
+          offset: data.offset,
+          isActive: true,
+        })
       }
 
       if (response.isFailure) {

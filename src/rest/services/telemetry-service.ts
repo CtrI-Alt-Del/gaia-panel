@@ -1,35 +1,59 @@
-import type { TelemetryService as ITelemetryService } from '@/core/telemetry/interfaces/telemetry-service'
 import type { RestClient } from '@/core/global/interfaces'
-import type { RestResponse } from '@/core/global/responses/rest-response'
-import type { PaginationResponse } from '@/core/global/responses'
-import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
-import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
+import type { ParameterDto } from '@/core/telemetry/dtos'
+import type { TelemetryService as ITelemetryService } from '@/core/telemetry/interfaces'
+import type { ParametersListingParams } from '@/core/telemetry/types'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
-    async fetchAlarms(): Promise<RestResponse<PaginationResponse<AlarmDto>>> {
-      return await restClient.get<PaginationResponse<AlarmDto>>('/telemetry/alarms')
+    async fetchAlarms() {
+      return await restClient.get('/telemetry/alarms')
     },
 
-    async fetchParameters(): Promise<RestResponse<ParameterDto[]>> {
-      return await restClient.get<ParameterDto[]>('/telemetry/parameters')
+    async fetchParameters(params: ParametersListingParams) {
+      // Debug: Log dos parâmetros recebidos
+      console.log('[TELEMETRY_SERVICE] Parâmetros recebidos:', params)
+
+      if (params.name) restClient.setQueryParam('name', params.name)
+      if (params.unitOfMeasure)
+        restClient.setQueryParam('unitOfMeasure', params.unitOfMeasure)
+      if (params.isActive !== undefined)
+        restClient.setQueryParam('isActive', params.isActive.toString())
+      if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
+      if (params.previousCursor)
+        restClient.setQueryParam('previousCursor', params.previousCursor)
+      if (params.pageSize)
+        restClient.setQueryParam('pageSize', params.pageSize.toString())
+
+      // Debug: Log da URL final
+      console.log(
+        '[TELEMETRY_SERVICE] Query params configurados:',
+        restClient.getQueryParams(),
+      )
+
+      return await restClient.get('/telemetry/parameters')
     },
 
-    async createParameter(
-      parameter: Omit<ParameterDto, 'id'>,
-    ): Promise<RestResponse<ParameterDto>> {
-      return await restClient.post<ParameterDto>('/telemetry/parameters', parameter)
+    async createParameter(parameterDto: ParameterDto) {
+      return await restClient.post('/telemetry/parameters', parameterDto)
     },
 
-    async updateParameter(parameter: ParameterDto): Promise<RestResponse<ParameterDto>> {
-      return await restClient.patch<ParameterDto>(
-        `/telemetry/parameters/${parameter.id}`,
-        parameter,
+    async updateParameter(parameterDto: ParameterDto) {
+      return await restClient.put(
+        `/telemetry/parameters/${parameterDto.id}`,
+        parameterDto,
       )
     },
 
-    async deleteParameter(id: string): Promise<RestResponse> {
-      return await restClient.delete(`/telemetry/parameters/${id}`)
+    async activateParameter(parameterId: string) {
+      console.log(`[TELEMETRY_SERVICE] Ativando parâmetro ${parameterId}`)
+      return await restClient.patch(`/telemetry/parameters/${parameterId}`, {
+        isActive: true,
+      })
+    },
+
+    async deactivateParameter(parameterId: string) {
+      console.log(`[TELEMETRY_SERVICE] Desativando parâmetro ${parameterId}`)
+      return await restClient.delete(`/telemetry/parameters/${parameterId}`)
     },
   }
 }

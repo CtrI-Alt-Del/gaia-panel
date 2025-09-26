@@ -2,13 +2,13 @@ import { useQueryState } from 'nuqs'
 
 export function useQueryParamString(
   key: string,
-  defeaulString = '',
+  defaultString = '',
 ): [string, (newValue: string) => void] {
   const [string, setString] = useQueryState(key)
 
-  function setState(newstring: string) {
-    setString(newstring)
+  function setState(newString: string) {
+    setString(newString)
   }
 
-  return [string ?? defeaulString, setState]
+  return [string ?? defaultString, setState]
 }

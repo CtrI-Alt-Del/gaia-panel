@@ -1,4 +1,4 @@
-import Axios, { type AxiosInstance } from 'axios'
+import Axios from 'axios'
 import type { RestClient } from '../../core/global/interfaces/rest-client'
 import type { RestResponse } from '../../core/global/responses/rest-response'
 import { buildUrl, createRestResponse, handleError } from './utils'
@@ -106,6 +106,10 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
       Object.keys(queryParams).forEach((key) => {
         delete queryParams[key]
       })
+    },
+
+    getQueryParams(): Record<string, string | string[]> {
+      return { ...queryParams }
     },
   }
 }

@@ -11,12 +11,10 @@ import { Button } from '@/ui/shadcn/components/button'
 import { Search, ChevronLeft } from 'lucide-react'
 import type { StationDto as BaseStationDto } from '@/core/dtos/telemetry/station-dto'
 import type { ParameterDto as BaseParameterDto } from '@/core/dtos/telemetry/parameter-dto'
+import { useParameterSelector } from './useParameterSelector'
 
-// --- Tipos e Dados Mockados ---
-
-// Recriando os tipos aqui para o arquivo ser autossuficiente
-type ParameterDto = BaseParameterDto;
-export type StationDto = BaseStationDto;
+export type ParameterDto = BaseParameterDto
+export type StationDto = BaseStationDto
 
 // Função para gerar dados mockados consistentes
 const generateMockData = (): StationDto[] => {
@@ -44,8 +42,7 @@ const generateMockData = (): StationDto[] => {
 }
 
 const MOCK_STATIONS = generateMockData()
-
-// --- Fim dos Dados Mockados ---
+const ITEMS_PER_PAGE = 8
 
 type ParameterSelectorSheetProps = {
   open: boolean
@@ -53,64 +50,33 @@ type ParameterSelectorSheetProps = {
   onSelect: (station: StationDto, parameter: ParameterDto) => void
 }
 
-const ITEMS_PER_PAGE = 8
-
-export const ParameterSelectorSheet = ({
+export function ParameterSelectorSheet({
   open,
   onOpenChange,
   onSelect,
-}: ParameterSelectorSheetProps) => {
-  const [view, setView] = useState<'stations' | 'parameters'>('stations')
-  const [selectedStation, setSelectedStation] = useState<StationDto | null>(null)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-
-  // Memoiza a filtragem para evitar recálculos desnecessários
-  const filteredStations = useMemo(
-    () =>
-      MOCK_STATIONS.filter((station) =>
-        station.name.toLowerCase().includes(searchTerm.toLowerCase()),
-      ),
-    [searchTerm],
-  )
-
-  // Lógica de Paginação
-  const totalPages = Math.ceil(filteredStations.length / ITEMS_PER_PAGE)
-  const paginatedStations = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-    return filteredStations.slice(startIndex, startIndex + ITEMS_PER_PAGE)
-  }, [filteredStations, currentPage])
-
-  const handleSelectStation = (station: StationDto) => {
-    setSelectedStation(station)
-    setView('parameters')
-  }
-
-  const handleBackToStations = () => {
-    setSelectedStation(null)
-    setView('stations')
-  }
-
-  const handleSelectParameter = (parameter: ParameterDto) => {
-    if (selectedStation) {
-      onSelect(selectedStation, parameter)
-      handleClose()
-    }
-  }
-
-  // Reseta o estado ao fechar o Sheet
-  const handleClose = () => {
-    onOpenChange(false)
-    setTimeout(() => {
-      setView('stations')
-      setSelectedStation(null)
-      setSearchTerm('')
-      setCurrentPage(1)
-    }, 300) // Aguarda a animação
-  }
+}: ParameterSelectorSheetProps) {
+  const {
+    view,
+    selectedStation,
+    searchTerm,
+    currentPage,
+    totalPages,
+    paginatedStations,
+    setSearchTerm,
+    setCurrentPage,
+    handleSelectStation,
+    handleBackToStations,
+    handleSelectParameter,
+    handleCloseAndReset,
+  } = useParameterSelector({
+    stations: MOCK_STATIONS,
+    itemsPerPage: ITEMS_PER_PAGE,
+    onOpenChange,
+    onSelect,
+  })
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+    <Sheet open={open} onOpenChange={handleCloseAndReset}>
       <SheetContent className='w-full sm:max-w-2xl flex flex-col'>
         {/* Visualização de Estações */}
         {view === 'stations' && (
@@ -129,13 +95,12 @@ export const ParameterSelectorSheet = ({
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value)
-                    setCurrentPage(1) // Reseta para a primeira página ao buscar
+                    setCurrentPage(1) 
                   }}
                   className='pl-10'
                 />
               </div>
             </div>
-            {/* Tabela de Estações (Adapte para seus componentes shadcn/ui) */}
             <div className='flex-grow overflow-auto'>
               <table className='w-full text-sm text-left'>
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50'>

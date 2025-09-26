@@ -1,3 +1,3 @@
-import { ParameterFormView } from "./parameter-form-view";
+import { ParameterFormView } from './parameter-form-view'
 
-export const ParameterForm = ParameterFormView;
+export const ParameterForm = ParameterFormView

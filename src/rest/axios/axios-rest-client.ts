@@ -106,5 +106,9 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
         delete queryParams[key]
       })
     },
+
+    getQueryParams(): Record<string, string | string[]> {
+      return { ...queryParams }
+    },
   }
 }

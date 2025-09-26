@@ -41,8 +41,8 @@ export const StatusSelectView = ({
         Status
       </Label>
       <Select
-        name='status'
-        defaultValue={value}
+        name='isActive'
+        value={value}
         onValueChange={onValueChange}
         disabled={disabled}
       >

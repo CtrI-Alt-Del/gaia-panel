@@ -6,7 +6,9 @@ export type PageSizeSelectProps = {
 }
 
 export const PageSizeSelect = ({ className }: PageSizeSelectProps) => {
-  const [value] = useQueryParamString('pageSize', '10')
+  const [value, setValue] = useQueryParamString('pageSize', '10')
 
-  return <PageSizeSelectView value={value} className={className} />
+  return (
+    <PageSizeSelectView value={value} className={className} onValueChange={setValue} />
+  )
 }

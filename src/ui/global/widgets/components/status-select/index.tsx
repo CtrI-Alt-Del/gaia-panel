@@ -6,7 +6,13 @@ export type StatusSelectProps = {
 }
 
 export const StatusSelect = ({ className }: StatusSelectProps) => {
-  const [queryValue] = useQueryParamString('status', 'all')
+  const [queryValue, setQueryValue] = useQueryParamString('isActive', 'all')
 
-  return <StatusSelectView value={queryValue} className={className} />
+  return (
+    <StatusSelectView
+      value={queryValue}
+      className={className}
+      onValueChange={setQueryValue}
+    />
+  )
 }

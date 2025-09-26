@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router'
 import { useCallback } from 'react'
+import type { RouterProvider } from '@/core/global/interfaces/router-provider'
 
-export function useRouter() {
+export function useRouter(): RouterProvider {
   const navigate = useNavigate()
 
   const goTo = useCallback(
@@ -15,13 +16,8 @@ export function useRouter() {
     navigate(-1)
   }, [navigate])
 
-  const refresh = useCallback(() => {
-    window.location.reload()
-  }, [])
-
   return {
     goTo,
     goBack,
-    refresh,
   }
 }

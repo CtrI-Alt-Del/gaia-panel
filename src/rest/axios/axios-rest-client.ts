@@ -31,7 +31,6 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
       body?: unknown,
     ): Promise<RestResponse<ResponseBody>> {
       try {
-        console.log(buildUrl(currentBaseUrl, url, queryParams))
         const response = await axios.post<ResponseBody>(
           buildUrl(currentBaseUrl, url, queryParams),
           body,

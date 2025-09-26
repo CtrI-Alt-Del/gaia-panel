@@ -74,8 +74,7 @@ export function useParameterForm({
         await uiProvider.reload()
         onSuccess?.()
       }
-    } catch (error) {
-      console.error('Erro ao salvar parâmetro:', error)
+    } catch {
       toastProvider.showError('Erro ao salvar parâmetro')
     }
   }

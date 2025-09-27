@@ -4,6 +4,7 @@ import { ROUTES } from '../core/global/constants/routes'
 export default [
   route(ROUTES.auth.signUp, 'routes/auth/sign-up-route.tsx'),
   route(ROUTES.auth.signIn, 'routes/auth/sign-in-route.tsx'),
+  route(ROUTES.auth.changePassword, 'routes/auth/change-password-route.tsx'),
   layout('layouts/app-layout.tsx', [
     route(ROUTES.dashboard, 'routes/telemetry/dashboard-route.tsx'),
     route(ROUTES.stations, 'routes/telemetry/stations-route.tsx'),

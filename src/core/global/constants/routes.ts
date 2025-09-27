@@ -2,6 +2,7 @@ export const ROUTES = {
   auth: {
     signUp: '/auth/sign-up',
     signIn: '/auth/sign-in',
+    changePassword: '/auth/change-password',
   },
   dashboard: '/dashboard',
   stations: '/stations',

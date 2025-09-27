@@ -14,5 +14,6 @@ export default [
     route(ROUTES.parameters, 'routes/telemetry/parameters-route.tsx'),
     route(ROUTES.alarms, 'routes/alerting/alarms-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
+    route(ROUTES.stationParameters,'routes/telemetry/station-parameters-tab-route.tsx')
   ]),
 ] satisfies RouteConfig

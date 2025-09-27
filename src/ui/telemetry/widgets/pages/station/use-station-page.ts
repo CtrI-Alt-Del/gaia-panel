@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router'
 import type { StationDto } from '@/core/dtos/telemetry/station-dto'
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
 import type { StationFormData } from '../../../../telemetry/widgets/components/station/station-form/use-station-form'
+import { useRouter } from '@/ui/global/hooks/use-router'
 
 // Mock de parâmetros disponíveis
 const mockParameters = [
@@ -108,6 +109,7 @@ export function useStation() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { goTo } = useRouter()
 
   const parameterId = searchParams.get('parameterId') ?? 'todos'
   const limit = Number(searchParams.get('limit') ?? 15)
@@ -228,5 +230,6 @@ export function useStation() {
     onCloseModal: handleCloseModal,
     handleStationSubmit,
     availableParameters: mockParameters,
+    navigate: goTo,
   }
 }

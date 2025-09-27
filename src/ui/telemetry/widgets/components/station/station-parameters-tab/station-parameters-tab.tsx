@@ -10,6 +10,7 @@ import {
 } from '@/ui/shadcn/components/table'
 import { getParameterIcon, getBadgeColor } from '../../../utils/parameter-utils'
 import type { ParameterDto } from '@/core/telemetry/dtos'
+import { SquareArrowOutUpRight } from 'lucide-react'
 
 interface ParametersTabProps {
   parameters: ParameterDto[]
@@ -96,9 +97,15 @@ export function StationParametersTabView({
                             >
                               <IconComponent className={`size-5 ${iconColor}`} />
                             </span>
-                            <div className='leading-tight'>
-                              <div className='font-medium'>{parameter.name}</div>
-                            </div>
+                            <a
+                              href={`/parameters?id=${parameter.id}`}
+                              className='hover:underline flex flex-1 items-center gap-2'
+                            >
+                              <div className='leading-tight'>
+                                <div className='font-medium'>{parameter.name}</div>
+                              </div>
+                              <SquareArrowOutUpRight size={16}/>
+                            </a>
                           </div>
                         </TableCell>
                         <TableCell>

@@ -1,4 +1,4 @@
-import Axios, { type AxiosInstance } from 'axios'
+import Axios from 'axios'
 import type { RestClient } from '../../core/global/interfaces/rest-client'
 import type { RestResponse } from '../../core/global/responses/rest-response'
 import { buildUrl, createRestResponse, handleError } from './utils'
@@ -31,7 +31,6 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
       body?: unknown,
     ): Promise<RestResponse<ResponseBody>> {
       try {
-        console.log(buildUrl(currentBaseUrl, url, queryParams))
         const response = await axios.post<ResponseBody>(
           buildUrl(currentBaseUrl, url, queryParams),
           body,

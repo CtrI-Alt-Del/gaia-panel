@@ -16,6 +16,10 @@ export const MembershipService = (restClient: RestClient): IMembershipService =>
       return await restClient.get('/membership/users')
     },
 
+    async fetchUser(userId: string) {
+      return await restClient.get(`/membership/users/${userId}`)
+    },
+
     async createUser(userDto: UserDto) {
       return await restClient.post('/membership/users', userDto)
     },

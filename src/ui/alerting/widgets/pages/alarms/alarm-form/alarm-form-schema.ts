@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
 export const alarmFormSchema = z.object({
+  stationId: z.string().min(1, 'É obrigatório selecionar uma estação'),
+  parameterId: z.string().min(1, 'É obrigatório selecionar um parâmetro'),
   message: z
     .string()
     .min(1, 'Mensagem é obrigatória')

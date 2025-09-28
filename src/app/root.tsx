@@ -58,6 +58,7 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 const App = ({ loaderData }: Route.ComponentProps) => {
+  console.log('ENV.gaiaServerUrl', ENV.gaiaServerUrl)
   return (
     <ClerkProvider loaderData={loaderData} localization={ptBR}>
       <Outlet />

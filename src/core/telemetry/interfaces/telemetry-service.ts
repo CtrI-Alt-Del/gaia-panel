@@ -1,8 +1,9 @@
-import type {RestResponse } from '@/core/global/responses'
+import type {PaginationResponse, RestResponse } from '@/core/global/responses'
 import type { ParameterDto } from '../dtos/parameter-dto'
 import type { StationDto } from '../dtos/station-dto'
 import type { StationsListingParams } from '../types'
 import type { ParametersListingParams } from '../types/parameters-listing-params'
+import type { AlarmDto } from '@/core/alerting/dtos'
 
 export interface TelemetryService {
   fetchAlarms(): Promise<RestResponse<PaginationResponse<AlarmDto>>>

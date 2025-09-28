@@ -1,21 +1,18 @@
 import type { Route } from './+types/station-route'
-
-import { restContext } from '@/app/contexts/rest-context'
-import { StationPage } from '@/ui/telemetry/widgets/pages/station'
+import { StationParametersSlot } from '@/ui/telemetry/widgets/slots/station-parameters'
 import { RestMiddleware } from '@/app/middlewares/rest-middleware'
+import { restContext } from '@/app/contexts/rest-context'
 
 export const middleware = [RestMiddleware]
 
 export const loader = async ({ params, context }: Route.ActionArgs) => {
   const { stationId } = params
   const { telemetryService } = context.get(restContext)
-
-  const response = await telemetryService.fetchStation(stationId)
-  if (response.isFailure) response.throwError()
-
+  const response = await telemetryService.fetchParametersByStationId(stationId)
   return {
-    station: response.body,
+    parameters: response.body,
+    stationId: stationId,
   }
 }
 
-export default StationPage
+export default StationParametersSlot

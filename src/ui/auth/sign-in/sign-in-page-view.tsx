@@ -105,15 +105,14 @@ export const SignInPageView = ({
                   />
 
                   <div className='flex justify-between items-center'>
-                    <Button
+                    <button
                       type='button'
-                      variant='link'
                       onClick={onForgotPassword}
+                      className='p-0 h-auto text-sm text-purple-600 hover:text-purple-700 bg-transparent border-none cursor-pointer'
                       disabled={isLoading}
-                      className='p-0 h-auto text-sm text-purple-600 hover:text-purple-700'
                     >
                       Esqueceu a senha?
-                    </Button>
+                    </button>
                   </div>
 
                   {error && (

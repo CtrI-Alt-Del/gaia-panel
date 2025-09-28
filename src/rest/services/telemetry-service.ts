@@ -31,5 +31,10 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
     async deleteParameter(id: string): Promise<RestResponse> {
       return await restClient.delete(`/telemetry/parameters/${id}`)
     },
+    async fetchParametersByStationId(stationId): Promise<RestResponse<ParameterDto[]>> {
+      return await restClient.get<ParameterDto[]>(
+        `/telemetry/stations/parameters/${stationId}`,
+      )
+    },
   }
 }

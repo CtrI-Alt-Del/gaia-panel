@@ -1,7 +1,6 @@
 import { ENV } from '@/core/global/constants'
 import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
-import { MembershipService, TelemetryService } from '@/rest/services'
-import { AlertingService } from '@/rest/services/alerting-service'
+import { MembershipService, TelemetryService, AlertingService } from '@/rest/services'
 
 export function useRest() {
   const restClient = AxiosRestClient()

@@ -14,6 +14,7 @@ import { ptBR } from '@clerk/localizations'
 import type { Route } from './+types/root'
 import '@/ui/global/styles/global.css'
 import { Toaster } from '@/ui/shadcn/components/sonner'
+import { PageBackground } from '@/ui/global/widgets/components/page-background'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -38,7 +39,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <NuqsAdapter>{children}</NuqsAdapter>
+        <NuqsAdapter>
+          <PageBackground>{children}</PageBackground>
+        </NuqsAdapter>
         <ScrollRestoration />
         <Scripts />
         <Toaster />
@@ -48,7 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export async function loader(args: Route.LoaderArgs) {
-  return rootAuthLoader(args, {})
+  return rootAuthLoader(args)
 }
 
 const App = ({ loaderData }: Route.ComponentProps) => {

@@ -1,9 +1,11 @@
 import z from 'zod'
 
 const envSchema = z.object({
-  serverAppUrl: z.url(),
+  gaiaServerUrl: z.url(),
 })
 
 export const ENV = envSchema.parse({
-  serverAppUrl: import.meta.env.VITE_SERVER_APP_URL || 'http://localhost:3000',
+  gaiaServerUrl: import.meta.env.VITE_SERVER_APP_URL || 'http://localhost:3333',
 })
+
+console.log(ENV)

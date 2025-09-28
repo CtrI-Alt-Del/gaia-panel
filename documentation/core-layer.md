@@ -48,11 +48,11 @@ O módulo global contém elementos compartilhados por toda a aplicação.
 ```typescript
 // Validação e tipagem de variáveis de ambiente
 const envSchema = z.object({
-  serverAppUrl: z.url(),
+  gaiaServerUrl: z.url(),
 })
 
 export const ENV = envSchema.parse({
-  serverAppUrl: process.env.SERVER_APP_URL,
+  gaiaServerUrl: process.env.SERVER_APP_URL,
 })
 ```
 

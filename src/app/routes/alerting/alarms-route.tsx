@@ -8,6 +8,7 @@ import { RestMiddleware } from '@/app/middlewares/rest-middleware'
 import { restContext } from '@/app/contexts/rest-context'
 import { AlarmsPage } from '@/ui/alerting/widgets/pages/alarms'
 import type { Route } from '../membership/+types/users-route'
+import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
 
 export const searchParams = {
   level: parseAsString,
@@ -19,7 +20,7 @@ export const searchParams = {
 
 export const loadSearchParams = createLoader(searchParams)
 
-export const middleware = [RestMiddleware]
+export const middleware = [AuthMiddleware, RestMiddleware]
 
 export const loader = async ({ context }: Route.LoaderArgs) => {
   const { telemetryService } = context.get(restContext)

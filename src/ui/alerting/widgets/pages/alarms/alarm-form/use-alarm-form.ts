@@ -41,6 +41,9 @@ export function useAlarmForm({ onSuccess, onCancel }: UseAlarmFormProps = {}) {
       const alarmDto = buildAlarmDto(data)
       console.log('Criando alarme:', alarmDto)
 
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      console.log(data);
+      
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       form.reset()

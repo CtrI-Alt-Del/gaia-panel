@@ -7,7 +7,7 @@ import type { AlarmRuleOperation } from '../../types/alarm-rule-operation'
 export class AlarmsFaker {
   static fakeDto(baseDto?: Partial<AlarmDto>): AlarmDto {
     const alarmLevels: AlarmLevel[] = ['warning', 'critical']
-    const alarmOperations: AlarmRuleOperation[] = ['>', '<', '>=', '<=', '==']
+    const alarmOperations: AlarmRuleOperation[] = ['GREATER_THAN', 'LESS_THAN', 'GREATER_THAN_OR_EQUAL', 'LESS_THAN_OR_EQUAL', 'EQUAL']
 
     return {
       id: faker.string.uuid(),

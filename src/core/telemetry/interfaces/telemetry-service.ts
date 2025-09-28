@@ -1,5 +1,4 @@
-import type { PaginationResponse, RestResponse } from '@/core/global/responses'
-import type { AlarmDto } from '../../alerting/dtos/alarm-dto'
+import type {RestResponse } from '@/core/global/responses'
 import type { ParameterDto } from '../dtos/parameter-dto'
 import type { StationDto } from '../dtos/station-dto'
 import type { StationsListingParams } from '../types'

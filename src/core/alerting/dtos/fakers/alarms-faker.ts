@@ -31,7 +31,7 @@ export class AlarmsFaker {
         },
       },
       rule: {
-        threshold: BigInt(faker.number.int({ min: 1, max: 1000 })),
+        threshold: Number(faker.number.int({ min: 1, max: 1000 })),
         operation: faker.helpers.arrayElement(alarmOperations),
       },
       level: faker.helpers.arrayElement(alarmLevels),

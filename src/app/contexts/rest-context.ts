@@ -1,3 +1,4 @@
+import type { AlertingService } from '@/core/alerting/interfaces/alerting-service'
 import type { MembershipService } from '@/core/membership/interfaces'
 import type { TelemetryService } from '@/core/telemetry/interfaces/telemetry-service'
 import { createContext } from 'react-router'
@@ -5,6 +6,7 @@ import { createContext } from 'react-router'
 type RestContext = {
   membershipService: MembershipService
   telemetryService: TelemetryService
+  alerginService: AlertingService
 }
 
 export const restContext = createContext<RestContext>()

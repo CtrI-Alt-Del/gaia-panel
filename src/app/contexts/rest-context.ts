@@ -6,7 +6,7 @@ import { createContext } from 'react-router'
 type RestContext = {
   membershipService: MembershipService
   telemetryService: TelemetryService
-  alerginService: AlertingService
+  alertingService: AlertingService
 }
 
 export const restContext = createContext<RestContext>()

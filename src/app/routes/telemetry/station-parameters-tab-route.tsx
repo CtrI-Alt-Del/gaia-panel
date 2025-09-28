@@ -7,7 +7,7 @@ import { useLoaderData } from 'react-router'
 
 export const loader = async ({ params }: Route.ActionArgs) => {
   const restClient = AxiosRestClient()
-  restClient.setBaseUrl(ENV.serverAppUrl)
+  restClient.setBaseUrl(ENV.gaiaServerUrl)
   const service = TelemetryService(restClient)
   const response = await service.fetchParametersByStationId(params.id)
   console.log('response', response)

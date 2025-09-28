@@ -5,14 +5,12 @@ import type { loader } from '@/app/routes/membership/users-route'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 
 export const UsersPage = () => {
-  const { users, user, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+  const { users, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
     useLoaderData<typeof loader>()
   const { selectedUser, handleEdit } = useUsersPage({
     users,
   })
   const { isLoading } = useUiProvider()
-
-  console.log('UsersPage', { user })
 
   return (
     <UsersPageView

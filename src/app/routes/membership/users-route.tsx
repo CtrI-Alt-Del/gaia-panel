@@ -1,5 +1,5 @@
-import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
-import type { Route } from './+types/users-route'
+import { createLoader, parseAsString, parseAsInteger } from "nuqs/server";
+import type { Route } from "./+types/users-route";
 
 import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
 import { MembershipService } from '@/rest/services/membership-service'
@@ -20,9 +20,9 @@ export const searchParams = {
   nextCursor: parseAsString,
   previousCursor: parseAsString,
   pageSize: parseAsInteger.withDefault(10),
-}
+};
 
-export const loadSearchParams = createLoader(searchParams)
+export const loadSearchParams = createLoader(searchParams);
 
 export const middleware = [AuthMiddleware, RestMiddleware, MembershipMiddleware]
 
@@ -57,7 +57,7 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
     pageSize: response.body.pageSize,
     hasNextPage: response.body.hasNextPage,
     hasPreviousPage: response.body.hasPreviousPage,
-  }
-}
+  };
+};
 
-export default UsersPage
+export default UsersPage;

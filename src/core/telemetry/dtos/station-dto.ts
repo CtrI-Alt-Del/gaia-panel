@@ -1,9 +1,13 @@
 export type StationDto = {
-  id: string
+  id?: string
   name: string
+  uid: string
   latitude: number
   longitude: number
-  elevation: number
-  createdAt: Date
-  updatedAt: Date
+  quantityOfParameters?: number
+  address: string
+  lastReadAt?: Date
+  isActive?: boolean
+  createdAt?: Date
+  updatedAt?: Date
 }

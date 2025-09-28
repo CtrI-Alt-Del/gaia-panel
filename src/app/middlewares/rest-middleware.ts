@@ -11,6 +11,7 @@ export const RestMiddleware = async ({ context }: Route.LoaderArgs) => {
   const { accessToken } = context.get(authContext)
 
   const restClient = AxiosRestClient()
+
   restClient.setBaseUrl(ENV.gaiaServerUrl)
   if (accessToken) restClient.setAuthorization(accessToken)
 

@@ -10,6 +10,8 @@ import { rootAuthLoader } from '@clerk/react-router/ssr.server'
 import { ClerkProvider } from '@clerk/react-router'
 import { NuqsAdapter } from 'nuqs/adapters/react'
 import { ptBR } from '@clerk/localizations'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from 'react'
 
 import type { Route } from './+types/root'
 import '@/ui/global/styles/global.css'
@@ -56,10 +58,21 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 const App = ({ loaderData }: Route.ComponentProps) => {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 5,
+        retry: 1,
+      },
+    },
+  }))
+
   return (
-    <ClerkProvider loaderData={loaderData} localization={ptBR}>
-      <Outlet />
-    </ClerkProvider>
+    <QueryClientProvider client={queryClient}>
+      <ClerkProvider loaderData={loaderData} localization={ptBR}>
+        <Outlet />
+      </ClerkProvider>
+    </QueryClientProvider>
   )
 }
 

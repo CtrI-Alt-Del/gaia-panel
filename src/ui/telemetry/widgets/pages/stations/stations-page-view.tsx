@@ -22,7 +22,6 @@ export type StationsPageViewProps = {
   hasPreviousPage?: boolean;
   isLoading?: boolean;
   selectedStation?: StationDto;
-  availableParameters: ParameterDto[] | undefined;
   onEdit?: (id: string) => void;
   onCloseModal?: () => void;
   onStationUpdated?: (station: StationDto) => void;
@@ -39,7 +38,6 @@ export const StationsPageView = ({
   hasPreviousPage,
   isLoading,
   selectedStation,
-  availableParameters,
   onEdit,
   onCloseModal,
   telemetryService,
@@ -73,7 +71,7 @@ export const StationsPageView = ({
             onClose={onCloseModal || (() => { })}
             title="Nova Estação"
             description="Preencha os dados para criar uma nova estação"
-            size="md"
+            size="2xl"
             trigger={
               <Button className="flex items-center gap-2 h-9">
                 <Plus className="w-4 h-4" />
@@ -85,7 +83,6 @@ export const StationsPageView = ({
               <StationForm
                 onSuccess={closeDialog}
                 onCancel={closeDialog}
-                availableParameters={availableParameters}
                 telemetryService={telemetryService}
                 uiProvider={uiProvider}
                 toastProvider={toastProvider}
@@ -102,7 +99,6 @@ export const StationsPageView = ({
           hasPreviousPage={hasPreviousPage}
           isLoading={isLoading}
           selectedStation={selectedStation}
-          availableParameters={availableParameters}
           onEdit={onEdit}
           onCloseModal={onCloseModal}
           telemetryService={telemetryService}

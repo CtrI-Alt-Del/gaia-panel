@@ -1,9 +1,10 @@
-import { type RouteConfig, index, route, layout } from '@react-router/dev/routes'
+import { type RouteConfig, route, layout } from '@react-router/dev/routes'
 import { ROUTES } from '../core/global/constants/routes'
 
 export default [
-  index('routes/auth/login-route.tsx'),
   route(ROUTES.auth.signUp, 'routes/auth/sign-up-route.tsx'),
+  route(ROUTES.auth.signIn, 'routes/auth/sign-in-route.tsx'),
+  route(ROUTES.auth.changePassword, 'routes/auth/change-password-route.tsx'),
   layout('layouts/app-layout.tsx', [
     route(ROUTES.dashboard, 'routes/telemetry/dashboard-route.tsx'),
     route(ROUTES.stations, 'routes/telemetry/stations-route.tsx'),
@@ -14,5 +15,6 @@ export default [
     route(ROUTES.parameters, 'routes/telemetry/parameters-route.tsx'),
     route(ROUTES.alarms, 'routes/alerting/alarms-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
+    route(ROUTES.stationParameters,'routes/telemetry/station-parameters-tab-route.tsx')
   ]),
 ] satisfies RouteConfig

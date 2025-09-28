@@ -16,7 +16,6 @@ export type StatusOption = {
 
 export type StatusSelectViewProps = {
   value?: string
-  disabled?: boolean
   className?: string
   onValueChange?: (value: string) => void
 }
@@ -29,7 +28,6 @@ const STATUS_OPTIONS: StatusOption[] = [
 
 export const StatusSelectView = ({
   value,
-  disabled = false,
   className = '',
   onValueChange,
 }: StatusSelectViewProps) => {
@@ -40,12 +38,7 @@ export const StatusSelectView = ({
       <Label htmlFor={id} className='text-xs text-stone-600'>
         Status
       </Label>
-      <Select
-        name='status'
-        defaultValue={value}
-        onValueChange={onValueChange}
-        disabled={disabled}
-      >
+      <Select name='status' defaultValue={value} onValueChange={onValueChange}>
         <SelectTrigger className='w-fit'>
           <SelectValue placeholder='Selecione' />
         </SelectTrigger>

@@ -2,19 +2,18 @@ import { Button } from "@/ui/shadcn/components/button";
 import { Input } from "@/ui/shadcn/components/input";
 import { Label } from "@/ui/shadcn/components/label";
 import { LocationPickerView } from "@/ui/global/widgets/components/location-picker";
-import { ParameterSelectorView } from "@/ui/global/widgets/components/parameter-selector";
+import { ParametersSelector } from "@/ui/global/widgets/components/parameters-selector";
 import type { StationDto } from "@/core/telemetry/dtos/station-dto";
-import type { ParameterDto } from "@/core/telemetry/dtos/parameter-dto";
 import type { TelemetryService } from "@/core/telemetry/interfaces/telemetry-service";
 import type { UiProvider } from "@/core/global/interfaces/ui-provider";
 import type { ToastProvider } from "@/core/global/interfaces/toast-provider";
 import { useStationForm } from "./use-station-form";
+import { Controller } from "react-hook-form";
 
 type Props = {
   onSuccess: () => void;
   onCancel: () => void;
   stationDto?: StationDto;
-  availableParameters: ParameterDto[] | undefined;
   telemetryService: TelemetryService;
   uiProvider: UiProvider;
   toastProvider: ToastProvider;
@@ -24,7 +23,6 @@ export const StationFormView = ({
   onSuccess,
   onCancel,
   stationDto,
-  availableParameters,
   telemetryService,
   uiProvider,
   toastProvider,
@@ -74,9 +72,8 @@ export const StationFormView = ({
           )}
         </div>
 
-        {/* Localização */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Localização</h3>
+        <div className="space-y-4 mt-10">
+          <h3 className="text-lg font-medium text-start">Localização da Estação</h3>
           <LocationPickerView
             latitude={form.watch("latitude")}
             longitude={form.watch("longitude")}
@@ -104,15 +101,20 @@ export const StationFormView = ({
           )}
         </div>
 
-        {/* Parâmetros */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Parâmetros</h3>
-          <ParameterSelectorView
-            availableParameters={availableParameters}
-            selectedParameterIds={form.watch("parameterIds") || []}
-            onSelectionChange={(parameterIds) => {
-              form.setValue("parameterIds", parameterIds, { shouldValidate: true });
-            }}
+        <div className="space-y-4 mt-10">
+          <h3 className="text-lg text-start font-medium">Parâmetros da Estação</h3>
+            <Controller 
+            name="parameterIds"
+            control={form.control}
+            render={({ field }) => (
+              <ParametersSelector
+                defaultParametersIds={field.value || []}
+                selectedParameterIds={field.value || []}
+                onSelectionChange={(parameterIds) => {
+                  form.setValue("parameterIds", parameterIds, { shouldValidate: true });
+                }}
+              />  
+            )}
           />
           {form.formState.errors.parameterIds && (
             <p className="text-sm text-red-500">

@@ -13,7 +13,7 @@ export const loader = async ({ params }: Route.ActionArgs) => {
   }
 
   const restClient = AxiosRestClient();
-  restClient.setBaseUrl(ENV.serverAppUrl);
+  restClient.setBaseUrl(ENV.gaiaServerUrl);
   const service = TelemetryService(restClient);
 
   const [stationResponse, parametersResponse] = await Promise.all([

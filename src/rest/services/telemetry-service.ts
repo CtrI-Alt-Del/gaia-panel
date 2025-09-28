@@ -4,7 +4,7 @@ import type { RestResponse } from '@/core/global/responses/rest-response'
 import type { PaginationResponse } from '@/core/global/responses'
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
-import type { StationsListingParams } from '@/core/telemetry/types'
+import type { ParametersListingParams, StationsListingParams } from '@/core/telemetry/types'
 import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
@@ -13,8 +13,15 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<PaginationResponse<AlarmDto>>('/telemetry/alarms')
     },
 
-    async fetchParameters(): Promise<RestResponse<ParameterDto[]>> {
-      return await restClient.get<ParameterDto[]>('/telemetry/parameters')
+    async fetchParameters(params: ParametersListingParams): Promise<RestResponse<PaginationResponse<ParameterDto>>> {
+      if (params.name) restClient.setQueryParam('name', params.name)
+        if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
+        if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
+        if (params.previousCursor)
+          restClient.setQueryParam('previousCursor', params.previousCursor)
+        if (params.pageSize)
+          restClient.setQueryParam('pageSize', params.pageSize.toString())
+      return await restClient.get<PaginationResponse<ParameterDto>>('/telemetry/parameters')
     },
 
     async createParameter(
@@ -34,14 +41,11 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.delete(`/telemetry/parameters/${id}`)
     },
 
-    // Stations
     async fetchStations(
       params: StationsListingParams,
     ): Promise<RestResponse<PaginationResponse<StationDto>>> {
       if (params.name) restClient.setQueryParam('name', params.name)
-      if (params.isActive !== undefined)
-        restClient.setQueryParam('isActive', params.isActive.toString())
-      if (params.status) restClient.setQueryParam('status', params.status)
+      if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
       if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
       if (params.previousCursor)
         restClient.setQueryParam('previousCursor', params.previousCursor)
@@ -51,18 +55,24 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<PaginationResponse<StationDto>>('/telemetry/stations')
     },
 
-    async createStation(station: StationDto): Promise<RestResponse<StationDto>> {
-      return await restClient.post<StationDto>('/telemetry/stations', station)
+    async createStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>> {
+      return await restClient.post<StationDto>('/telemetry/stations', {
+        station, 
+        parameterIds,
+      })
     },
 
     async fetchStation(stationId: string): Promise<RestResponse<StationDto>> {
       return await restClient.get<StationDto>(`/telemetry/stations/${stationId}`)
     },
 
-    async updateStation(station: StationDto): Promise<RestResponse<StationDto>> {
+    async updateStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>> {
       return await restClient.put<StationDto>(
         `/telemetry/stations/${station.id}`,
-        station,
+        {
+          station,
+          parameterIds,
+        },
       )
     },
 
@@ -77,6 +87,11 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
     async fetchStationParameters(
       stationId: string,
     ): Promise<RestResponse<ParameterDto[]>> {
+      return await restClient.get<ParameterDto[]>(
+        `/telemetry/stations/parameters/${stationId}`,
+      )
+    },
+    async fetchParametersByStationId(stationId): Promise<RestResponse<ParameterDto[]>> {
       return await restClient.get<ParameterDto[]>(
         `/telemetry/stations/parameters/${stationId}`,
       )

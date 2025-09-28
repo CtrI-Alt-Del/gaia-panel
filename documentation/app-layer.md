@@ -58,7 +58,7 @@ Middlewares são executados antes das rotas e fornecem funcionalidades transvers
 ```typescript
 export const RestMiddleware = async ({ context }: Route.LoaderArgs) => {
   const restClient = AxiosRestClient()
-  restClient.setBaseUrl(ENV.serverAppUrl)
+  restClient.setBaseUrl(ENV.gaiaServerUrl)
   
   const membershipService = MembershipService(restClient)
   

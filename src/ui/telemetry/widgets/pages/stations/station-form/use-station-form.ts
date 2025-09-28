@@ -1,20 +1,27 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { stationSchema } from "@/validation/telemetry";
-import type { StationDto } from "@/core/telemetry/dtos/station-dto";
-import type { TelemetryService } from "@/core/telemetry/interfaces/telemetry-service";
-import type { UiProvider } from "@/core/global/interfaces/ui-provider";
-import type { ToastProvider } from "@/core/global/interfaces/toast-provider";
-import type { RestResponse } from "@/core/global/responses/rest-response";
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import z from 'zod'
+
+import { stationSchema } from '@/validation/telemetry'
+import type { StationDto } from '@/core/telemetry/dtos/station-dto'
+import type { TelemetryService } from '@/core/telemetry/interfaces/telemetry-service'
+import type { UiProvider } from '@/core/global/interfaces/ui-provider'
+import type { ToastProvider } from '@/core/global/interfaces/toast-provider'
+import type { RestResponse } from '@/core/global/responses/rest-response'
 
 type Props = {
-  stationDto?: StationDto;
-  telemetryService: TelemetryService;
-  uiProvider: UiProvider;
-  toastProvider: ToastProvider;
-  onSuccess?: () => void;
-  onCancel: () => void;
-};
+  stationDto?: StationDto
+  telemetryService: TelemetryService
+  uiProvider: UiProvider
+  toastProvider: ToastProvider
+  onSuccess?: () => void
+  onCancel: () => void
+}
+
+const formSchema = stationSchema.extend({
+  parameterIds: z.array(z.string()),
+})
 
 export function useStationForm({
   onSuccess,
@@ -25,87 +32,91 @@ export function useStationForm({
   toastProvider,
 }: Props) {
   const form = useForm({
-    resolver: zodResolver(stationSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      name: stationDto?.name || "",
-      uid: stationDto?.uid || "",
+      name: stationDto?.name || '',
+      uid: stationDto?.uid || '',
       latitude: stationDto?.latitude || 0,
       longitude: stationDto?.longitude || 0,
-      address: stationDto?.address || "",
-      parameterIds: stationDto?.parameterIds || [],
+      address: stationDto?.address || '',
     },
-    mode: "onChange",
-  });
+    mode: 'onChange',
+  })
 
-  const { formState } = form;
-  const isValid = formState.isValid;
+  const { formState } = form
+  const isValid = formState.isValid
 
   function handleCancel() {
-    onCancel();
+    onCancel()
   }
 
   async function handleSubmit(data: {
-    name: string;
-    uid: string;
-    latitude: number;
-    longitude: number;
-    address: string;
-    parameterIds: string[];
+    name: string
+    uid: string
+    latitude: number
+    longitude: number
+    address: string
+    parameterIds: string[]
   }) {
-    const isEdition = Boolean(stationDto?.id);
+    const isEdition = Boolean(stationDto?.id)
 
-    let response: RestResponse;
+    let response: RestResponse
     if (isEdition && stationDto?.id) {
-      const stationData: StationDto = {
+      const station: StationDto = {
         ...data,
         id: stationDto.id,
         quantityOfParameters: data.parameterIds.length,
-        status: stationDto.status,
-        lastMeasurement: stationDto.lastMeasurement,
-      };
-      console.log('Updating station - payload:', stationData);
-      response = await telemetryService.updateStation(stationData);
+      }
+      console.log(station) // -60,02388986211038, -64,00806427001955
+      response = await telemetryService.updateStation(station, data.parameterIds)
     } else {
-      const createPayload = {
+      const stationDto: StationDto = {
         name: data.name,
         uid: data.uid,
         latitude: data.latitude,
         longitude: data.longitude,
         address: data.address,
-        parameterIds: data.parameterIds,
         quantityOfParameters: data.parameterIds.length,
-        status: false,
-        lastMeasurement: '',
-      } as any;
+      }
 
-      console.log('Creating station - payload:', createPayload);
-      response = await telemetryService.createStation(createPayload as any);
+      response = await telemetryService.createStation(stationDto, data.parameterIds)
     }
 
     if (response.isFailure) {
       try {
-        toastProvider.showError(response.errorMessage);
-      } catch (err) {
-        toastProvider.showError('Erro ao salvar estação (ver console)');
-        console.error('Failed response:', response);
+        toastProvider.showError(response.errorMessage)
+      } catch {
+        toastProvider.showError('Erro ao salvar estação (ver console)')
       }
     }
 
     if (response.isSuccessful) {
       toastProvider.showSuccess(
-        isEdition
-          ? "Estação atualizada com sucesso!"
-          : "Estação criada com sucesso!"
-      );
-      await uiProvider.reload();
-      onSuccess?.();
+        isEdition ? 'Estação atualizada com sucesso!' : 'Estação criada com sucesso!',
+      )
+      await uiProvider.reload()
+      onSuccess?.()
     }
   }
+
+  useEffect(() => {
+    async function fetchParameters() {
+      const response = await telemetryService.fetchParametersByStationId(
+        stationDto?.id as string,
+      )
+      if (response.isFailure) return
+      form.setValue(
+        'parameterIds',
+        response.body.map((parameter) => String(parameter.id)),
+      )
+    }
+    fetchParameters()
+  }, [form.setValue, telemetryService.fetchParametersByStationId, stationDto?.id])
 
   return {
     form,
     isValid,
     handleCancel,
     handleSubmit: form.handleSubmit(handleSubmit),
-  };
+  }
 }

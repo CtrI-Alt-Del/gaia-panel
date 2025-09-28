@@ -15,6 +15,7 @@ import type { Route } from './+types/root'
 import '@/ui/global/styles/global.css'
 import { Toaster } from '@/ui/shadcn/components/sonner'
 import { PageBackground } from '@/ui/global/widgets/components/page-background'
+import { ENV } from '@/core/global/constants'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -66,6 +67,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = 'Oops!'
   let details = 'An unexpected error occurred.'
   let stack: string | undefined
+
+  console.log('ErrorBoundary:', error)
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? '404' : 'Error'

@@ -7,16 +7,15 @@ type AlarmFormProps = {
 }
 
 export const AlarmForm = ({ onSuccess, onCancel }: AlarmFormProps) => {
-  const { register, handleSubmit, handleCancel, errors, isSubmitting } = useAlarmForm({
+  const { form, handleSubmit, handleCancel } = useAlarmForm({
     onSuccess,
     onCancel,
   })
 
   return (
     <AlarmFormView
-      register={register}
-      errors={errors}
-      isSubmitting={isSubmitting}
+      form={form}
+      isSubmitting={form.formState.isSubmitting}
       onSubmit={handleSubmit}
       onCancel={handleCancel}
     />

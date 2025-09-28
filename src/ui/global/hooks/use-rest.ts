@@ -5,7 +5,7 @@ import { MembershipService } from '@/rest/services'
 export function useRest() {
   const restClient = AxiosRestClient()
 
-  restClient.setBaseUrl(ENV.serverAppUrl)
+  restClient.setBaseUrl(ENV.gaiaServerUrl)
 
   return {
     membershipService: MembershipService(restClient),

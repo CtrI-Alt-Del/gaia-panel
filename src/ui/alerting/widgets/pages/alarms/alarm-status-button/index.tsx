@@ -1,6 +1,6 @@
 import { AlarmStatusButtonView } from './alarm-status-button-view'
 import { useAlarmStatusButton } from './use-alarm-status-button'
-import { useToastProvider } from '@/ui/global/hooks/use-toast'
+import { useToastProvider } from '@/ui/global/hooks/use-toast-provider'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 
 type Props = {

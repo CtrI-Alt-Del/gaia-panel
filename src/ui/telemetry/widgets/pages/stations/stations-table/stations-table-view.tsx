@@ -80,7 +80,7 @@ export const StationsTableView = ({
               <TableCell className='font-medium pl-6'>{station.uid}</TableCell>
               <TableCell>
                 <Link
-                  to={`/stations/${station.id}`}
+                  to={`/stations/${station.id}/location`}
                   className='text-primary hover:text-primary/80 hover:underline font-medium'
                 >
                   {station.name}

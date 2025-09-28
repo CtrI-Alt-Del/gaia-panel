@@ -28,16 +28,13 @@ export const ParametersSelector = ({
     hasPreviousPage,
     isLoading,
     name,
-    status,
     pageSize,
     handleParameterToggle,
     handleSelectAll,
     handleRemoveParameter,
     handleToggleExpanded,
     handleNameChange,
-    handleStatusChange,
     handlePageSizeChange,
-    handleApplyFilters,
   } = useParametersSelector({
     telemetryService,
     defaultParametersIds,
@@ -58,7 +55,6 @@ export const ParametersSelector = ({
       hasNextPage={hasNextPage}
       hasPreviousPage={hasPreviousPage}
       name={name}
-      status={status}
       pageSize={pageSize}
       className={className}
       handleParameterToggle={handleParameterToggle}
@@ -66,9 +62,7 @@ export const ParametersSelector = ({
       handleRemoveParameter={handleRemoveParameter}
       handleToggleExpanded={handleToggleExpanded}
       handleNameChange={handleNameChange}
-      handleStatusChange={handleStatusChange}
       handlePageSizeChange={handlePageSizeChange}
-      handleApplyFilters={handleApplyFilters}
     />
   )
 }

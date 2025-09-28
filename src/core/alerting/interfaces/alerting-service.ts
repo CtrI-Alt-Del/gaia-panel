@@ -4,4 +4,5 @@ import type { AlarmListingParams } from "../types";
 
 export interface AlertingService{
     fetchAlarms(params: AlarmListingParams): Promise<RestResponse<PaginationResponse<AlarmDto>>>
+    updateAlarm(alarm: AlarmDto): Promise<RestResponse<AlarmDto>>
 }

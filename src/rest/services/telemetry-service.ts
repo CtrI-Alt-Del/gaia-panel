@@ -9,12 +9,10 @@ import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
-    // Alarms
     async fetchAlarms(): Promise<RestResponse<PaginationResponse<AlarmDto>>> {
       return await restClient.get<PaginationResponse<AlarmDto>>('/telemetry/alarms')
     },
 
-    // Parameters
     async fetchParameters(): Promise<RestResponse<ParameterDto[]>> {
       return await restClient.get<ParameterDto[]>('/telemetry/parameters')
     },

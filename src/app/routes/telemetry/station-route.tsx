@@ -6,7 +6,7 @@ import { StationPage } from "@/ui/telemetry/widgets/pages/station";
 import { ENV } from "@/core/global/constants";
 
 export const loader = async ({ params }: Route.ActionArgs) => {
-  const { id: stationId } = params;
+  const { stationId } = params;
 
   if (!stationId) {
     throw new Error("Station ID is required");

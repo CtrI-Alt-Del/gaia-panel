@@ -6,7 +6,7 @@ export const ROUTES = {
   },
   dashboard: '/dashboard',
   stations: '/stations',
-  station: '/stations/:id',
+  station: '/stations/:stationId',
   parameters: '/parameters',
   alarms: '/alarms',
   alerts: '/alerts',

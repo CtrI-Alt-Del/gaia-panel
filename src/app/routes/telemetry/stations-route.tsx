@@ -38,9 +38,7 @@ export const loader = async ({ request }: Route.ActionArgs) => {
     status: status ?? undefined,
   });
 
-  console.log("response", response);
 
-  // Verificar se a requisição foi bem-sucedida
   if (!response.isSuccessful) {
     throw new Response(response.errorMessage, {
       status: response.statusCode,

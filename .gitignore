@@ -5,6 +5,10 @@
 /.react-router/
 /build/
 
+/.windsurf
+
+# Windsurf
+/.windsurf/** 
 
 .cursor/
 

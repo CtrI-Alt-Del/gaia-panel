@@ -52,6 +52,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export async function loader(args: Route.LoaderArgs) {
+  console.log('import.meta.env', import.meta.env)
+  console.log('ENV', ENV)
   return rootAuthLoader(args)
 }
 
@@ -67,7 +69,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = 'Oops!'
   let details = 'An unexpected error occurred.'
   let stack: string | undefined
-  console.log(ENV)
+
   console.log('ErrorBoundary:', error)
 
   if (isRouteErrorResponse(error)) {

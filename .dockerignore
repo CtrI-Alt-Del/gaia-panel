@@ -39,10 +39,15 @@ reports
 test/
 documentation/
 
+# Env files
+.env
+.env.*
+!.env.example
+
 # Git metadata
-git
-gitignore
-gitattributes
+.git
+.gitignore
+.gitattributes
 .github
 
 # Logs

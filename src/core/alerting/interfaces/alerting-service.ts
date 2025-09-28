@@ -1,6 +1,7 @@
-import type { RestResponse } from "@/core/global/responses";
+import type { PaginationResponse, RestResponse } from "@/core/global/responses";
 import type { AlarmDto } from "../dtos";
+import type { AlarmListingParams } from "../types";
 
 export interface AlertingService{
-    fetchAlarms(alarmId: string): Promise<RestResponse<AlarmDto>>
+    fetchAlarms(params: AlarmListingParams): Promise<RestResponse<PaginationResponse<AlarmDto>>>
 }

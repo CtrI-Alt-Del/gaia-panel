@@ -17,7 +17,6 @@ export function useAlarmStatusButton({
   uiProvider,
 }: UseAlarmStatusButtonProps) {
   async function handleActivate() {
-    // TODO: Implementar chamada para ativar alarm
     const response = await alertingService.activateAlarm(alarmId)
     if (response.isFailure) {
       toastProvider.showError(response.errorMessage)
@@ -33,15 +32,14 @@ export function useAlarmStatusButton({
   }
 
   async function handleDeactivate() {
-    // TODO: Implementar chamada para desativar alarm
-    // const response = await telemetryService.deactivateAlarm(alarmId)
-    // if (response.isFailure) {
-    //   toastProvider.showError(response.errorMessage)
-    // }
-    // if (response.isSuccessful) {
-    //   toastProvider.showSuccess('Alarm desativado com sucesso!')
-    //   await uiProvider.reload()
-    // }
+    const response = await alertingService.deactivateAlarm(alarmId)
+    if (response.isFailure) {
+      toastProvider.showError(response.errorMessage)
+    }
+    if (response.isSuccessful) {
+      toastProvider.showSuccess('Alarm desativado com sucesso!')
+      await uiProvider.reload()
+    }
 
     // Simulação temporária
     toastProvider.showSuccess("Alarm desativado com sucesso!");

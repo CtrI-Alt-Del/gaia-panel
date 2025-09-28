@@ -17,5 +17,9 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
         async activateAlarm(alarmId: string) {
             return await restClient.patch(`/alerting/alarm/${alarmId}`)
         },
+
+        async deactivateAlarm(alarmId) {
+            return await restClient.patch(`/alerting/alarm/${alarmId}`)
+        },
     }
 }

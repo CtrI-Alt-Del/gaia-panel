@@ -1,5 +1,6 @@
 import type { PaginationParams } from "@/core/global/types"
 
 export type AlarmListingParams = {
-    status?: string
+    status?: string,
+    level?: string
 } & PaginationParams

@@ -21,6 +21,7 @@ type AlarmFormViewProps = {
   isSubmitting: boolean
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
   onCancel: () => void
+  isEditing?: boolean
 }
 
 export const AlarmFormView = ({
@@ -28,6 +29,7 @@ export const AlarmFormView = ({
   isSubmitting,
   onSubmit,
   onCancel,
+  isEditing
 }: AlarmFormViewProps) => {
   const {
     register,
@@ -170,7 +172,7 @@ export const AlarmFormView = ({
             Cancelar
           </Button>
           <Button type='submit' disabled={isSubmitting}>
-            {isSubmitting ? 'Criando...' : 'Criar Alarme'}
+            {isEditing ? isSubmitting ? 'Editando...' : 'Editar Alarme' : isSubmitting ? 'Criando...' : 'Criar Alarme'}
           </Button>
         </div>
       </form>

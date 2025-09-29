@@ -4,6 +4,7 @@ import { useAlarmForm } from './use-alarm-form'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 import { useToastProvider } from '@/ui/global/hooks'
 import type { AlarmDto } from '@/core/alerting/dtos'
+import { boolean } from 'zod'
 
 type AlarmFormProps = {
   onSuccess?: () => void
@@ -31,6 +32,7 @@ export const AlarmForm = ({ onSuccess, onCancel, alarmDto }: AlarmFormProps) => 
       isSubmitting={form.formState.isSubmitting}
       onSubmit={handleSubmit}
       onCancel={handleCancel}
+      isEditing={Boolean(alarmDto?.id)}
     />
   )
 }

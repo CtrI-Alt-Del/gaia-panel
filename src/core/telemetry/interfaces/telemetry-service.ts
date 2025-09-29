@@ -21,4 +21,6 @@ export interface TelemetryService {
   deactivateStation(stationId: string): Promise<RestResponse>
   fetchStationParameters(stationId: string): Promise<RestResponse<ParameterDto[]>>
   fetchParametersByStationId(stationId: string): Promise<RestResponse<ParameterDto[]>>
+  activateParameter(parameterId: string): Promise<RestResponse<ParameterDto>>
+  deactivateParameter(parameterId: string): Promise<RestResponse<ParameterDto>>
 }

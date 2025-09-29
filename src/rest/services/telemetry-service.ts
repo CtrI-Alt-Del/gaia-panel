@@ -30,11 +30,17 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.post<ParameterDto>('/telemetry/parameters', parameter)
     },
 
-    async updateParameter(parameter: ParameterDto): Promise<RestResponse<ParameterDto>> {
-      return await restClient.patch<ParameterDto>(
-        `/telemetry/parameters/${parameter.id}`,
-        parameter,
-      )
+    async updateParameter(parameter: Partial<ParameterDto>): Promise<RestResponse<ParameterDto>> {
+      const { id, name, unitOfMeasure, factor, offset } = parameter;
+      const body: Partial<ParameterDto> = {};
+      if (name !== undefined) body.name = name;
+      if (unitOfMeasure !== undefined) body.unitOfMeasure = unitOfMeasure;
+      if (factor !== undefined) body.factor = factor;
+      if (offset !== undefined) body.offset = offset;
+      return await restClient.put<ParameterDto>(
+        `/telemetry/parameters/${id}`,
+        body,
+      );
     },
 
     async deleteParameter(id: string): Promise<RestResponse> {
@@ -96,5 +102,14 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
         `/telemetry/stations/parameters/${stationId}`,
       )
     },
+
+    async activateParameter(parameterId: string): Promise<RestResponse<ParameterDto>> {
+      return await restClient.patch<ParameterDto>(`/telemetry/parameters/${parameterId}`)
+    },
+
+    async deactivateParameter(parameterId: string): Promise<RestResponse<ParameterDto>> {
+      return await restClient.delete(`/telemetry/parameters/${parameterId}`) as RestResponse<ParameterDto>;
+    },
+
   }
 }

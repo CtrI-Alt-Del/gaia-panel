@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/ui/shadcn/components/select'
 import { Textarea } from '@/ui/shadcn/components/textarea'
-import { AlertCircle, ChevronDown, ChevronLeft, ChevronRight, Edit } from 'lucide-react'
+import { AlertCircle, ChevronRight, Edit } from 'lucide-react'
 import type { AlarmFormData } from './alarm-form-schema'
 import { ParameterSelectorSheet } from './parameter-selector-sheet'
 
@@ -38,7 +38,7 @@ export const AlarmFormView = ({
   } = form
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
-  const selectedStationId = watch('stationId')
+  const selectedParameterId = watch('parameterId')
   const [selectedStationName, setSelectedStationName] = useState('')
   const [selectedParameterName, setSelectedParameterName] = useState('')
 
@@ -49,7 +49,7 @@ export const AlarmFormView = ({
           <Label className='text-sm font-semibold text-gray-700'>
             Estação e Parâmetro
           </Label>
-          {selectedStationId ? (
+          {selectedParameterId ? (
             <div className='flex items-center justify-between p-3 border rounded-md bg-gray-50'>
               <div>
                 <p className='text-sm font-medium'>{selectedStationName}</p>
@@ -76,10 +76,10 @@ export const AlarmFormView = ({
               <ChevronRight className='w-4 h-4 ml-2' />
             </Button>
           )}
-          {(errors.stationId || errors.parameterId) && (
+          {errors.parameterId && (
             <div className='flex items-center gap-2 text-red-600 text-sm mt-1'>
               <AlertCircle className='h-4 w-4' />
-              <span>{errors.stationId?.message || errors.parameterId?.message}</span>
+              <span>{errors.parameterId?.message}</span>
             </div>
           )}
         </div>
@@ -179,7 +179,6 @@ export const AlarmFormView = ({
         open={isSheetOpen}
         onOpenChange={setIsSheetOpen}
         onSelect={(station, parameter) => {
-          setValue('stationId', station.id as string, { shouldValidate: true })
           setValue('parameterId', parameter.id as string, { shouldValidate: true })
           setSelectedStationName(station.name)
           setSelectedParameterName(`${parameter.name} (${parameter.unitOfMeasure})`)

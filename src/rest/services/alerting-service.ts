@@ -14,8 +14,17 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
                 restClient.setQueryParam('pageSize', params.pageSize.toString())
             return await restClient.get('/alerting/alarm')
         },
+      
         async createAlarm(alarmDto: AlarmDto) {
             return await restClient.post('/alerting/alarm', alarmDto)
+        },
+
+        async activateAlarm(alarmId: string) {
+            return await restClient.patch(`/alerting/alarm/${alarmId}`)
+        },
+
+        async deactivateAlarm(alarmId) {
+            return await restClient.delete(`/alerting/alarm/${alarmId}`)
         },
     }
 }

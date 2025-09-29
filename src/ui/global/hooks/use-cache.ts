@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { useToastProvider } from './use-toast'
+import { useToastProvider } from './use-toast-provider'
 import type { RestResponse } from '@/core/global/responses/rest-response'
 
 type MutateConfig = {

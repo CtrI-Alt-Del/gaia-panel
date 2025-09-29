@@ -21,5 +21,6 @@ export const RestMiddleware = async ({ context }: Route.LoaderArgs) => {
   context.set(restContext, {
     membershipService,
     telemetryService,
+    alertingService: null
   })
 }

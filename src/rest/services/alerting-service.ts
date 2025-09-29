@@ -16,15 +16,15 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
     },
 
     async activateAlarm(alarmId: string) {
-      return await restClient.patch(`/alerting/alarms/${alarmId}`)
+      return await restClient.patch(`/alerting/alarm/${alarmId}`)
     },
 
     async deactivateAlarm(alarmId) {
-      return await restClient.delete(`/alerting/alarms/${alarmId}`)
+      return await restClient.delete(`/alerting/alarm/${alarmId}`)
     },
 
     async createAlarm(alarmDto: AlarmDto) {
-      return await restClient.post("alerting/alarm", alarmDto)
+      return await restClient.post("/alerting/alarm", alarmDto)
     },
   }
 }

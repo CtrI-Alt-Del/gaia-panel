@@ -3,13 +3,15 @@ import { AlarmFormView } from './alarm-form-view'
 import { useAlarmForm } from './use-alarm-form'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 import { useToastProvider } from '@/ui/global/hooks'
+import type { AlarmDto } from '@/core/alerting/dtos'
 
 type AlarmFormProps = {
   onSuccess?: () => void
   onCancel?: () => void
+  alarmDto?: AlarmDto
 }
 
-export const AlarmForm = ({ onSuccess, onCancel }: AlarmFormProps) => {
+export const AlarmForm = ({ onSuccess, onCancel, alarmDto }: AlarmFormProps) => {
   const {alertingService} = useRest()
   const uiProvider = useUiProvider()
   const toastProvider = useToastProvider()
@@ -19,7 +21,8 @@ export const AlarmForm = ({ onSuccess, onCancel }: AlarmFormProps) => {
     onCancel,
     alertingService,
     uiProvider,
-    toastProvider
+    toastProvider,
+    alarmDto
   })
 
   return (

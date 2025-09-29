@@ -1,20 +1,20 @@
-import { useLoaderData } from "react-router";
-import { useStationsPage } from "./use-stations-page";
-import { StationsPageView } from "./stations-page-view";
-import type { loader } from "@/app/routes/telemetry/stations-route";
-import { useUiProvider } from "@/ui/global/hooks/use-ui-provider";
-import { useRest } from "@/ui/global/hooks/use-rest";
-import { useToastProvider } from "@/ui/global/hooks/use-toast";
+import { useLoaderData } from 'react-router'
+import { useStationsPage } from './use-stations-page'
+import { StationsPageView } from './stations-page-view'
+import type { loader } from '@/app/routes/telemetry/stations-route'
+import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
+import { useRest } from '@/ui/global/hooks/use-rest'
+import { useToastProvider } from '@/ui/global/hooks/use-toast-provider'
 
 export const StationsPage = () => {
   const { stations, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
-    useLoaderData<typeof loader>();
+    useLoaderData<typeof loader>()
   const { selectedStation, handleEdit } = useStationsPage({
     stations,
-  });
-  const { isLoading, reload } = useUiProvider();
-  const { telemetryService } = useRest();
-  const toastProvider = useToastProvider();
+  })
+  const { isLoading, reload } = useUiProvider()
+  const { telemetryService } = useRest()
+  const toastProvider = useToastProvider()
 
   return (
     <StationsPageView
@@ -30,5 +30,5 @@ export const StationsPage = () => {
       uiProvider={{ isLoading, reload }}
       toastProvider={toastProvider}
     />
-  );
-};
+  )
+}

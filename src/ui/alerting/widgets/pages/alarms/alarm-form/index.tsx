@@ -2,7 +2,7 @@ import { useRest } from '@/ui/global/hooks/use-rest'
 import { AlarmFormView } from './alarm-form-view'
 import { useAlarmForm } from './use-alarm-form'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
-import { useToastProvider } from '@/ui/global/hooks/use-toast'
+import { useToastProvider } from '@/ui/global/hooks'
 
 type AlarmFormProps = {
   onSuccess?: () => void

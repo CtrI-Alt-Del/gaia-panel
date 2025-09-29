@@ -1,6 +1,6 @@
 import { UserStatusButtonView } from './user-status-button-view'
 import { useUserStatusButton } from './use-user-status-button'
-import { useToastProvider } from '@/ui/global/hooks/use-toast'
+import { useToastProvider } from '@/ui/global/hooks/use-toast-provider'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 import { useRest } from '@/ui/global/hooks/use-rest'
 
@@ -21,10 +21,5 @@ export const UserStatusButton = ({ userId, isActive }: Props) => {
     toastProvider,
   })
 
-  return (
-    <UserStatusButtonView
-      isActive={isActive}
-      onConfirm={handleConfirm}
-    />
-  )
+  return <UserStatusButtonView isActive={isActive} onConfirm={handleConfirm} />
 }

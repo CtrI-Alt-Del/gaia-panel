@@ -49,10 +49,9 @@ export function useStationForm({
     if (mode === 'edit' && station) {
       return {
         name: station.name,
-        UID: station.uid,
+        uid: station.uid,
         latitude: station.latitude,
         longitude: station.longitude,
-        parameterIds: station.parameterIds,
       }
     }
     return { ...defaultValues, parameterIds: [] }
@@ -65,7 +64,7 @@ export function useStationForm({
   })
 
   const {
-    handleSubmit: rhfHandleSubmit,
+    handleSubmit,
     watch,
     reset,
     setValue,

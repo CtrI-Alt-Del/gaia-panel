@@ -1,7 +1,12 @@
-import { useStation } from "./use-station-page";
-import StationPageView from "./station-page-view";
+import type { PropsWithChildren } from 'react'
+import { Outlet, useLoaderData } from 'react-router'
+
+import type { loader } from '@/app/routes/telemetry/station-route'
+import { StationPageView } from './station-page-view'
 
 export const StationPage = () => {
-  const props = useStation();
-  return <StationPageView {...props} />;
-};
+  const { station } = useLoaderData<typeof loader>()
+  return <StationPageView station={station}>
+    <Outlet />
+  </StationPageView>
+}

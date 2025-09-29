@@ -35,10 +35,6 @@ export function useParametersSelector({
         name,
         status: 'active',
       })
-      setNextCursor(response.body.nextCursor)
-      setPreviousCursor(response.body.previousCursor)
-      setHasNextPage(response.body.hasNextPage)
-      setHasPreviousPage(response.body.hasPreviousPage)
       return response
     },
     dependencies: [pageSize, name],
@@ -78,7 +74,6 @@ export function useParametersSelector({
 
   function handleNameChange(newName: string) {
     setName(newName)
-    // Reset pagination when filtering
     setNextCursor(null)
     setPreviousCursor(null)
   }
@@ -87,6 +82,11 @@ export function useParametersSelector({
     setPageSize(newPageSize)
     setNextCursor(null)
     setPreviousCursor(null)
+  }
+
+  function handlePaginationChange(nextCursor: string | null, previousCursor: string | null) {
+    setNextCursor(nextCursor)
+    setPreviousCursor(previousCursor)
   }
 
   const parameters = data?.items || []
@@ -114,30 +114,23 @@ export function useParametersSelector({
 
   return {
     isExpanded,
-    parameters,
     selectedParameters,
     isAllSelected,
     isIndeterminate,
-    nextCursor,
-    previousCursor,
-    hasNextPage,
-    hasPreviousPage,
+    parameters: data?.items || [],
+    nextCursor: data?.nextCursor || null,
+    previousCursor: data?.previousCursor || null,
+    hasNextPage: data?.hasNextPage || false,
+    hasPreviousPage: data?.hasPreviousPage || false,
+    pageSize: data?.pageSize || 5,
     isLoading,
-    // Filter states
     name,
-    status,
-    pageSize,
-    // Handlers
     handleParameterToggle,
     handleSelectAll,
     handleRemoveParameter,
     handleToggleExpanded,
     handleNameChange,
     handlePageSizeChange,
-    // Pagination setters
-    setNextCursor,
-    setPreviousCursor,
-    setHasNextPage,
-    setHasPreviousPage,
+    handlePaginationChange,
   }
 }

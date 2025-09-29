@@ -152,7 +152,7 @@ export const AlarmsTableView = ({
                         onClose={onCloseModal || (() => {})}
                         title='Editar Alarm'
                         description='Edite as informações do alarm'
-                        size='md'
+                        size='lg'
                         trigger={
                           <button
                             type='button'

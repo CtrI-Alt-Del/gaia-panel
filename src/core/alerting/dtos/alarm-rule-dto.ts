@@ -1,6 +1,6 @@
 import type { AlarmRuleOperation } from '../types'
 
 export type AlarmRuleDto = {
-  threshold: bigint
+  threshold: number
   operation: AlarmRuleOperation
 }

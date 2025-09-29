@@ -1,145 +1,114 @@
-import { Link } from 'react-router'
-import type { StationDto } from '@/core/dtos/telemetry/station-dto'
-import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
-import { DetailsTab, MeasureTab } from '../../../../telemetry/widgets/components/station'
-import { StationModal } from '../../../../telemetry/widgets/components/station/station-form'
-import { useRouter } from '@/ui/global/hooks/use-router'
+import { Link, useLocation } from 'react-router'
+import type { PropsWithChildren } from 'react'
+import { MapPin, Activity, Calendar, Settings } from 'lucide-react'
 
-interface StationPageViewProps {
-  station: StationDto | null
-  tab: 'details' | 'records' | 'parameters'
-  loading: boolean
-  rows: MeasurementDto[]
-  cursor: { next: string | null; prev: string | null }
-  parameterId: string
-  limit: number
-  uniqueParams: Array<{ id: string; name: string }>
-  setTab: (tab: 'details' | 'records' | 'parameters') => void
-  setParam: (k: string, v: string | null) => void
-  loadMeasure: () => Promise<void>
-  timeAgo: (d: Date) => string
-  formatDateTime: (d: Date) => string
-  toggleStationActive: () => Promise<void>
-  isModalOpen: boolean
-  onEditStation: () => void
-  onCloseModal: () => void
-  handleStationSubmit: (data: any) => Promise<void>
-  availableParameters: any[]
-  navigate: (route: string) => void
+import type { StationDto } from '@/core/telemetry/dtos/station-dto'
+import { Badge } from '@/ui/shadcn/components/badge'
+import { useDateTimeProvider } from '@/ui/global/hooks/use-date-provider'
+
+type Props = {
+  station: StationDto
 }
 
-export default function StationPageView({
-  station,
-  tab,
-  loading,
-  rows,
-  cursor,
-  parameterId,
-  limit,
-  uniqueParams,
-  isModalOpen,
-  availableParameters,
-  setTab,
-  setParam,
-  loadMeasure,
-  timeAgo,
-  formatDateTime,
-  toggleStationActive,
-  onEditStation,
-  onCloseModal,
-  handleStationSubmit,
-  navigate,
-}: StationPageViewProps) {
-  if (!station) return <div className='p-6'>Carregando…</div>
+export const StationPageView = ({ station, children }: PropsWithChildren<Props>) => {
+  const { formatRelativeTime } = useDateTimeProvider()
+  const location = useLocation()
 
   return (
     <div className='p-6'>
-      <div className='mb-6 flex items-start justify-between'>
-        <div>
-          <div className='text-sm text-muted-foreground mb-1'>
-            <Link className='underline' to='/stations'>
-              Estações
-            </Link>
-            <span className='mx-2'>/</span>
-            <span>{station.UID}</span>
+      <div className='mb-8'>
+        <div className='text-sm text-muted-foreground mb-3'>
+          <Link className='text-primary hover:text-primary/80 underline' to='/stations'>
+            Estações
+          </Link>
+          <span className='mx-2 text-gray-400'>/</span>
+          <span className='font-medium'>{station.uid}</span>
+        </div>
+        
+        <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+          <div className='flex items-start justify-between'>
+            <div className='flex-1'>
+              <div className='flex items-center gap-3 mb-2'>
+                <div className={`w-3 h-3 rounded-full ${station.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />
+                <h1 className='text-2xl font-bold text-gray-900'>{station.name}</h1>
+                <Badge color={station.isActive ? 'green' : 'stone'} tone="soft">
+                  {station.isActive ? 'Ativa' : 'Inativa'}
+                </Badge>
+              </div>
+              
+              <div className='flex items-center gap-1 mb-4'>
+                <MapPin className='w-4 h-4 text-gray-500' />
+                <p className='text-gray-600'>{station.address}</p>
+              </div>
+              
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-4'>
+                
+                <div className='flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg'>
+                  <div className='w-8 h-8 bg-violet-50 rounded-full flex items-center justify-center'>
+                    <Activity className='w-4 h-4 text-violet-600' />
+                  </div>
+                  <div>
+                    <p className='text-xs text-gray-500'>Parâmetros</p>
+                    <p className='text-sm font-medium text-gray-900'>
+                      {station.quantityOfParameters || 0} monitorados
+                    </p>
+                  </div>
+                </div>
+                
+                <div className='flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg'>
+                  <div className='w-8 h-8 bg-violet-50 rounded-full flex items-center justify-center'>
+                    <Calendar className='w-4 h-4 text-violet-600' />
+                  </div>
+                  <div>
+                    <p className='text-xs text-gray-500'>Última Leitura</p>
+                    <p className='text-sm font-medium text-gray-900'>{formatRelativeTime(station.lastReadAt)}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className='flex gap-3 ml-6'>
+              <button
+                type='button'
+                className='flex items-center gap-2 h-10 px-4 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors'
+              >
+                <Settings className='w-4 h-4' />
+                Editar
+              </button>
+              <button
+                type='button'
+                className={`h-10 px-4 rounded-lg border transition-colors ${
+                  station.isActive
+                    ? 'border-red-300 text-red-700 hover:bg-red-50'
+                    : 'border-green-300 text-green-700 hover:bg-green-50'
+                }`}
+              >
+                {station.isActive ? 'Desativar' : 'Ativar'}
+              </button>
+            </div>
           </div>
-          <h1 className='text-2xl font-semibold'>{station.name}</h1>
-          <p className='text-sm text-muted-foreground'>
-            {station.latitude.toFixed(4)}, {station.longitude.toFixed(4)}
-          </p>
-        </div>
-        <div className='flex gap-2'>
-          <button
-            type='button'
-            className='h-9 px-4 rounded-md border border-stone-300 text-stone-700 hover:bg-stone-50'
-            onClick={onEditStation}
-          >
-            Editar
-          </button>
-          <button
-            type='button'
-            className={`h-9 px-4 rounded-md border ${
-              station.isActive
-                ? 'border-red-300 text-red-700 hover:bg-red-50'
-                : 'border-green-300 text-green-700 hover:bg-green-50'
-            }`}
-            onClick={toggleStationActive}
-          >
-            {station.isActive ? 'Desativar' : 'Ativar'}
-          </button>
         </div>
       </div>
 
-      <div className='border-b mb-4 flex gap-6 text-sm'>
-        <button
-          type='button'
-          className={`pb-2 -mb-[1px] border-b-2 ${tab === 'details' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
-          onClick={() => setTab('details')}
-        >
-          Detalhes da Estação
-        </button>
-        <button
-          type='button'
-          className={`pb-2 -mb-[1px] border-b-2 ${tab === 'parameters' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
-          onClick={() => navigate(`/stations/${station.id}/parameters`)}
-        >
-          Parâmetros
-        </button>
-        <button
-          type='button'
-          className={`pb-2 -mb-[1px] border-b-2 ${tab === 'records' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
-          onClick={() => setTab('records')}
-        >
-          Medições
-        </button>
+      <div className='bg-white rounded-lg shadow-sm border border-gray-200 mb-6'>
+        <div className='border-b border-gray-200 px-6'>
+          <nav className='flex gap-8'>
+            <Link to={`/stations/${station.id}/location`} className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${location.pathname === `/stations/${station.id}/location` ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'}`}>
+              Localização
+            </Link>
+            <Link to={`/stations/${station.id}/parameters`} className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${location.pathname === `/stations/${station.id}/parameters` ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'}`}>
+              Parâmetros
+            </Link>
+            <Link to={`/stations/${station.id}/measurements`} className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${location.pathname === `/stations/${station.id}/measurements` ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'}`}>
+              Medições
+            </Link>
+          </nav>
+        </div>
+        
+        <div className='p-6'>
+          {children}
+        </div>
       </div>
-
-      {tab === 'details' ? (
-        <DetailsTab station={station} timeAgo={timeAgo} />
-      ) : (
-        <MeasureTab
-          loading={loading}
-          rows={rows}
-          cursor={cursor}
-          parameterId={parameterId}
-          limit={limit}
-          uniqueParams={uniqueParams}
-          setParam={setParam}
-          loadMeasure={loadMeasure}
-          formatDateTime={formatDateTime}
-        />
-      )}
-
-      {onCloseModal && (
-        <StationModal
-          isOpen={isModalOpen}
-          onClose={onCloseModal}
-          onSubmit={handleStationSubmit}
-          availableParameters={availableParameters}
-          station={station}
-          mode='edit'
-        />
-      )}
     </div>
   )
 }

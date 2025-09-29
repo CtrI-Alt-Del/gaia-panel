@@ -62,7 +62,7 @@ export const AlarmsPageView = ({
             title='Novo Alarme'
             icon={<Bell className='w-4 h-4' />}
             description='Preencha os dados para criar um novo alarme'
-            size='md'
+            size='lg'
             trigger={
               <Button className='flex items-center gap-2 h-9'>
                 <Plus className='w-4 h-4' />

@@ -4,6 +4,5 @@ import type { loader } from '@/app/layouts/app-layout'
 
 export const UserInfo = () => {
   const { user } = useLoaderData<typeof loader>()
-  console.log('user', user)
   if (user) return <UserInfoView name={user.name} email={user.email} />
 }

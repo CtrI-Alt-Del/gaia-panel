@@ -1,6 +1,7 @@
+import { useRest } from '@/ui/global/hooks/use-rest'
 import { AlarmStatusButtonView } from './alarm-status-button-view'
 import { useAlarmStatusButton } from './use-alarm-status-button'
-import { useToastProvider } from '@/ui/global/hooks/use-toast'
+import { useToastProvider } from '@/ui/global/hooks/use-toast-provider'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 
 type Props = {
@@ -9,11 +10,13 @@ type Props = {
 }
 
 export const AlarmStatusButton = ({ alarmId, isActive }: Props) => {
+  const {alertingService} = useRest()
   const toastProvider = useToastProvider()
   const uiProvider = useUiProvider()
   const { handleConfirm } = useAlarmStatusButton({
     alarmId,
     isAlarmActive: isActive,
+    alertingService,
     toastProvider,
     uiProvider,
   })

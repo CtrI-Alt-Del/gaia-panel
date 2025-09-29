@@ -8,4 +8,3 @@ export const ENV = envSchema.parse({
   gaiaServerUrl: import.meta.env.VITE_GAIA_SERVER_URL || 'http://localhost:3333',
 })
 
-console.log(ENV)

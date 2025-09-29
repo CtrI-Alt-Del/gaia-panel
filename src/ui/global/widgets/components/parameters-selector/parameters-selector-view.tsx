@@ -36,20 +36,15 @@ type ParameterSelectorViewProps = {
   previousCursor: string | null
   hasNextPage: boolean
   hasPreviousPage: boolean
-  // Filter states
   name: string
-  status: string
   pageSize: number
-  // Handlers
+  className?: string
   handleParameterToggle: (parameterId: string) => void
   handleSelectAll: () => void
   handleRemoveParameter: (parameterId: string | undefined) => void
   handleToggleExpanded: () => void
   handleNameChange: (name: string) => void
-  handleStatusChange: (status: string) => void
   handlePageSizeChange: (pageSize: number) => void
-  handleApplyFilters: () => void
-  className?: string
 }
 
 export const ParametersSelectorView = ({
@@ -64,16 +59,13 @@ export const ParametersSelectorView = ({
   hasNextPage,
   hasPreviousPage,
   name,
-  status,
   pageSize,
   handleParameterToggle,
   handleSelectAll,
   handleRemoveParameter,
   handleToggleExpanded,
   handleNameChange,
-  handleStatusChange,
   handlePageSizeChange,
-  handleApplyFilters,
   className = '',
 }: ParameterSelectorViewProps) => {
   return (
@@ -121,19 +113,6 @@ export const ParametersSelectorView = ({
                 />
               </div>
               <div className='flex flex-col'>
-                <Label className='text-xs text-stone-600 mb-1'>Status</Label>
-                <Select value={status} onValueChange={handleStatusChange}>
-                  <SelectTrigger className='h-9 w-32'>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value='all'>Todos</SelectItem>
-                    <SelectItem value='ACTIVE'>Ativo</SelectItem>
-                    <SelectItem value='INACTIVE'>Inativo</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className='flex flex-col'>
                 <Label className='text-xs text-stone-600 mb-1'>Itens por página</Label>
                 <Select
                   value={pageSize.toString()}
@@ -146,7 +125,6 @@ export const ParametersSelectorView = ({
                     <SelectItem value='5'>5</SelectItem>
                     <SelectItem value='10'>10</SelectItem>
                     <SelectItem value='20'>20</SelectItem>
-                    <SelectItem value='50'>50</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

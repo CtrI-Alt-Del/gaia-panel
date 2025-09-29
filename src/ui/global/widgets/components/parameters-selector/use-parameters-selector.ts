@@ -24,19 +24,24 @@ export function useParametersSelector({
   const [hasPreviousPage, setHasPreviousPage] = useState(false)
   const [pageSize, setPageSize] = useState(5)
   const [name, setName] = useState('')
-  const [status, setStatus] = useState('ACTIVE')
 
   const { data, isLoading } = useCache({
     key: CACHE.stationParameters.key,
-    fetcher: async () =>
-      await telemetryService.fetchParameters({
+    fetcher: async () => {
+      const response = await telemetryService.fetchParameters({
         nextCursor,
         previousCursor,
         pageSize,
         name,
-        status,
-      }),
-    dependencies: [pageSize, name, status, nextCursor, previousCursor],
+        status: 'active',
+      })
+      setNextCursor(response.body.nextCursor)
+      setPreviousCursor(response.body.previousCursor)
+      setHasNextPage(response.body.hasNextPage)
+      setHasPreviousPage(response.body.hasPreviousPage)
+      return response
+    },
+    dependencies: [pageSize, name],
   })
 
   function handleParameterToggle(parameterId: string) {
@@ -78,23 +83,10 @@ export function useParametersSelector({
     setPreviousCursor(null)
   }
 
-  function handleStatusChange(newStatus: string) {
-    setStatus(newStatus)
-    // Reset pagination when filtering
-    setNextCursor(null)
-    setPreviousCursor(null)
-  }
-
   function handlePageSizeChange(newPageSize: number) {
     setPageSize(newPageSize)
-    // Reset pagination when changing page size
     setNextCursor(null)
     setPreviousCursor(null)
-  }
-
-  function handleApplyFilters() {
-    // Force refetch by updating the cache key
-    // The cache key already includes all filter states, so this will trigger a new fetch
   }
 
   const parameters = data?.items || []
@@ -141,9 +133,7 @@ export function useParametersSelector({
     handleRemoveParameter,
     handleToggleExpanded,
     handleNameChange,
-    handleStatusChange,
     handlePageSizeChange,
-    handleApplyFilters,
     // Pagination setters
     setNextCursor,
     setPreviousCursor,

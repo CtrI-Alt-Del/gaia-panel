@@ -12,6 +12,7 @@ type LocationPickerClientProps = {
   address: string
   onLocationChange: (lat: number, lng: number, address: string) => void
   className?: string
+  readOnly?: boolean
 }
 
 export const LocationPickerClient = ({
@@ -20,6 +21,7 @@ export const LocationPickerClient = ({
   address,
   onLocationChange,
   className = '',
+  readOnly = false,
 }: LocationPickerClientProps) => {
   const [mapCenter, setMapCenter] = useState<[number, number]>([
     latitude || -23.5505,
@@ -142,64 +144,65 @@ export const LocationPickerClient = ({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      {/* Campos de localização */}
-      <div className='space-y-4'>
-
-        {/* Endereço */}
-        <div className='space-y-1'>
-          <Label htmlFor='address'>Endereço</Label>
-          <Input
-            id='address'
-            value={address}
-            onChange={(e) => onLocationChange(latitude, longitude, e.target.value)}
-            placeholder='Ex.: Av. Paulista, 1000 - São Paulo, SP'
-            disabled={isLoadingAddress}
-          />
-        </div>
-
-        {/* Coordenadas */}
-        <div className='grid grid-cols-2 gap-4'>
+      {!readOnly && (
+        <div className='space-y-4'>
+          {/* Endereço */}
           <div className='space-y-1'>
-            <Label htmlFor='latitude'>Latitude</Label>
+            <Label htmlFor='address'>Endereço</Label>
             <Input
-              id='latitude'
-              type='number'
-              step='any'
-              value={latitude || ''}
-              onChange={handleLatitudeChange}
-              placeholder='Ex.: -23.5505'
-              disabled={isLoadingCoords}
+              id='address'
+              value={address}
+              onChange={(e) => onLocationChange(latitude, longitude, e.target.value)}
+              placeholder='Ex.: Av. Paulista, 1000 - São Paulo, SP'
+              disabled={isLoadingAddress}
             />
           </div>
-          <div className='space-y-1'>
-            <Label htmlFor='longitude'>Longitude</Label>
-            <Input
-              id='longitude'
-              type='number'
-              step='any'
-              value={longitude || ''}
-              onChange={handleLongitudeChange}
-              placeholder='Ex.: -46.6333'
-              disabled={isLoadingCoords}
-            />
+
+          {/* Coordenadas */}
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='space-y-1'>
+              <Label htmlFor='latitude'>Latitude</Label>
+              <Input
+                id='latitude'
+                type='number'
+                step='any'
+                value={latitude || ''}
+                onChange={handleLatitudeChange}
+                placeholder='Ex.: -23.5505'
+                disabled={isLoadingCoords}
+              />
+            </div>
+            <div className='space-y-1'>
+              <Label htmlFor='longitude'>Longitude</Label>
+              <Input
+                id='longitude'
+                type='number'
+                step='any'
+                value={longitude || ''}
+                onChange={handleLongitudeChange}
+                placeholder='Ex.: -46.6333'
+                disabled={isLoadingCoords}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Mapa */}
       <div className='space-y-2'>
-        <Label>Localização no mapa</Label>
         <div className='border rounded-lg overflow-hidden relative'>
           <LeafletMap
             latitude={latitude}
             longitude={longitude}
             mapCenter={mapCenter}
-            onLocationChange={handleMapClick}
+            onLocationChange={readOnly ? () => {} : handleMapClick}
           />
         </div>
-        <p className='text-xs text-start text-muted-foreground'>
-          Clique no mapa para selecionar a localização
-        </p>
+        {!readOnly && (
+          <p className='text-xs text-start text-muted-foreground'>
+            Clique no mapa para selecionar a localização
+          </p>
+        )}
       </div>
     </div>
   )

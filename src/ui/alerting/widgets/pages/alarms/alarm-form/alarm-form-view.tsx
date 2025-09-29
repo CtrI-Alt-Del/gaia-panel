@@ -100,11 +100,11 @@ export const AlarmFormView = ({
                   <SelectValue placeholder='Selecione a operação' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='>'>Maior que (&gt;)</SelectItem>
-                  <SelectItem value='>='>Maior ou igual (&gt;=)</SelectItem>
-                  <SelectItem value='<'>Menor que (&lt;)</SelectItem>
-                  <SelectItem value='<='>Menor ou igual (&lt;=)</SelectItem>
-                  <SelectItem value='=='>Igual a (==)</SelectItem>
+                  <SelectItem value='GREATER_THAN'>Maior que (&gt;)</SelectItem>
+                  <SelectItem value='GREATER_THAN_OR_EQUAL'>Maior ou igual (&gt;=)</SelectItem>
+                  <SelectItem value='LESS_THAN'>Menor que (&lt;)</SelectItem>
+                  <SelectItem value='LESS_THAN_OR_EQUAL'>Menor ou igual (&lt;=)</SelectItem>
+                  <SelectItem value='EQUAL'>Igual a (==)</SelectItem>
                 </SelectContent>
               </Select>
               {errors.operation && <p className='text-sm text-red-600'>{errors.operation.message}</p>}

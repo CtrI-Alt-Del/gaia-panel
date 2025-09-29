@@ -1,12 +1,12 @@
-import { useQueryParamString } from '@/ui/global/hooks/use-query-param-string'
-import { StatusSelectView } from './status-select-view'
+import { useQueryParamString } from "@/ui/global/hooks/use-query-param-string";
+import { StatusSelectView } from "./status-select-view";
 
 export type StatusSelectProps = {
-  className?: string
-}
+  className?: string;
+};
 
 export const StatusSelect = ({ className }: StatusSelectProps) => {
-  const [queryValue, setQueryValue] = useQueryParamString('isActive', 'all')
+  const [queryValue, setQueryValue] = useQueryParamString("status", "all");
 
   return (
     <StatusSelectView
@@ -14,5 +14,5 @@ export const StatusSelect = ({ className }: StatusSelectProps) => {
       className={className}
       onValueChange={setQueryValue}
     />
-  )
-}
+  );
+};

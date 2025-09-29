@@ -1,40 +1,30 @@
-import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
+import { createLoader, parseAsString, parseAsInteger } from "nuqs/server";
 
-import type { Route } from './+types/parameters-route'
-import { ParametersPage } from '@/ui/telemetry/widgets/pages/parameters'
-import { RestMiddleware } from '@/app/middlewares/rest-middleware'
-import { restContext } from '@/app/contexts/rest-context'
-import { ApiErrorHandler } from '@/app/utils/error-handler'
+import type { Route } from "./+types/parameters-route";
+import { ParametersPage } from "@/ui/telemetry/widgets/pages/parameters";
+import { RestMiddleware } from "@/app/middlewares/rest-middleware";
+import { restContext } from "@/app/contexts/rest-context";
+import { ApiErrorHandler } from "@/app/utils/error-handler";
 
 export const searchParams = {
   name: parseAsString,
   unitOfMeasure: parseAsString,
-  isActive: parseAsString.withDefault('all'),
+  status: parseAsString.withDefault("all"),
   nextCursor: parseAsString,
   previousCursor: parseAsString,
   pageSize: parseAsInteger.withDefault(10),
-}
+};
 
-export const loadSearchParams = createLoader(searchParams)
+export const loadSearchParams = createLoader(searchParams);
 
-export const middleware = [RestMiddleware]
+export const middleware = [RestMiddleware];
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const { telemetryService } = context.get(restContext)
-  const { nextCursor, previousCursor, pageSize, name, unitOfMeasure, isActive } =
-    loadSearchParams(request)
+  const { telemetryService } = context.get(restContext);
+  const { nextCursor, previousCursor, pageSize, name, unitOfMeasure, status } =
+    loadSearchParams(request);
 
-  const service = telemetryService
-
-  // Converter o valor de string para boolean ou undefined
-  let isActiveBoolean: boolean | undefined
-  if (isActive === 'active') {
-    isActiveBoolean = true
-  } else if (isActive === 'inactive') {
-    isActiveBoolean = false
-  } else {
-    isActiveBoolean = undefined // 'all' ou qualquer outro valor
-  }
+  const service = telemetryService;
 
   const response = await service.fetchParameters({
     nextCursor,
@@ -42,11 +32,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     pageSize: Number(pageSize),
     name: name ?? undefined,
     unitOfMeasure: unitOfMeasure ?? undefined,
-    isActive: isActiveBoolean,
-  })
+    status: status ?? "all",
+  });
 
   // Usar o handler de erro para verificar e tratar falhas
-  const data = ApiErrorHandler.ensureSuccess(response, 'buscar parâmetros')
+  const data = ApiErrorHandler.ensureSuccess(response, "buscar parâmetros");
 
   return {
     parameters: data.items,
@@ -56,7 +46,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     hasNextPage: data.hasNextPage,
     hasPreviousPage: data.hasPreviousPage,
     telemetryService,
-  }
-}
+  };
+};
 
-export default ParametersPage
+export default ParametersPage;

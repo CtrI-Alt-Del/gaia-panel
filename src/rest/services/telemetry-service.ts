@@ -10,11 +10,12 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
     },
 
     async fetchParameters(params: ParametersListingParams) {
+      restClient.clearQueryParams();
       if (params.name) restClient.setQueryParam('name', params.name)
       if (params.unitOfMeasure)
         restClient.setQueryParam('unitOfMeasure', params.unitOfMeasure)
-      if (params.isActive !== undefined)
-        restClient.setQueryParam('isActive', params.isActive.toString())
+      if (params.status !== undefined)
+        restClient.setQueryParam('status', params.status.toString())
       if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
       if (params.previousCursor)
         restClient.setQueryParam('previousCursor', params.previousCursor)

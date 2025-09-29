@@ -17,6 +17,7 @@ import { PaginationControl } from '@/ui/global/widgets/components/pagination-con
 import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { AlarmStatusButton } from '../alarm-status-button'
 import { MeasurementUnitIcon } from '@/ui/global/widgets/components/measurement-unit-icon'
+import { AlarmForm } from '../alarm-form'
 
 export type AlarmsTableViewProps = {
   alarms: AlarmDto[]
@@ -165,20 +166,7 @@ export const AlarmsTableView = ({
                         }
                       >
                         {(closeDialog) => (
-                          <div className='p-4'>
-                            <p className='text-sm text-stone-600'>
-                              Formulário de edição será implementado em breve.
-                            </p>
-                            <div className='flex justify-end mt-4'>
-                              <button
-                                type='button'
-                                onClick={closeDialog}
-                                className='px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-md'
-                              >
-                                Fechar
-                              </button>
-                            </div>
-                          </div>
+                          <AlarmForm onCancel={closeDialog} onSuccess={closeDialog} alarmDto={alarm}/>
                         )}
                       </Dialog>
                     )}

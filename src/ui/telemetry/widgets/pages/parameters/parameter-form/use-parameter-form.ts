@@ -49,9 +49,6 @@ export function useParameterForm({
   }) {
     const isEdition = Boolean(parameterDto?.id)
 
-    // TODO: Implementar updateParameter/createParameter quando o serviço estiver disponível
-    console.log(isEdition ? 'Atualizando parâmetro:' : 'Criando parâmetro:', data)
-
     // Simulando resposta de sucesso por enquanto
     const response = { isSuccessful: true, isFailure: false } as any
 

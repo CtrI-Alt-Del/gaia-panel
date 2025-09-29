@@ -8,7 +8,5 @@ export type StatusSelectProps = {
 export const StatusSelect = ({ className }: StatusSelectProps) => {
   const [queryValue] = useQueryParamString('status', 'all')
 
-  console.log(queryValue)
-
   return <StatusSelectView value={queryValue} className={className} />
 }

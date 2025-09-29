@@ -3,13 +3,6 @@ import { RestMiddleware } from '@/app/middlewares/rest-middleware'
 import { restContext } from '@/app/contexts/rest-context'
 import { AlarmsPage } from '@/ui/alerting/widgets/pages/alarms'
 import type { Route } from '../membership/+types/users-route'
-import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
-import { AlertingService } from '@/rest/services/alerting-service'
-import { authContext } from '@/app/contexts/auth-context'
-import { redirect } from 'react-router'
-import { ROUTES } from '@/core/global/constants/routes'
-import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
-import { ENV } from '@/core/global/constants'
 
 export const searchParams = {
   status: parseAsString,
@@ -20,16 +13,12 @@ export const searchParams = {
 
 export const loadSearchParams = createLoader(searchParams)
 
-export const middleware = [AuthMiddleware, RestMiddleware, AlertingService]
+export const middleware = [RestMiddleware]
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const { nextCursor, previousCursor, pageSize, status } = loadSearchParams(request)
-
-  const restClient = AxiosRestClient()
-  restClient.setBaseUrl(ENV.gaiaServerUrl)
-  const service = AlertingService(restClient)
-
-  const response = await service.fetchAlarms({
+  const { alertingService } = context.get(restContext)
+  const response = await alertingService.fetchAlarms({
     nextCursor,
     previousCursor,
     pageSize: Number(pageSize),
@@ -37,7 +26,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   })
   if (response.isFailure) response.throwError()
 
-  console.log('response', response)
   return {
     alarms: response.body.items,
     nextCursor: response.body.nextCursor,

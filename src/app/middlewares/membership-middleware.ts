@@ -7,8 +7,6 @@ export const MembershipMiddleware = async ({ context }: Route.LoaderArgs) => {
   const { userId } = context.get(authContext)
   const { membershipService } = context.get(restContext)
 
-  console.log({ userId })
-
   let user = null
 
   if (userId) {

@@ -67,7 +67,6 @@ export function useStationForm({
         id: stationDto.id,
         quantityOfParameters: data.parameterIds.length,
       }
-      console.log(station) // -60,02388986211038, -64,00806427001955
       response = await telemetryService.updateStation(station, data.parameterIds)
     } else {
       const stationDto: StationDto = {

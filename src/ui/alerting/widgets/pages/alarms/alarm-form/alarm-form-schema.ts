@@ -13,7 +13,7 @@ export const alarmFormSchema = z.object({
     message: 'Nível é obrigatório',
   }),
 
-  operation: z.enum(['>', '<', '>=', '<=', '=='], {
+  operation: z.enum(['GREATER_THAN', 'LESS_THAN', 'GREATER_THAN_OR_EQUAL', 'LESS_THAN_OR_EQUAL', 'EQUAL'], {
     message: 'Operação é obrigatória',
   }),
 

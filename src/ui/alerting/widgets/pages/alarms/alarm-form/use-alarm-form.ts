@@ -2,13 +2,18 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 import { alarmFormSchema, type AlarmFormData } from './alarm-form-schema'
+import type { AlertingService } from '@/core/alerting/interfaces/alerting-service'
+import type { ToastProvider, UiProvider } from '@/core/global/interfaces'
 
 type UseAlarmFormProps = {
   onSuccess?: () => void
   onCancel?: () => void
+  uiProvider: UiProvider
+  toastProvider: ToastProvider
+  alertingService: AlertingService
 }
 
-export function useAlarmForm({ onSuccess, onCancel }: UseAlarmFormProps = {}) {
+export function useAlarmForm({ onSuccess, onCancel, alertingService, uiProvider, toastProvider }: UseAlarmFormProps) {
   const form = useForm<AlarmFormData>({
     resolver: zodResolver(alarmFormSchema),
     defaultValues: {
@@ -25,10 +30,11 @@ export function useAlarmForm({ onSuccess, onCancel }: UseAlarmFormProps = {}) {
     console.log('Dados do formulário para DTO:', data)
     return {
       message: data.message.trim(),
-      parameterId: data.parameterId,
-      stationId: data.stationId,
+      parameter:{
+        id:data.parameterId
+      },
       rule: {
-        threshold: data.threshold,
+        threshold: Number(data.threshold).valueOf(),
         operation: data.operation,
       },
       level: data.level,
@@ -40,8 +46,18 @@ export function useAlarmForm({ onSuccess, onCancel }: UseAlarmFormProps = {}) {
     try {
       const alarmDto = buildAlarmDto(data)
       console.log('Criando alarme:', alarmDto)
+      
+      const response = await alertingService.createAlarm(alarmDto)
 
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (response.isFailure) {
+        toastProvider.showError(response.errorMessage)
+      }
+
+      if (response.isSuccessful) {
+        toastProvider.showSuccess( 'Alerta criado com sucesso!',)
+        await uiProvider.reload()
+        onSuccess?.()
+      }
 
       form.reset()
       onSuccess?.()

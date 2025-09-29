@@ -7,24 +7,25 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
   return {
     async fetchAlarms(params: AlarmListingParams) {
       if (params.status) restClient.setQueryParam('status', params.status.toString())
+      if (params.level) restClient.setQueryParam('level', params.level.toString())
       if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
       if (params.previousCursor)
         restClient.setQueryParam('previousCursor', params.previousCursor)
       if (params.pageSize)
         restClient.setQueryParam('pageSize', params.pageSize.toString())
-      return await restClient.get('/alerting/alarm')
+      return await restClient.get('/alerting/alarms')
     },
 
     async activateAlarm(alarmId: string) {
-      return await restClient.patch(`/alerting/alarm/${alarmId}`)
+      return await restClient.patch(`/alerting/alarms/${alarmId}`)
     },
 
     async deactivateAlarm(alarmId) {
-      return await restClient.delete(`/alerting/alarm/${alarmId}`)
+      return await restClient.delete(`/alerting/alarms/${alarmId}`)
     },
 
     async createAlarm(alarmDto: AlarmDto) {
-      return await restClient.post("/alerting/alarm", alarmDto)
+      return await restClient.post("/alerting/alarms", alarmDto)
     },
   }
 }

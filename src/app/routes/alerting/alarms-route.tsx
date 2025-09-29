@@ -9,6 +9,7 @@ export const searchParams = {
   nextCursor: parseAsString,
   previousCursor: parseAsString,
   pageSize: parseAsInteger.withDefault(10),
+  level: parseAsString
 }
 
 export const loadSearchParams = createLoader(searchParams)
@@ -16,13 +17,14 @@ export const loadSearchParams = createLoader(searchParams)
 export const middleware = [RestMiddleware]
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const { nextCursor, previousCursor, pageSize, status } = loadSearchParams(request)
+  const { nextCursor, previousCursor, pageSize, status, level } = loadSearchParams(request)
   const { alertingService } = context.get(restContext)
   const response = await alertingService.fetchAlarms({
     nextCursor,
     previousCursor,
     pageSize: Number(pageSize),
     status: status ?? undefined,
+    level: level ?? undefined
   })
   if (response.isFailure) response.throwError()
 

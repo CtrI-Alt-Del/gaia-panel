@@ -51,6 +51,7 @@ export function useParameterForm({
   }) {
     const isEdition = Boolean(parameterDto?.id)
 
+
     try {
       let response: RestResponse<ParameterDto>
       if (isEdition) {
@@ -69,6 +70,7 @@ export function useParameterForm({
         toastProvider.showError('Erro ao salvar parâmetro')
         return
       }
+
 
       if (response.isSuccessful) {
         toastProvider.showSuccess(

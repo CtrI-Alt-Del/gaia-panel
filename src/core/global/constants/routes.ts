@@ -1,0 +1,20 @@
+export const ROUTES = {
+  auth: {
+    signUp: '/auth/sign-up',
+    signIn: '/auth/sign-in',
+    changePassword: '/auth/change-password',
+  },
+  dashboard: '/dashboard',
+  stations: '/stations',
+  station: '/stations/:stationId',
+  stationLocation: '/stations/:stationId/location',
+  stationParameters: '/stations/:stationId/parameters',
+  stationMeasurements: '/stations/:stationId/measurements',
+  parameters: '/parameters',
+  alarms: '/alarms',
+  alerts: '/alerts',
+  reports: '/reports',
+  configuration: '/configuration',
+  profile: '/profile',
+  users: '/users',
+}

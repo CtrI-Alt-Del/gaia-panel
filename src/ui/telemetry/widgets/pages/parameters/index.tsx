@@ -5,7 +5,7 @@ import type { loader } from '@/app/routes/telemetry/parameters-route'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 
 export const ParametersPage = () => {
-  const { parameters, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+  const { user, parameters, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
     useLoaderData<typeof loader>()
   const { selectedParameter, handleEdit, handleCloseModal } = useParametersPage({
     parameters,
@@ -23,6 +23,7 @@ export const ParametersPage = () => {
       selectedParameter={selectedParameter}
       onEdit={handleEdit}
       onCloseModal={handleCloseModal}
+      isAuthenticated={Boolean(user)}
     />
   )
 }

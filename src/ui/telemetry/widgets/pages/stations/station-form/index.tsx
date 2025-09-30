@@ -1,16 +1,24 @@
-import { StationFormView } from "./station-form-view";
-import type { StationDto } from "@/core/telemetry/dtos/station-dto";
-import type { TelemetryService } from "@/core/telemetry/interfaces/telemetry-service";
-import type { UiProvider } from "@/core/global/interfaces/ui-provider";
-import type { ToastProvider } from "@/core/global/interfaces/toast-provider";
+import { StationFormView } from './station-form-view'
+import type { StationDto } from '@/core/telemetry/dtos/station-dto'
+import { useRest, useToastProvider, useUiProvider } from '@/ui/global/hooks'
 
 type StationFormProps = {
-  onSuccess: () => void;
-  onCancel: () => void;
-  stationDto?: StationDto;
-  telemetryService: TelemetryService;
-  uiProvider: UiProvider;
-  toastProvider: ToastProvider;
-};
+  onSuccess: () => void
+  onCancel: () => void
+  stationDto?: StationDto
+}
 
-export const StationForm = (props: StationFormProps) => <StationFormView {...props} />;
+export const StationForm = (props: StationFormProps) => {
+  const { telemetryService } = useRest()
+  const uiProvider = useUiProvider()
+  const toastProvider = useToastProvider()
+
+  return (
+    <StationFormView
+      {...props}
+      telemetryService={telemetryService}
+      uiProvider={uiProvider}
+      toastProvider={toastProvider}
+    />
+  )
+}

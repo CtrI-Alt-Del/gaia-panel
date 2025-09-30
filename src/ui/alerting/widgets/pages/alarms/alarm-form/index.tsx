@@ -33,6 +33,7 @@ export const AlarmForm = ({ onSuccess, onCancel, alarmDto }: AlarmFormProps) => 
       onSubmit={handleSubmit}
       onCancel={handleCancel}
       isEditing={Boolean(alarmDto?.id)}
+      alarmDto={alarmDto}
     />
   )
 }

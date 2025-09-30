@@ -33,6 +33,14 @@ export type AlarmsTableViewProps = {
   // onAlarmUpdated?: (alarm: AlarmDto) => void
 }
 
+const translateOperation = {
+    "EQUAL": "=",
+    "GREATER_THAN": ">",
+    "GREATER_THAN_OR_EQUAL": ">=",
+    "LESS_THAN": "<",
+    "LESS_THAN_OR_EQUAL": "<="
+  }
+
 export const AlarmsTableView = ({
   alarms,
   nextCursor,
@@ -44,28 +52,6 @@ export const AlarmsTableView = ({
   onEdit,
   onCloseModal,
 }: AlarmsTableViewProps) => {
-
-  const translateOperation = (operation: AlarmRuleOperation) => {
-    if (operation === "EQUAL") {
-      return "Igual"
-    }
-
-    if (operation === "GREATER_THAN") {
-      return "Maior que"
-    }
-
-    if (operation === "GREATER_THAN_OR_EQUAL") {
-      return "Maior ou igual"
-    }
-
-    if (operation === "LESS_THAN") {
-      return "Menor que"
-    }
-
-    if (operation === "LESS_THAN_OR_EQUAL") {
-      return "Menor ou igual"
-    }
-  }
 
   return (
     <Table>
@@ -146,7 +132,7 @@ export const AlarmsTableView = ({
 
                 <TableCell>
                   <div className='text-sm font-mono text-stone-700'>
-                    {translateOperation(alarm.rule.operation)}
+                    {translateOperation[alarm.rule.operation]}
                   </div>
                 </TableCell>
 

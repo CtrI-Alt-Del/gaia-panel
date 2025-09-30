@@ -54,6 +54,7 @@ export const AlarmsTableView = ({
   onEdit,
   onCloseModal,
 }: AlarmsTableViewProps) => {
+  console.log(isAuthenticated)
   return (
     <Table>
       <TableHeader>
@@ -157,9 +158,9 @@ export const AlarmsTableView = ({
                     : '-'}
                 </TableCell>
 
-                <TableCell className='text-right'>
+             {isAuthenticated && <TableCell className='text-right'>
                   <div className='flex gap-2 justify-center'>
-                    {isAuthenticated && onEdit && (
+                    {onEdit && (
                       <Dialog
                         onClose={onCloseModal || (() => {})}
                         title='Editar Alarm'
@@ -190,7 +191,7 @@ export const AlarmsTableView = ({
                       isActive={alarm.isActive || false}
                     />
                   </div>
-                </TableCell>
+                </TableCell>}
               </TableRow>
             )
           })

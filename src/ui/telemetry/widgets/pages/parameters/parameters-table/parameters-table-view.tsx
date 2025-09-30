@@ -77,7 +77,7 @@ export const ParametersTableView = ({
           parameters.map((parameter) => {
             return (
               <TableRow key={parameter.id}>
-                <TableCell>
+                <TableCell className='pl-6'>
                   <div className='flex items-center gap-3'>
                     <MeasurementUnitIcon unit={parameter.unitOfMeasure} />
                     <div className='leading-tight'>

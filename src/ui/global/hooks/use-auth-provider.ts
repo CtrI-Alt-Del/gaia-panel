@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react'
-import { useClerk, useSignIn, useSignUp, useUser } from '@clerk/react-router'
+import { useClerk, useSignIn, useUser } from '@clerk/react-router'
 
 export function useAuthProvider() {
   const { signOut: clerkSignOut } = useClerk()
   const { signIn: clerkSignIn, setActive } = useSignIn()
-  const { signUp: clerkSignUp } = useSignUp()
-  const { user } = useUser()
+  const { user, isSignedIn } = useUser()
   const [otp, setOtp] = useState('')
 
   const signIn = useCallback(
@@ -39,13 +38,10 @@ export function useAuthProvider() {
     [clerkSignIn?.create],
   )
 
-  const verifyOtp = useCallback(
-    async (otp: string) => {
-      setOtp(otp)
-      return true
-    },
-    [],
-  )
+  const verifyOtp = useCallback(async (otp: string) => {
+    setOtp(otp)
+    return true
+  }, [])
 
   const changePassword = useCallback(
     async (password: string) => {
@@ -66,5 +62,6 @@ export function useAuthProvider() {
     verifyOtp,
     changePassword,
     userId: user?.publicMetadata?.userId ? String(user.publicMetadata.userId) : '',
+    isAuthenticated: Boolean(isSignedIn),
   }
 }

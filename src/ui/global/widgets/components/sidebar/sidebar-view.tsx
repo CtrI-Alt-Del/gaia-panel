@@ -17,6 +17,7 @@ import {
 import { ROUTES } from '@/core/global/constants/routes'
 import { SidebarItem } from './sidebar-item'
 import { UserInfo } from '../user-info'
+import { Link } from 'react-router'
 
 type Props = {
   currentPath: string
@@ -27,14 +28,14 @@ export const SidebarView = ({ currentPath, isUserOwner }: Props) => {
   return (
     <Sidebar className='w-64 bg-card min-h-screen'>
       <SidebarHeader className='p-6 bg-card'>
-        <div className='flex items-center gap-1'>
+        <Link to={ROUTES.index} className='flex items-center gap-1'>
           <img
             src='../../../../../public/images/gaia-logo.png'
             alt='Gaia'
             width={96}
             height={96}
           />
-        </div>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent className='bg-card px-3'>

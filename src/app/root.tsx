@@ -17,7 +17,6 @@ import type { Route } from './+types/root'
 import '@/ui/global/styles/global.css'
 import { Toaster } from '@/ui/shadcn/components/sonner'
 import { PageBackground } from '@/ui/global/widgets/components/page-background'
-import { ENV } from '@/core/global/constants'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -58,14 +57,17 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 const App = ({ loaderData }: Route.ComponentProps) => {
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 1000 * 60 * 5,
-        retry: 1,
-      },
-    },
-  }))
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 5,
+            retry: 1,
+          },
+        },
+      }),
+  )
 
   return (
     <QueryClientProvider client={queryClient}>

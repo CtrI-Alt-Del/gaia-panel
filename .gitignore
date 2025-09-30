@@ -6,10 +6,6 @@
 /build/
 
 /.windsurf
-
-# Windsurf
-/.windsurf/** 
-
-.cursor/
+/.cursor
 
 .env

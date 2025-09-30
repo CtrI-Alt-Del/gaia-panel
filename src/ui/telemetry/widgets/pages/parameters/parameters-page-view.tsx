@@ -1,6 +1,6 @@
 import { Form } from "react-router";
 
-import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
+import type { ParameterDto } from "@/core/telemetry/dtos/parameter-dto";
 import { Button } from "@/ui/shadcn/components/button";
 import { Plus } from "lucide-react";
 import { PageSizeSelect } from "@/ui/global/widgets/components/page-size-select";
@@ -8,7 +8,7 @@ import { StatusSelect } from "@/ui/global/widgets/components/status-select";
 import { ParameterNameSearchInput } from "./parameter-name-search-input";
 import { ParameterForm } from "./parameter-form";
 import { Dialog } from "@/ui/global/widgets/components/dialog";
-import { ParametersTableView } from "./parameters-table/parameters-table-view";
+import { ParametersTable } from "./parameters-table";
 
 export type ParametersPageViewProps = {
   parameters: ParameterDto[];
@@ -17,11 +17,11 @@ export type ParametersPageViewProps = {
   hasNextPage?: boolean;
   hasPreviousPage?: boolean;
   isLoading?: boolean;
+  isAuthenticated?: boolean;
   selectedParameter?: ParameterDto;
   onEdit?: (id: string) => void;
   onCloseModal?: () => void;
   onParameterUpdated?: (parameter: ParameterDto) => void;
-  onToggleActive?: (id: string) => void;
 };
 
 export const ParametersPageView = ({
@@ -31,11 +31,11 @@ export const ParametersPageView = ({
   hasNextPage,
   hasPreviousPage,
   isLoading,
+  isAuthenticated,
   selectedParameter,
   onEdit,
   onCloseModal,
   onParameterUpdated,
-  onToggleActive,
 }: ParametersPageViewProps) => {
   return (
     <section className="container mx-auto px-4 py-2">
@@ -58,10 +58,9 @@ export const ParametersPageView = ({
         </div>
       </div>
 
-      <div className="rounded-lg border border-stone-200">
+      <div className="rounded-lg bg-card border border-stone-200">
         <div className="flex items-center justify-between p-4 border-b border-stone-200">
-          <h2 className="text-lg font-medium">Parâmetros</h2>
-          <Dialog
+        {isAuthenticated &&  <Dialog
             onClose={onCloseModal || (() => {})}
             title="Novo Parâmetro"
             description="Preencha os dados para criar um novo parâmetro"
@@ -76,10 +75,10 @@ export const ParametersPageView = ({
             {(closeDialog) => (
               <ParameterForm onSuccess={closeDialog} onCancel={closeDialog} />
             )}
-          </Dialog>
+          </Dialog>}
         </div>
 
-        <ParametersTableView
+        <ParametersTable
           parameters={parameters}
           nextCursor={nextCursor}
           previousCursor={previousCursor}
@@ -90,7 +89,6 @@ export const ParametersPageView = ({
           onEdit={onEdit}
           onCloseModal={onCloseModal}
           onParameterUpdated={onParameterUpdated}
-          onToggleActive={onToggleActive}
         />
       </div>
     </section>

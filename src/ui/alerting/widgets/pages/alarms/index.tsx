@@ -6,7 +6,7 @@ import { AlarmsPageView } from './alarms-page-view'
 import { useAlarmsPage } from './use-alarms-page'
 
 export const AlarmsPage = () => {
-  const { alarms, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+  const { user, alarms, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
     useLoaderData<typeof loader>()
 
   const { selectedAlarm, handleEdit } = useAlarmsPage({

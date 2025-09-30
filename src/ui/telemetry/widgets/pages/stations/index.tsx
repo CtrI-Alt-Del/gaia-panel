@@ -1,20 +1,17 @@
 import { useLoaderData } from 'react-router'
+
 import { useStationsPage } from './use-stations-page'
 import { StationsPageView } from './stations-page-view'
-import type { loader } from '@/app/routes/telemetry/stations-route'
+import type { loader as StationsLoader } from '@/app/routes/telemetry/stations-route'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
-import { useRest } from '@/ui/global/hooks/use-rest'
-import { useToastProvider } from '@/ui/global/hooks/use-toast-provider'
 
 export const StationsPage = () => {
-  const { stations, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
-    useLoaderData<typeof loader>()
+  const { user, stations, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+    useLoaderData<typeof StationsLoader>()
   const { selectedStation, handleEdit } = useStationsPage({
     stations,
   })
-  const { isLoading, reload } = useUiProvider()
-  const { telemetryService } = useRest()
-  const toastProvider = useToastProvider()
+  const { isLoading } = useUiProvider()
 
   return (
     <StationsPageView
@@ -26,9 +23,7 @@ export const StationsPage = () => {
       isLoading={isLoading}
       onEdit={handleEdit}
       selectedStation={selectedStation}
-      telemetryService={telemetryService}
-      uiProvider={{ isLoading, reload }}
-      toastProvider={toastProvider}
+      isAuthenticated={Boolean(user)}
     />
   )
 }

@@ -27,6 +27,7 @@ export type AlarmsTableViewProps = {
   hasNextPage?: boolean
   hasPreviousPage?: boolean
   isLoading?: boolean
+  isAuthenticated?: boolean
   selectedAlarm?: AlarmDto
   onEdit?: (id: string) => void
   onCloseModal?: () => void
@@ -34,12 +35,12 @@ export type AlarmsTableViewProps = {
 }
 
 const translateOperation = {
-    "EQUAL": "=",
-    "GREATER_THAN": ">",
-    "GREATER_THAN_OR_EQUAL": ">=",
-    "LESS_THAN": "<",
-    "LESS_THAN_OR_EQUAL": "<="
-  }
+  EQUAL: '=',
+  GREATER_THAN: '>',
+  GREATER_THAN_OR_EQUAL: '>=',
+  LESS_THAN: '<',
+  LESS_THAN_OR_EQUAL: '<=',
+}
 
 export const AlarmsTableView = ({
   alarms,
@@ -48,11 +49,12 @@ export const AlarmsTableView = ({
   hasNextPage,
   hasPreviousPage,
   isLoading,
+  isAuthenticated,
   // selectedAlarm, // TODO: Usar quando implementar edição de alarms
   onEdit,
   onCloseModal,
 }: AlarmsTableViewProps) => {
-
+  console.log(isAuthenticated)
   return (
     <Table>
       <TableHeader>
@@ -65,7 +67,7 @@ export const AlarmsTableView = ({
           <TableHead>Limite</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Data de Criação</TableHead>
-          <TableHead className='text-center'>Ações</TableHead>
+          {isAuthenticated && <TableHead className='text-center'>Ações</TableHead>}
         </TableRow>
       </TableHeader>
 
@@ -156,7 +158,7 @@ export const AlarmsTableView = ({
                     : '-'}
                 </TableCell>
 
-                <TableCell className='text-right'>
+             {isAuthenticated && <TableCell className='text-right'>
                   <div className='flex gap-2 justify-center'>
                     {onEdit && (
                       <Dialog
@@ -176,7 +178,11 @@ export const AlarmsTableView = ({
                         }
                       >
                         {(closeDialog) => (
-                          <AlarmForm onCancel={closeDialog} onSuccess={closeDialog} alarmDto={alarm}/>
+                          <AlarmForm
+                            onCancel={closeDialog}
+                            onSuccess={closeDialog}
+                            alarmDto={alarm}
+                          />
                         )}
                       </Dialog>
                     )}
@@ -185,7 +191,7 @@ export const AlarmsTableView = ({
                       isActive={alarm.isActive || false}
                     />
                   </div>
-                </TableCell>
+                </TableCell>}
               </TableRow>
             )
           })

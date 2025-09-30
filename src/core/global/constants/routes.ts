@@ -1,4 +1,5 @@
 export const ROUTES = {
+  index: '/',
   auth: {
     signUp: '/auth/sign-up',
     signIn: '/auth/sign-in',

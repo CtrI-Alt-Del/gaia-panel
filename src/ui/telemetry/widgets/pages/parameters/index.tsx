@@ -11,6 +11,7 @@ export const ParametersPage = () => {
     parameters,
   })
   const { isLoading } = useUiProvider()
+  const { user } = useLoaderData<typeof loader>()
 
   return (
     <ParametersPageView
@@ -23,6 +24,7 @@ export const ParametersPage = () => {
       selectedParameter={selectedParameter}
       onEdit={handleEdit}
       onCloseModal={handleCloseModal}
+      isAuthenticated={Boolean(user)}
     />
   )
 }

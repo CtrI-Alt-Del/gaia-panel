@@ -6,13 +6,11 @@ import { AlarmsPageView } from './alarms-page-view'
 import { useAlarmsPage } from './use-alarms-page'
 
 export const AlarmsPage = () => {
-  const { alarms, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+  const { user, alarms, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
     useLoaderData<typeof loader>()
-
   const { selectedAlarm, handleEdit } = useAlarmsPage({
     alarms,
   })
-
   const { isLoading } = useUiProvider()
 
   return (
@@ -22,6 +20,7 @@ export const AlarmsPage = () => {
       previousCursor={previousCursor}
       hasNextPage={hasNextPage}
       hasPreviousPage={hasPreviousPage}
+      isAuthenticated={Boolean(user)}
       isLoading={isLoading}
       onEdit={handleEdit}
       selectedAlarm={selectedAlarm}

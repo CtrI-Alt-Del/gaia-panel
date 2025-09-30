@@ -15,6 +15,7 @@ import { Textarea } from '@/ui/shadcn/components/textarea'
 import { AlertCircle, ChevronRight, Edit } from 'lucide-react'
 import type { AlarmFormData } from './alarm-form-schema'
 import { ParameterSelectorSheet } from './parameter-selector-sheet'
+import type { AlarmDto } from '@/core/alerting/dtos'
 
 type AlarmFormViewProps = {
   form: ReturnType<typeof useForm<AlarmFormData>>
@@ -22,6 +23,7 @@ type AlarmFormViewProps = {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
   onCancel: () => void
   isEditing?: boolean
+  alarmDto?: AlarmDto
 }
 
 export const AlarmFormView = ({
@@ -29,7 +31,8 @@ export const AlarmFormView = ({
   isSubmitting,
   onSubmit,
   onCancel,
-  isEditing
+  isEditing,
+  alarmDto
 }: AlarmFormViewProps) => {
   const {
     register,
@@ -42,7 +45,7 @@ export const AlarmFormView = ({
 
   const selectedParameterId = watch('parameterId')
   const [selectedStationName, setSelectedStationName] = useState('')
-  const [selectedParameterName, setSelectedParameterName] = useState('')
+  const [selectedParameterName, setSelectedParameterName] = useState(isEditing ? `${alarmDto?.parameter.entity?.name} ${alarmDto?.parameter.entity?.unitOfMeasure}` : '')
 
   return (
     <>

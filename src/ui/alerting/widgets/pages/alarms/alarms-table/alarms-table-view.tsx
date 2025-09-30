@@ -18,6 +18,7 @@ import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { AlarmStatusButton } from '../alarm-status-button'
 import { MeasurementUnitIcon } from '@/ui/global/widgets/components/measurement-unit-icon'
 import { AlarmForm } from '../alarm-form'
+import type { AlarmRuleOperation } from '@/core/alerting/types'
 
 export type AlarmsTableViewProps = {
   alarms: AlarmDto[]
@@ -32,6 +33,14 @@ export type AlarmsTableViewProps = {
   // onAlarmUpdated?: (alarm: AlarmDto) => void
 }
 
+const translateOperation = {
+    "EQUAL": "=",
+    "GREATER_THAN": ">",
+    "GREATER_THAN_OR_EQUAL": ">=",
+    "LESS_THAN": "<",
+    "LESS_THAN_OR_EQUAL": "<="
+  }
+
 export const AlarmsTableView = ({
   alarms,
   nextCursor,
@@ -43,6 +52,7 @@ export const AlarmsTableView = ({
   onEdit,
   onCloseModal,
 }: AlarmsTableViewProps) => {
+
   return (
     <Table>
       <TableHeader>
@@ -122,7 +132,7 @@ export const AlarmsTableView = ({
 
                 <TableCell>
                   <div className='text-sm font-mono text-stone-700'>
-                    {alarm.rule.operation}
+                    {translateOperation[alarm.rule.operation]}
                   </div>
                 </TableCell>
 

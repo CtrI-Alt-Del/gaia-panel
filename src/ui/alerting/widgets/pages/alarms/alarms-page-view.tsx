@@ -18,6 +18,7 @@ export type AlarmsPageViewProps = {
   hasPreviousPage?: boolean
   isLoading?: boolean
   selectedAlarm?: AlarmDto
+  isAuthenticated?: boolean
   onEdit?: (id: string) => void
   onCloseModal?: () => void
   onAlarmUpdated?: (alarm: AlarmDto) => void
@@ -31,6 +32,7 @@ export const AlarmsPageView = ({
   hasPreviousPage,
   isLoading,
   selectedAlarm,
+  isAuthenticated,
   onEdit,
   onCloseModal,
 }: AlarmsPageViewProps) => {
@@ -57,23 +59,25 @@ export const AlarmsPageView = ({
 
       <div className='rounded-lg bg-card border border-stone-200'>
         <div className='flex items-end justify-start p-4 border-b border-stone-200'>
-          <Dialog
-            onClose={onCloseModal || (() => {})}
-            title='Novo Alarme'
-            icon={<Bell className='w-4 h-4' />}
-            description='Preencha os dados para criar um novo alarme'
-            size='lg'
-            trigger={
-              <Button className='flex items-center gap-2 h-9'>
-                <Plus className='w-4 h-4' />
-                Novo Alarme
-              </Button>
-            }
-          >
-            {(closeDialog) => (
-              <AlarmForm onSuccess={closeDialog} onCancel={closeDialog} />
-            )}
-          </Dialog>
+          {isAuthenticated && (
+            <Dialog
+              onClose={onCloseModal || (() => {})}
+              title='Novo Alarme'
+              icon={<Bell className='w-4 h-4' />}
+              description='Preencha os dados para criar um novo alarme'
+              size='lg'
+              trigger={
+                <Button className='flex items-center gap-2 h-9'>
+                  <Plus className='w-4 h-4' />
+                  Novo Alarme
+                </Button>
+              }
+            >
+              {(closeDialog) => (
+                <AlarmForm onSuccess={closeDialog} onCancel={closeDialog} />
+              )}
+            </Dialog>
+          )}
         </div>
 
         <AlarmsTableView

@@ -18,6 +18,7 @@ import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { AlarmStatusButton } from '../alarm-status-button'
 import { MeasurementUnitIcon } from '@/ui/global/widgets/components/measurement-unit-icon'
 import { AlarmForm } from '../alarm-form'
+import type { AlarmRuleOperation } from '@/core/alerting/types'
 
 export type AlarmsTableViewProps = {
   alarms: AlarmDto[]
@@ -26,10 +27,19 @@ export type AlarmsTableViewProps = {
   hasNextPage?: boolean
   hasPreviousPage?: boolean
   isLoading?: boolean
+  isAuthenticated?: boolean
   selectedAlarm?: AlarmDto
   onEdit?: (id: string) => void
   onCloseModal?: () => void
   // onAlarmUpdated?: (alarm: AlarmDto) => void
+}
+
+const translateOperation = {
+  EQUAL: '=',
+  GREATER_THAN: '>',
+  GREATER_THAN_OR_EQUAL: '>=',
+  LESS_THAN: '<',
+  LESS_THAN_OR_EQUAL: '<=',
 }
 
 export const AlarmsTableView = ({
@@ -39,6 +49,7 @@ export const AlarmsTableView = ({
   hasNextPage,
   hasPreviousPage,
   isLoading,
+  isAuthenticated,
   // selectedAlarm, // TODO: Usar quando implementar edição de alarms
   onEdit,
   onCloseModal,
@@ -55,7 +66,7 @@ export const AlarmsTableView = ({
           <TableHead>Limite</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Data de Criação</TableHead>
-          <TableHead className='text-center'>Ações</TableHead>
+          {isAuthenticated && <TableHead className='text-center'>Ações</TableHead>}
         </TableRow>
       </TableHeader>
 
@@ -122,7 +133,7 @@ export const AlarmsTableView = ({
 
                 <TableCell>
                   <div className='text-sm font-mono text-stone-700'>
-                    {alarm.rule.operation}
+                    {translateOperation[alarm.rule.operation]}
                   </div>
                 </TableCell>
 
@@ -148,7 +159,7 @@ export const AlarmsTableView = ({
 
                 <TableCell className='text-right'>
                   <div className='flex gap-2 justify-center'>
-                    {onEdit && (
+                    {isAuthenticated && onEdit && (
                       <Dialog
                         onClose={onCloseModal || (() => {})}
                         title='Editar Alarm'
@@ -166,7 +177,11 @@ export const AlarmsTableView = ({
                         }
                       >
                         {(closeDialog) => (
-                          <AlarmForm onCancel={closeDialog} onSuccess={closeDialog} alarmDto={alarm}/>
+                          <AlarmForm
+                            onCancel={closeDialog}
+                            onSuccess={closeDialog}
+                            alarmDto={alarm}
+                          />
                         )}
                       </Dialog>
                     )}

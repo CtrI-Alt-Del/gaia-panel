@@ -2,7 +2,7 @@ import { Form } from 'react-router'
 
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
 import { Button } from '@/ui/shadcn/components/button'
-import { Plus } from 'lucide-react'
+import { Plus, RadioTower } from 'lucide-react'
 import { PageSizeSelect } from '@/ui/global/widgets/components/page-size-select'
 import { StatusSelect } from '@/ui/global/widgets/components/status-select'
 import { StationNameSearchInput } from './station-name-search-input'
@@ -62,6 +62,7 @@ export const StationsPageView = ({
           {isAuthenticated && (
             <Dialog
               onClose={onCloseModal || (() => {})}
+              icon={<RadioTower className='w-4 h-4' />}
               title='Nova Estação'
               description='Preencha os dados para criar uma nova estação'
               size='2xl'

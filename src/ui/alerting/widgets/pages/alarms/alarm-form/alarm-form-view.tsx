@@ -29,10 +29,10 @@ type AlarmFormViewProps = {
 export const AlarmFormView = ({
   form,
   isSubmitting,
-  onSubmit,
-  onCancel,
   isEditing,
   alarmDto,
+  onSubmit,
+  onCancel,
 }: AlarmFormViewProps) => {
   const {
     register,
@@ -61,7 +61,7 @@ export const AlarmFormView = ({
           {selectedParameterId ? (
             <div className='flex items-center justify-between p-3 border rounded-md bg-gray-50'>
               <div>
-                <p className='text-sm font-medium'>{selectedStationName}</p>
+                <p className='text-lg font-bold'>{selectedStationName}</p>
                 <p className='text-xs text-gray-500'>{selectedParameterName}</p>
               </div>
               <Button

@@ -1,4 +1,4 @@
-import { Edit, AlertTriangle, AlertCircle } from 'lucide-react'
+import { Edit, AlertTriangle, AlertCircle, Bell } from 'lucide-react'
 
 import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
@@ -18,7 +18,6 @@ import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { AlarmStatusButton } from '../alarm-status-button'
 import { MeasurementUnitIcon } from '@/ui/global/widgets/components/measurement-unit-icon'
 import { AlarmForm } from '../alarm-form'
-import type { AlarmRuleOperation } from '@/core/alerting/types'
 
 export type AlarmsTableViewProps = {
   alarms: AlarmDto[]
@@ -50,11 +49,9 @@ export const AlarmsTableView = ({
   hasPreviousPage,
   isLoading,
   isAuthenticated,
-  // selectedAlarm, // TODO: Usar quando implementar edição de alarms
   onEdit,
   onCloseModal,
 }: AlarmsTableViewProps) => {
-  console.log(isAuthenticated)
   return (
     <Table>
       <TableHeader>
@@ -75,11 +72,16 @@ export const AlarmsTableView = ({
         {isLoading ? (
           Array.from({ length: 5 }, (_, index) => {
             const skeletonId = `alarm-skeleton-${Date.now()}-${index}`
-            return <AlarmTableSkeleton key={skeletonId} />
+            return (
+              <AlarmTableSkeleton key={skeletonId} isAuthenticated={isAuthenticated} />
+            )
           })
         ) : alarms.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={9} className='text-center text-stone-500 py-10'>
+            <TableCell
+              colSpan={isAuthenticated ? 9 : 8}
+              className='text-center text-stone-500 py-10'
+            >
               Nenhum alarm encontrado.
             </TableCell>
           </TableRow>
@@ -158,40 +160,43 @@ export const AlarmsTableView = ({
                     : '-'}
                 </TableCell>
 
-             {isAuthenticated && <TableCell className='text-right'>
-                  <div className='flex gap-2 justify-center'>
-                    {onEdit && (
-                      <Dialog
-                        onClose={onCloseModal || (() => {})}
-                        title='Editar Alarm'
-                        description='Edite as informações do alarm'
-                        size='lg'
-                        trigger={
-                          <button
-                            type='button'
-                            onClick={() => onEdit(String(alarm.id))}
-                            className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200'
-                            title='Editar alarm'
-                          >
-                            <Edit className='w-4 h-4' />
-                          </button>
-                        }
-                      >
-                        {(closeDialog) => (
-                          <AlarmForm
-                            onCancel={closeDialog}
-                            onSuccess={closeDialog}
-                            alarmDto={alarm}
-                          />
-                        )}
-                      </Dialog>
-                    )}
-                    <AlarmStatusButton
-                      alarmId={String(alarm.id)}
-                      isActive={alarm.isActive || false}
-                    />
-                  </div>
-                </TableCell>}
+                {isAuthenticated && (
+                  <TableCell className='text-right'>
+                    <div className='flex gap-2 justify-center'>
+                      {onEdit && (
+                        <Dialog
+                          onClose={onCloseModal || (() => {})}
+                          title='Editar Alarme'
+                          description='Edite as informações do alarme'
+                          icon={<Bell className='w-4 h-4' />}
+                          size='lg'
+                          trigger={
+                            <button
+                              type='button'
+                              onClick={() => onEdit(String(alarm.id))}
+                              className='inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200'
+                              title='Editar alarm'
+                            >
+                              <Edit className='w-4 h-4' />
+                            </button>
+                          }
+                        >
+                          {(closeDialog) => (
+                            <AlarmForm
+                              onCancel={closeDialog}
+                              onSuccess={closeDialog}
+                              alarmDto={alarm}
+                            />
+                          )}
+                        </Dialog>
+                      )}
+                      <AlarmStatusButton
+                        alarmId={String(alarm.id)}
+                        isActive={alarm.isActive || false}
+                      />
+                    </div>
+                  </TableCell>
+                )}
               </TableRow>
             )
           })
@@ -200,7 +205,7 @@ export const AlarmsTableView = ({
 
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={9}>
+          <TableCell colSpan={isAuthenticated ? 9 : 8}>
             <PaginationControl
               previousCursor={previousCursor}
               nextCursor={nextCursor}

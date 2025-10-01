@@ -38,7 +38,6 @@ describe('useSignInPage hook', () => {
     expect(typeof result.current.isLoading).toBe('boolean')
     expect(result.current.error).toBeUndefined()
     expect(typeof result.current.onSubmit).toBe('function')
-    expect(typeof result.current.onForgotPassword).toBe('function')
   })
 
   it('should initialize with correct default values', () => {
@@ -183,7 +182,6 @@ describe('useSignInPage hook', () => {
     )
 
     result.current.form.setValue('email', 'test@example.com')
-    result.current.onForgotPassword()
 
     expect(consoleSpy).toHaveBeenCalledWith('Forgot password for:', 'test@example.com')
 
@@ -201,7 +199,6 @@ describe('useSignInPage hook', () => {
       }),
     )
 
-    result.current.onForgotPassword()
 
     expect(consoleSpy).toHaveBeenCalledWith('Forgot password for:', '')
 

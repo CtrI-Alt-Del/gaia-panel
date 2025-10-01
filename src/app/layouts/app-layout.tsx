@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Outlet, redirect } from 'react-router'
 import type { Route } from '../+types/root'
 
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
@@ -7,6 +7,7 @@ import { MembershipMiddleware } from '@/app/middlewares/membership-middleware'
 import { DashboardLayout } from '@/ui/global/widgets/layouts'
 import { membershipContext } from '../contexts/membership-context'
 import { ENV } from '@/core/global/constants'
+import { ROUTES } from '@/core/global/constants/routes'
 
 export const middleware = [AuthMiddleware, RestMiddleware, MembershipMiddleware]
 
@@ -17,7 +18,9 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
   } catch (error) {
     console.log('error', error)
   }
-  return context.get(membershipContext)
+  const { user } = context.get(membershipContext)
+  if (!user?.isActive) return redirect(ROUTES.auth.signIn)
+  return { user }
 }
 
 const AppLayout = () => {

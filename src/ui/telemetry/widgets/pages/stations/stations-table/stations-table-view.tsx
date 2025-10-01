@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
-import { Edit } from 'lucide-react'
+import { Edit, RadioTower } from 'lucide-react'
 import { StationStatusButton } from '../station-status-button'
 import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { StationForm } from '../station-form'
@@ -15,6 +15,7 @@ import {
   TableCell,
   TableFooter,
 } from '@/ui/shadcn/components/table'
+import { StationsTableSkeleton } from '../stations-table-skeleton'
 
 type StationsTableViewProps = {
   stations: StationDto[]
@@ -56,14 +57,18 @@ export const StationsTableView = ({
       </TableHeader>
       <TableBody>
         {isLoading ? (
-          <TableRow>
-            <TableCell colSpan={7} className='text-center text-muted-foreground'>
-              Carregando…
-            </TableCell>
-          </TableRow>
+          Array.from({ length: 10 }, (_, index) => {
+            const skeletonId = `station-skeleton-${Date.now()}-${index}`
+            return (
+              <StationsTableSkeleton key={skeletonId} isAuthenticated={isAuthenticated} />
+            )
+          })
         ) : stations.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={7} className='text-center text-muted-foreground'>
+            <TableCell
+              colSpan={isAuthenticated ? 7 : 6}
+              className='text-center text-muted-foreground'
+            >
               Nenhuma estação encontrada
             </TableCell>
           </TableRow>
@@ -97,6 +102,7 @@ export const StationsTableView = ({
                     {onEdit && (
                       <Dialog
                         onClose={onCloseModal || (() => {})}
+                        icon={<RadioTower className='w-4 h-4' />}
                         title='Editar Estação'
                         description='Edite as informações da estação'
                         size='2xl'
@@ -133,7 +139,7 @@ export const StationsTableView = ({
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={7}>
+          <TableCell colSpan={isAuthenticated ? 7 : 6}>
             <PaginationControl
               previousCursor={previousCursor}
               nextCursor={nextCursor}

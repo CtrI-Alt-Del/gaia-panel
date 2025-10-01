@@ -1,10 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Button } from '@/ui/shadcn/components/button'
 import { Input } from '@/ui/shadcn/components/input'
 import { Label } from '@/ui/shadcn/components/label'
-import { Navigation } from 'lucide-react'
 import { LeafletMap } from './leaflet-map'
-// import { LeafletMap } from './leaflet-map'
 
 type LocationPickerClientProps = {
   latitude: number

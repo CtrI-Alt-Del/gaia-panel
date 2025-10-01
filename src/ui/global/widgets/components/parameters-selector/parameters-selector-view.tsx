@@ -22,8 +22,8 @@ import {
   SelectValue,
 } from '@/ui/shadcn/components/select'
 import { PaginationControl } from '@/ui/global/widgets/components/pagination-control'
-import { getParameterIcon } from '@/ui/telemetry/widgets/utils/parameter-utils'
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
+import { MeasurementUnitIcon } from '../measurement-unit-icon'
 
 type ParameterSelectorViewProps = {
   parameters: ParameterDto[]
@@ -187,12 +187,6 @@ export const ParametersSelectorView = ({
                   parameters.map((parameter) => {
                     if (!parameter.id) return null
 
-                    const {
-                      Icon: IconComponent,
-                      iconColor,
-                      badgeColor,
-                    } = getParameterIcon(parameter.name)
-
                     const isSelected = selectedParameters.some(
                       (p) => p.id === parameter.id,
                     )
@@ -215,11 +209,7 @@ export const ParametersSelectorView = ({
 
                         <TableCell>
                           <div className='flex items-center gap-3'>
-                            <span
-                              className={`inline-flex size-9 items-center justify-center rounded-xl ring-1 ${badgeColor}`}
-                            >
-                              <IconComponent className={`size-5 ${iconColor}`} />
-                            </span>
+                            <MeasurementUnitIcon unit={parameter.unitOfMeasure} />
                             <div className='leading-tight'>
                               <div className='font-medium'>{parameter.name}</div>
                               <div className='text-xs text-stone-500'>

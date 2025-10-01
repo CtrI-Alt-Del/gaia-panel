@@ -1,4 +1,4 @@
-import { Edit } from 'lucide-react'
+import { Edit, Users } from 'lucide-react'
 
 import type { UserDto } from '@/core/membership/dtos/user-dto'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
@@ -56,7 +56,7 @@ export const UsersTableView = ({
 
       <TableBody>
         {isLoading ? (
-          Array.from({ length: 5 }, (_, index) => {
+          Array.from({ length: 10 }, (_, index) => {
             const skeletonId = `user-skeleton-${Date.now()}-${index}`
             return <UserTableSkeleton key={skeletonId} />
           })
@@ -102,6 +102,7 @@ export const UsersTableView = ({
                     {onEdit && (
                       <Dialog
                         onClose={onCloseModal || (() => {})}
+                        icon={<Users className='w-4 h-4' />}
                         title='Editar Usuário'
                         description='Edite as informações do usuário'
                         size='md'

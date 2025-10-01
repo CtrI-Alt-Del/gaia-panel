@@ -18,7 +18,7 @@ export const ParameterNameSearchInput = ({
   const [queryValue, setQueryValue] = useQueryParamString('name', '')
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col gap-2'>
       <Label htmlFor={id || 'name'} className='text-xs text-stone-600'>
         {label}
       </Label>

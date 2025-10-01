@@ -47,12 +47,12 @@ export const StationPageView = ({
                 </Badge>
               </div>
 
-              <div className='flex items-center gap-1 mb-4'>
+              <div className='grid grid-cols-[16px_1fr] items-center gap-2 mb-4'>
                 <MapPin className='text-gray-500' size={16} />
                 <p className='text-gray-600 text-sm'>{station.address}</p>
               </div>
 
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-4'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 w-96'>
                 <div className='flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg'>
                   <div className='w-8 h-8 bg-violet-50 rounded-full flex items-center justify-center'>
                     <Activity className='w-4 h-4 text-violet-600' />

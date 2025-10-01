@@ -42,6 +42,7 @@ export function useSignInPage({ authProvider, toastProvider, routerProvider }: P
     setError(undefined)
 
     try {
+      await authProvider.signOut()
       const isSuccessful = await authProvider.signIn(data.email, data.password)
       if (isSuccessful) {
         routerProvider.goTo(ROUTES.users)
@@ -55,16 +56,10 @@ export function useSignInPage({ authProvider, toastProvider, routerProvider }: P
     }
   }
 
-  function handleForgotPassword() {
-    const email = form.getValues('email')
-    console.log('Forgot password for:', email)
-  }
-
   return {
     form,
     isLoading,
     error,
     onSubmit: form.handleSubmit(onSubmit),
-    onForgotPassword: handleForgotPassword,
   }
 }

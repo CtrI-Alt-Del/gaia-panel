@@ -8,7 +8,6 @@ import { StatusSelect } from '@/ui/global/widgets/components/status-select'
 import { AlarmLevelSelect } from './alarm-level-select'
 import { AlarmForm } from './alarm-form'
 import { Dialog } from '@/ui/global/widgets/components/dialog'
-import { AlarmsTableView } from './alarms-table/alarms-table-view'
 import { AlarmsTable } from './alarms-table'
 
 export type AlarmsPageViewProps = {

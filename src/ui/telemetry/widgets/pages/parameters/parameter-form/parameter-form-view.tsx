@@ -6,7 +6,6 @@ import type { UiProvider } from '@/core/global/interfaces/ui-provider'
 import type { ToastProvider } from '@/core/global/interfaces/toast-provider'
 import { Button } from '@/ui/shadcn/components/button'
 import { Input } from '@/ui/shadcn/components/input'
-import { Switch } from '@/ui/shadcn/components/switch'
 import {
   Form,
   FormControl,

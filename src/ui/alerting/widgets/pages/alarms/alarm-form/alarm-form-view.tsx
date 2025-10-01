@@ -29,10 +29,10 @@ type AlarmFormViewProps = {
 export const AlarmFormView = ({
   form,
   isSubmitting,
+  isEditing,
+  alarmDto,
   onSubmit,
   onCancel,
-  isEditing,
-  alarmDto
 }: AlarmFormViewProps) => {
   const {
     register,
@@ -44,21 +44,23 @@ export const AlarmFormView = ({
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   const selectedParameterId = watch('parameterId')
-  const [selectedStationName, setSelectedStationName] = useState('')
-  const [selectedParameterName, setSelectedParameterName] = useState(isEditing ? `${alarmDto?.parameter.entity?.name} ${alarmDto?.parameter.entity?.unitOfMeasure}` : '')
+  const [selectedParameterName, setSelectedParameterName] = useState(
+    isEditing
+      ? `${alarmDto?.parameter.entity?.name} - (${alarmDto?.parameter.entity?.unitOfMeasure})`
+      : '',
+  )
 
   return (
     <>
       <form onSubmit={onSubmit} className='space-y-6'>
         <div className='space-y-3'>
-          <Label className='text-sm font-semibold text-gray-700'>
-            Estação e Parâmetro
-          </Label>
+          <Label className='text-sm text-gray-700'>Parâmetro</Label>
           {selectedParameterId ? (
             <div className='flex items-center justify-between p-3 border rounded-md bg-gray-50'>
               <div>
-                {/* <p className='text-sm font-medium'>{selectedStationName}</p> */}
-                <p className='text-xs text-gray-500'>{selectedParameterName}</p>
+                <p className='text-md font-medium text-gray-500'>
+                  {selectedParameterName}
+                </p>
               </div>
               <Button
                 type='button'
@@ -74,7 +76,7 @@ export const AlarmFormView = ({
             <Button
               type='button'
               variant='outline'
-              className='w-full justify-between items-center gap-2 text-gray-500'
+              className='w-full justify-between items-center gap-2 py-6 text-gray-500'
               onClick={() => setIsSheetOpen(true)}
             >
               Clique para selecionar uma estação e um parâmetro
@@ -136,9 +138,13 @@ export const AlarmFormView = ({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='GREATER_THAN'>Maior que (&gt;)</SelectItem>
-                    <SelectItem value='GREATER_THAN_OR_EQUAL'>Maior ou igual (&gt;=)</SelectItem>
+                    <SelectItem value='GREATER_THAN_OR_EQUAL'>
+                      Maior ou igual (&gt;=)
+                    </SelectItem>
                     <SelectItem value='LESS_THAN'>Menor que (&lt;)</SelectItem>
-                    <SelectItem value='LESS_THAN_OR_EQUAL'>Menor ou igual (&lt;=)</SelectItem>
+                    <SelectItem value='LESS_THAN_OR_EQUAL'>
+                      Menor ou igual (&lt;=)
+                    </SelectItem>
                     <SelectItem value='EQUAL'>Igual a (==)</SelectItem>
                   </SelectContent>
                 </Select>
@@ -175,7 +181,13 @@ export const AlarmFormView = ({
             Cancelar
           </Button>
           <Button type='submit' disabled={isSubmitting}>
-            {isEditing ? isSubmitting ? 'Editando...' : 'Editar Alarme' : isSubmitting ? 'Criando...' : 'Criar Alarme'}
+            {isEditing
+              ? isSubmitting
+                ? 'Editando...'
+                : 'Editar Alarme'
+              : isSubmitting
+                ? 'Criando...'
+                : 'Criar Alarme'}
           </Button>
         </div>
       </form>
@@ -183,10 +195,9 @@ export const AlarmFormView = ({
       <ParameterSelectorSheet
         open={isSheetOpen}
         onOpenChange={setIsSheetOpen}
-        onSelect={(station, parameter) => {
+        onSelect={(_, parameter) => {
           setValue('parameterId', parameter.id as string, { shouldValidate: true })
-          setSelectedStationName(station.name)
-          setSelectedParameterName(`${parameter.name} (${parameter.unitOfMeasure})`)
+          setSelectedParameterName(`${parameter.name} - (${parameter.unitOfMeasure})`)
         }}
       />
     </>

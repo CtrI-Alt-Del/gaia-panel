@@ -10,7 +10,10 @@ export function useAuthProvider() {
   const signIn = useCallback(
     async (email: string, password: string) => {
       try {
-        const response = await clerkSignIn?.create({ identifier: email, password })
+        const response = await clerkSignIn?.create({
+          identifier: email,
+          password,
+        })
         if (response?.status === 'complete') {
           await setActive?.({ session: response.createdSessionId })
           return true

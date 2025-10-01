@@ -2,7 +2,7 @@ import { Form } from 'react-router'
 
 import type { UserDto } from '@/core/membership/dtos/user-dto'
 import { Button } from '@/ui/shadcn/components/button'
-import { Plus } from 'lucide-react'
+import { Plus, Users } from 'lucide-react'
 import { PageSizeSelect } from '@/ui/global/widgets/components/page-size-select'
 import { StatusSelect } from '@/ui/global/widgets/components/status-select'
 import { UserNameSearchInput } from './user-name-search-input'
@@ -59,6 +59,7 @@ export const UsersPageView = ({
         <div className='flex items-center justify-between p-4 border-b border-accent'>
           <Dialog
             onClose={onCloseModal || (() => {})}
+            icon={<Users className='w-4 h-4' />}
             title='Novo Usuário'
             description='Preencha os dados para criar um novo usuário'
             size='md'

@@ -1,4 +1,4 @@
-import { Edit } from 'lucide-react'
+import { Edit, SlidersHorizontal } from 'lucide-react'
 
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
 import { StatusPill } from '@/ui/shadcn/components/status-pill'
@@ -16,6 +16,7 @@ import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { ParameterForm } from '../parameter-form'
 import { ParameterStatusButton } from '../parameter-status-button'
 import { MeasurementUnitIcon } from '@/ui/global/widgets/components/measurement-unit-icon'
+import { ParametersTableSkeleton } from '../parameters-table-skeleton'
 
 export type Props = {
   parameters: ParameterDto[]
@@ -57,19 +58,21 @@ export const ParametersTableView = ({
 
       <TableBody>
         {isLoading ? (
-          Array.from({ length: 5 }, (_, index) => {
+          Array.from({ length: 10 }, (_, index) => {
             const skeletonId = `parameter-skeleton-${Date.now()}-${index}`
             return (
-              <TableRow key={skeletonId}>
-                <TableCell colSpan={6} className='text-center text-stone-500 py-10'>
-                  Carregando...
-                </TableCell>
-              </TableRow>
+              <ParametersTableSkeleton
+                key={skeletonId}
+                isAuthenticated={isAuthenticated}
+              />
             )
           })
         ) : parameters.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={6} className='text-center text-stone-500 py-10'>
+            <TableCell
+              colSpan={isAuthenticated ? 6 : 5}
+              className='text-center text-stone-500 py-10'
+            >
               Nenhum parâmetro encontrado.
             </TableCell>
           </TableRow>
@@ -114,6 +117,7 @@ export const ParametersTableView = ({
                         <Dialog
                           onClose={onCloseModal || (() => {})}
                           title='Editar Parâmetro'
+                          icon={<SlidersHorizontal className='w-4 h-4' />}
                           description='Edite as informações do parâmetro'
                           size='md'
                           trigger={
@@ -151,7 +155,7 @@ export const ParametersTableView = ({
 
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={6}>
+          <TableCell colSpan={isAuthenticated ? 6 : 5}>
             <PaginationControl
               previousCursor={previousCursor}
               nextCursor={nextCursor}

@@ -7,7 +7,13 @@ type LeafletMapProps = {
   onLocationChange: (lat: number, lng: number, address: string) => void
 }
 
-const MapClickHandler = ({ useMapEvents, onLocationChange }: { useMapEvents: any; onLocationChange: (lat: number, lng: number, address: string) => void }) => {
+const MapClickHandler = ({
+  useMapEvents,
+  onLocationChange,
+}: {
+  useMapEvents: any
+  onLocationChange: (lat: number, lng: number, address: string) => void
+}) => {
   useMapEvents?.({
     click: (e: any) => {
       const { lat, lng } = e.latlng
@@ -17,7 +23,12 @@ const MapClickHandler = ({ useMapEvents, onLocationChange }: { useMapEvents: any
   return null
 }
 
-export const LeafletMap = ({ latitude, longitude, mapCenter, onLocationChange }: LeafletMapProps) => {
+export const LeafletMap = ({
+  latitude,
+  longitude,
+  mapCenter,
+  onLocationChange,
+}: LeafletMapProps) => {
   const [MapContainer, setMapContainer] = useState<any>(null)
   const [TileLayer, setTileLayer] = useState<any>(null)
   const [Marker, setMarker] = useState<any>(null)
@@ -70,7 +81,9 @@ export const LeafletMap = ({ latitude, longitude, mapCenter, onLocationChange }:
 
         setMapContainer(() => ReactLeaflet.MapContainer)
         setTileLayer(() => ReactLeaflet.TileLayer)
-        setMarker(() => (props: any) => <ReactLeaflet.Marker {...props} icon={customIcon} />)
+        setMarker(() => (props: any) => (
+          <ReactLeaflet.Marker {...props} icon={customIcon} />
+        ))
         setUseMapEvents(() => ReactLeaflet.useMapEvents)
         setIsLoaded(true)
       } catch (error) {
@@ -83,7 +96,7 @@ export const LeafletMap = ({ latitude, longitude, mapCenter, onLocationChange }:
 
   if (!isLoaded || !MapContainer || !TileLayer || !Marker) {
     return (
-      <div className="h-64 bg-muted flex items-center justify-center text-muted-foreground">
+      <div className='h-64 bg-muted flex items-center justify-center text-muted-foreground'>
         Carregando mapa...
       </div>
     )
@@ -93,17 +106,15 @@ export const LeafletMap = ({ latitude, longitude, mapCenter, onLocationChange }:
     <MapContainer
       center={mapCenter}
       zoom={13}
-      style={{ height: '400px', width: '100%' }}
-      className="z-0"
+      style={{ height: '500px', width: '100%' }}
+      className='z-0'
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
 
-      {latitude !== 0 && longitude !== 0 && (
-        <Marker position={[latitude, longitude]} />
-      )}
+      {latitude !== 0 && longitude !== 0 && <Marker position={[latitude, longitude]} />}
 
       <MapClickHandler useMapEvents={useMapEvents} onLocationChange={onLocationChange} />
     </MapContainer>

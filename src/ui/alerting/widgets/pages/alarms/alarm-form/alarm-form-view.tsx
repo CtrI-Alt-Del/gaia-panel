@@ -44,10 +44,9 @@ export const AlarmFormView = ({
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   const selectedParameterId = watch('parameterId')
-  const [selectedStationName, setSelectedStationName] = useState('')
   const [selectedParameterName, setSelectedParameterName] = useState(
     isEditing
-      ? `${alarmDto?.parameter.entity?.name} ${alarmDto?.parameter.entity?.unitOfMeasure}`
+      ? `${alarmDto?.parameter.entity?.name} - (${alarmDto?.parameter.entity?.unitOfMeasure})`
       : '',
   )
 
@@ -55,14 +54,13 @@ export const AlarmFormView = ({
     <>
       <form onSubmit={onSubmit} className='space-y-6'>
         <div className='space-y-3'>
-          <Label className='text-sm font-semibold text-gray-700'>
-            Estação e Parâmetro
-          </Label>
+          <Label className='text-sm text-gray-700'>Parâmetro</Label>
           {selectedParameterId ? (
             <div className='flex items-center justify-between p-3 border rounded-md bg-gray-50'>
               <div>
-                <p className='text-lg font-bold'>{selectedStationName}</p>
-                <p className='text-xs text-gray-500'>{selectedParameterName}</p>
+                <p className='text-md font-medium text-gray-500'>
+                  {selectedParameterName}
+                </p>
               </div>
               <Button
                 type='button'
@@ -197,10 +195,9 @@ export const AlarmFormView = ({
       <ParameterSelectorSheet
         open={isSheetOpen}
         onOpenChange={setIsSheetOpen}
-        onSelect={(station, parameter) => {
+        onSelect={(_, parameter) => {
           setValue('parameterId', parameter.id as string, { shouldValidate: true })
-          setSelectedStationName(station.name)
-          setSelectedParameterName(`${parameter.name} (${parameter.unitOfMeasure})`)
+          setSelectedParameterName(`${parameter.name} - (${parameter.unitOfMeasure})`)
         }}
       />
     </>

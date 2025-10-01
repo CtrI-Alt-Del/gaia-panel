@@ -122,7 +122,7 @@ export const AlarmsTableView = ({
                     ) : (
                       <>
                         <AlertCircle className='w-3 h-3' />
-                        Alarme
+                        Aviso
                       </>
                     )}
                   </Badge>

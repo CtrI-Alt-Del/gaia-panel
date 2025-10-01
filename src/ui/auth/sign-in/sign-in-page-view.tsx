@@ -18,6 +18,8 @@ import {
   CardDescription,
 } from '@/ui/shadcn/components/card'
 import { GaiaLogo } from '@/ui/global/widgets/components/gaia-logo'
+import { Link } from 'react-router'
+import { ROUTES } from '@/core/global/constants/routes'
 
 type SignInFormData = {
   email: string
@@ -105,14 +107,12 @@ export const SignInPageView = ({
                   />
 
                   <div className='flex justify-between items-center'>
-                    <button
-                      type='button'
-                      onClick={onForgotPassword}
+                    <Link
+                      to={ROUTES.auth.changePassword}
                       className='p-0 h-auto text-sm text-purple-600 hover:text-purple-700 bg-transparent border-none cursor-pointer'
-                      disabled={isLoading}
                     >
                       Esqueceu a senha?
-                    </button>
+                    </Link>
                   </div>
 
                   {error && (

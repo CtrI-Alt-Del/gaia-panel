@@ -32,7 +32,7 @@ export const AlarmFormView = ({
   onSubmit,
   onCancel,
   isEditing,
-  alarmDto
+  alarmDto,
 }: AlarmFormViewProps) => {
   const {
     register,
@@ -45,7 +45,11 @@ export const AlarmFormView = ({
 
   const selectedParameterId = watch('parameterId')
   const [selectedStationName, setSelectedStationName] = useState('')
-  const [selectedParameterName, setSelectedParameterName] = useState(isEditing ? `${alarmDto?.parameter.entity?.name} ${alarmDto?.parameter.entity?.unitOfMeasure}` : '')
+  const [selectedParameterName, setSelectedParameterName] = useState(
+    isEditing
+      ? `${alarmDto?.parameter.entity?.name} ${alarmDto?.parameter.entity?.unitOfMeasure}`
+      : '',
+  )
 
   return (
     <>
@@ -74,7 +78,7 @@ export const AlarmFormView = ({
             <Button
               type='button'
               variant='outline'
-              className='w-full justify-between items-center gap-2 text-gray-500'
+              className='w-full justify-between items-center gap-2 py-6 text-gray-500'
               onClick={() => setIsSheetOpen(true)}
             >
               Clique para selecionar uma estação e um parâmetro
@@ -136,9 +140,13 @@ export const AlarmFormView = ({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='GREATER_THAN'>Maior que (&gt;)</SelectItem>
-                    <SelectItem value='GREATER_THAN_OR_EQUAL'>Maior ou igual (&gt;=)</SelectItem>
+                    <SelectItem value='GREATER_THAN_OR_EQUAL'>
+                      Maior ou igual (&gt;=)
+                    </SelectItem>
                     <SelectItem value='LESS_THAN'>Menor que (&lt;)</SelectItem>
-                    <SelectItem value='LESS_THAN_OR_EQUAL'>Menor ou igual (&lt;=)</SelectItem>
+                    <SelectItem value='LESS_THAN_OR_EQUAL'>
+                      Menor ou igual (&lt;=)
+                    </SelectItem>
                     <SelectItem value='EQUAL'>Igual a (==)</SelectItem>
                   </SelectContent>
                 </Select>
@@ -175,7 +183,13 @@ export const AlarmFormView = ({
             Cancelar
           </Button>
           <Button type='submit' disabled={isSubmitting}>
-            {isEditing ? isSubmitting ? 'Editando...' : 'Editar Alarme' : isSubmitting ? 'Criando...' : 'Criar Alarme'}
+            {isEditing
+              ? isSubmitting
+                ? 'Editando...'
+                : 'Editar Alarme'
+              : isSubmitting
+                ? 'Criando...'
+                : 'Criar Alarme'}
           </Button>
         </div>
       </form>

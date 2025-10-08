@@ -7,6 +7,9 @@ import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
 import { membershipContext } from '@/app/contexts/membership-context'
 import { AlertsFaker } from '@/core/alerts/dtos/fakers'
 
+// PÁGINA COMPLETAMENTE MOCKADA, APÓS A IMPLEMENTAÇÃO DO BACKEND,
+// DESCOMENTAR O CÓDIGO ABAIXO E REMOVER O CÓDIGO DE MOCK
+
 export const searchParams = {
   date: parseAsString,
   nextCursor: parseAsString,

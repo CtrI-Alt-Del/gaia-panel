@@ -16,7 +16,6 @@ export interface StationData {
 }
 
 export const useStationMap = () => {
-  // Dados mockados das estações
   const mockStations: StationData[] = [
     {
       id: '001',
@@ -93,19 +92,18 @@ export const useStationMap = () => {
   const [stations] = useState<StationData[]>(mockStations)
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null)
 
-  // Centro do Brasil como ponto inicial
   const mapCenter: [number, number] = [-15.7801, -47.9292]
 
   const getStationStatusColor = (status: string) => {
     switch (status) {
       case 'active':
-        return '#10b981' // green
+        return '#10b981' 
       case 'warning':
-        return '#f59e0b' // yellow
+        return '#f59e0b' 
       case 'critical':
-        return '#ef4444' // red
+        return '#ef4444' 
       case 'inactive':
-        return '#6b7280' // gray
+        return '#6b7280' 
       default:
         return '#10b981'
     }
@@ -128,8 +126,8 @@ export const useStationMap = () => {
   return {
     stations,
     selectedStation,
-    setSelectedStation,
     mapCenter,
+    setSelectedStation,
     getStationStatusColor,
     formatTimeAgo,
   }

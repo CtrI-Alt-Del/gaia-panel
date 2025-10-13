@@ -56,10 +56,15 @@ export function useSignInPage({ authProvider, toastProvider, routerProvider }: P
     }
   }
 
+  function onForgotPassword() {
+    console.log('Forgot password for:', form.getValues('email'))
+  }
+
   return {
     form,
     isLoading,
     error,
     onSubmit: form.handleSubmit(onSubmit),
+    onForgotPassword,
   }
 }

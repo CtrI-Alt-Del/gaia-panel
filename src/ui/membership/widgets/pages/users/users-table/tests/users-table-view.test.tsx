@@ -226,7 +226,7 @@ describe('UsersTableView', () => {
     render(<UsersTableView {...defaultProps} isLoading={true} />)
 
     const skeletons = screen.getAllByTestId('user-table-skeleton')
-    expect(skeletons).toHaveLength(5)
+    expect(skeletons).toHaveLength(10)
   })
 
   it('should not render user data when loading', () => {

@@ -183,6 +183,8 @@ describe('useSignInPage hook', () => {
 
     result.current.form.setValue('email', 'test@example.com')
 
+    result.current.onForgotPassword()
+
     expect(consoleSpy).toHaveBeenCalledWith('Forgot password for:', 'test@example.com')
 
     consoleSpy.mockRestore()
@@ -199,6 +201,8 @@ describe('useSignInPage hook', () => {
       }),
     )
 
+
+    result.current.onForgotPassword()
 
     expect(consoleSpy).toHaveBeenCalledWith('Forgot password for:', '')
 

@@ -139,8 +139,8 @@ describe('SidebarView Component', () => {
     expect(screen.getByTestId('sidebar-item-alarms')).toBeInTheDocument()
     expect(screen.getByText('Alarmes')).toBeInTheDocument()
 
-    // Alerts (note: this item uses ROUTES.users as href due to a bug in the component)
-    expect(screen.getByTestId('sidebar-item-users')).toBeInTheDocument()
+    // Alerts
+    expect(screen.getByTestId('sidebar-item-alerts')).toBeInTheDocument()
     expect(screen.getByText('Alertas')).toBeInTheDocument()
   })
 
@@ -161,10 +161,12 @@ describe('SidebarView Component', () => {
       </MemoryRouter>,
     )
 
-    // There will be two sidebar-item-users elements: one for "Alertas" and one for "Usuários"
-    const userItems = screen.getAllByTestId('sidebar-item-users')
-    expect(userItems).toHaveLength(2)
+    const usersItem = screen.getByTestId('sidebar-item-users')
+    expect(usersItem).toBeInTheDocument()
     expect(screen.getByText('Usuários')).toBeInTheDocument()
+
+    const alertsItem = screen.getByTestId('sidebar-item-alerts')
+    expect(alertsItem).toBeInTheDocument()
   })
 
   it('should not show users section when user is not owner', () => {
@@ -174,9 +176,9 @@ describe('SidebarView Component', () => {
       </MemoryRouter>,
     )
 
-    // Only the "Alertas" item should be present (which uses ROUTES.users as href)
-    const userItems = screen.getAllByTestId('sidebar-item-users')
-    expect(userItems).toHaveLength(1)
+    const alertsItem = screen.getByTestId('sidebar-item-alerts')
+    expect(alertsItem).toBeInTheDocument()
+    expect(screen.queryByTestId('sidebar-item-users')).not.toBeInTheDocument()
     expect(screen.queryByText('Usuários')).not.toBeInTheDocument()
   })
 
@@ -263,7 +265,7 @@ describe('SidebarView Component', () => {
       'data-active',
       'true',
     )
-    expect(screen.getByTestId('sidebar-item-users')).toHaveAttribute(
+    expect(screen.getByTestId('sidebar-item-alerts')).toHaveAttribute(
       'data-active',
       'false',
     )
@@ -276,8 +278,7 @@ describe('SidebarView Component', () => {
       </MemoryRouter>,
     )
 
-    // The "Alertas" item is active when currentPath is /alerts (even though href is /users)
-    expect(screen.getByTestId('sidebar-item-users')).toHaveAttribute(
+    expect(screen.getByTestId('sidebar-item-alerts')).toHaveAttribute(
       'data-active',
       'true',
     )
@@ -294,11 +295,11 @@ describe('SidebarView Component', () => {
       </MemoryRouter>,
     )
 
-    // Only the "Usuários" item will be active since "Alertas" checks for /alerts, not /users
-    const userItems = screen.getAllByTestId('sidebar-item-users')
-    expect(userItems).toHaveLength(2)
-    expect(userItems[0]).toHaveAttribute('data-active', 'false') // Alertas (checks for /alerts)
-    expect(userItems[1]).toHaveAttribute('data-active', 'true') // Usuários (checks for /users)
+    const usersItem = screen.getByTestId('sidebar-item-users')
+    const alertsItem = screen.getByTestId('sidebar-item-alerts')
+
+    expect(usersItem).toHaveAttribute('data-active', 'true')
+    expect(alertsItem).toHaveAttribute('data-active', 'false')
   })
 
   it('should apply correct CSS classes to sidebar', () => {

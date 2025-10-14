@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import { SidebarView } from '../sidebar-view'
+import { MemoryRouter } from 'react-router'
 
 // Mock do componente UserInfo
 vi.mock('../../user-info', () => ({
@@ -85,7 +86,11 @@ describe('SidebarView Component', () => {
   }
 
   it('should render sidebar with correct structure', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByTestId('sidebar')).toBeInTheDocument()
     expect(screen.getByTestId('sidebar-header')).toBeInTheDocument()
@@ -94,7 +99,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should render logo in header', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     const logo = screen.getByAltText('Gaia')
     expect(logo).toBeInTheDocument()
@@ -104,7 +113,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should render all main menu items', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     // Dashboard
     expect(screen.getByTestId('sidebar-item-dashboard')).toBeInTheDocument()
@@ -132,13 +145,21 @@ describe('SidebarView Component', () => {
   })
 
   it('should render user info in footer', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByTestId('user-info')).toBeInTheDocument()
   })
 
   it('should show users section when user is owner', () => {
-    render(<SidebarView {...defaultProps} isUserOwner={true} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} isUserOwner={true} />
+      </MemoryRouter>,
+    )
 
     // There will be two sidebar-item-users elements: one for "Alertas" and one for "Usuários"
     const userItems = screen.getAllByTestId('sidebar-item-users')
@@ -147,7 +168,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should not show users section when user is not owner', () => {
-    render(<SidebarView {...defaultProps} isUserOwner={false} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} isUserOwner={false} />
+      </MemoryRouter>,
+    )
 
     // Only the "Alertas" item should be present (which uses ROUTES.users as href)
     const userItems = screen.getAllByTestId('sidebar-item-users')
@@ -156,7 +181,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should mark correct item as active based on current path', () => {
-    render(<SidebarView {...defaultProps} currentPath='/dashboard' />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} currentPath='/dashboard' />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByTestId('sidebar-item-dashboard')).toHaveAttribute(
       'data-active',
@@ -173,7 +202,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should mark reports item as active when current path is reports', () => {
-    render(<SidebarView {...defaultProps} currentPath='/reports' />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} currentPath='/reports' />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByTestId('sidebar-item-dashboard')).toHaveAttribute(
       'data-active',
@@ -186,7 +219,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should mark stations item as active when current path is stations', () => {
-    render(<SidebarView {...defaultProps} currentPath='/stations' />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} currentPath='/stations' />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByTestId('sidebar-item-stations')).toHaveAttribute(
       'data-active',
@@ -199,7 +236,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should mark parameters item as active when current path is parameters', () => {
-    render(<SidebarView {...defaultProps} currentPath='/parameters' />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} currentPath='/parameters' />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByTestId('sidebar-item-parameters')).toHaveAttribute(
       'data-active',
@@ -212,7 +253,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should mark alarms item as active when current path is alarms', () => {
-    render(<SidebarView {...defaultProps} currentPath='/alarms' />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} currentPath='/alarms' />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByTestId('sidebar-item-alarms')).toHaveAttribute(
       'data-active',
@@ -225,7 +270,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should mark alerts item as active when current path is alerts', () => {
-    render(<SidebarView {...defaultProps} currentPath='/alerts' />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} currentPath='/alerts' />
+      </MemoryRouter>,
+    )
 
     // The "Alertas" item is active when currentPath is /alerts (even though href is /users)
     expect(screen.getByTestId('sidebar-item-users')).toHaveAttribute(
@@ -239,7 +288,11 @@ describe('SidebarView Component', () => {
   })
 
   it('should mark users item as active when current path is users and user is owner', () => {
-    render(<SidebarView {...defaultProps} currentPath='/users' isUserOwner={true} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} currentPath='/users' isUserOwner={true} />
+      </MemoryRouter>,
+    )
 
     // Only the "Usuários" item will be active since "Alertas" checks for /alerts, not /users
     const userItems = screen.getAllByTestId('sidebar-item-users')
@@ -249,49 +302,77 @@ describe('SidebarView Component', () => {
   })
 
   it('should apply correct CSS classes to sidebar', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     const sidebar = screen.getByTestId('sidebar')
     expect(sidebar).toHaveClass('w-64', 'bg-card', 'min-h-screen')
   })
 
   it('should apply correct CSS classes to sidebar header', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     const header = screen.getByTestId('sidebar-header')
     expect(header).toHaveClass('p-6', 'bg-card')
   })
 
   it('should apply correct CSS classes to sidebar content', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     const content = screen.getByTestId('sidebar-content')
     expect(content).toHaveClass('bg-card', 'px-3')
   })
 
   it('should apply correct CSS classes to sidebar footer', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     const footer = screen.getByTestId('sidebar-footer')
     expect(footer).toHaveClass('p-4', 'bg-card', 'border-card')
   })
 
   it('should render all sidebar menus', () => {
-    render(<SidebarView {...defaultProps} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     const menus = screen.getAllByTestId('sidebar-menu')
     expect(menus).toHaveLength(3) // 3 seções de menu quando usuário não é owner
   })
 
   it('should render all sidebar menus when user is owner', () => {
-    render(<SidebarView {...defaultProps} isUserOwner={true} />)
+    render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} isUserOwner={true} />
+      </MemoryRouter>,
+    )
 
     const menus = screen.getAllByTestId('sidebar-menu')
     expect(menus).toHaveLength(4) // 4 seções de menu quando usuário é owner
   })
 
   it('should render separators between menu sections', () => {
-    const { container } = render(<SidebarView {...defaultProps} />)
+    const { container } = render(
+      <MemoryRouter>
+        <SidebarView {...defaultProps} />
+      </MemoryRouter>,
+    )
 
     // The separators are div elements with specific classes, not elements with role="separator"
     const separators = container.querySelectorAll('.h-px.bg-purple-200.my-4')

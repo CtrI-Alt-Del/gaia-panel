@@ -107,12 +107,14 @@ export const SignInPageView = ({
                   />
 
                   <div className='flex justify-between items-center'>
-                    <Link
-                      to={ROUTES.auth.changePassword}
+                    <button
+                      type="button"
+                      onClick={onForgotPassword}
+                      disabled={isLoading}
                       className='p-0 h-auto text-sm text-purple-600 hover:text-purple-700 bg-transparent border-none cursor-pointer'
                     >
                       Esqueceu a senha?
-                    </Link>
+                    </button>
                   </div>
 
                   {error && (

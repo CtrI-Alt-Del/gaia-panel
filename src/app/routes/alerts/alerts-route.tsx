@@ -1,11 +1,11 @@
 import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
 import { RestMiddleware } from '@/app/middlewares/rest-middleware'
-import { AlertsPage } from '@/ui/alerts/widgets/pages/alerts'
 import type { Route } from '../membership/+types/users-route'
 import { MembershipMiddleware } from '@/app/middlewares/membership-middleware'
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
 import { membershipContext } from '@/app/contexts/membership-context'
 import { AlertsFaker } from '@/core/alerts/dtos/fakers'
+import { AlertsPage } from '@/ui/alerting/widgets/pages/alerts'
 
 // PÁGINA COMPLETAMENTE MOCKADA, APÓS A IMPLEMENTAÇÃO DO BACKEND,
 // DESCOMENTAR O CÓDIGO ABAIXO E REMOVER O CÓDIGO DE MOCK
@@ -66,7 +66,7 @@ export default AlertsPage
 // import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
 // import { RestMiddleware } from '@/app/middlewares/rest-middleware'
 // import { restContext } from '@/app/contexts/rest-context'
-// import { AlertsPage } from '@/ui/alerts/widgets/pages/alerts'
+// import { AlertsPage } from '@/ui/alerting/widgets/pages/alerts'
 // import type { Route } from '../membership/+types/users-route'
 // import { MembershipMiddleware } from '@/app/middlewares/membership-middleware'
 // import { AuthMiddleware } from '@/app/middlewares/auth-middleware'

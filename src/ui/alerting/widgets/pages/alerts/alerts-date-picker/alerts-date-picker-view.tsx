@@ -22,7 +22,7 @@ export const AlertsDatePickerView = ({
 }: AlertsDatePickerProps) => {
   const selectedDate = value ? new Date(value) : undefined
 
-  const handleDateSelect = (date: Date | undefined) => {
+  function handleDateSelect(date: Date | undefined) {
     if (date) {
       const formattedDate = date.toISOString().split('T')[0]
       onValueChange?.(formattedDate)
@@ -31,11 +31,11 @@ export const AlertsDatePickerView = ({
     }
   }
 
-  const handleClear = () => {
+  function handleClear() {
     onValueChange?.(null)
   }
 
-  const formatDisplayDate = (dateString: string) => {
+  function formatDisplayDate(dateString: string) {
     const date = new Date(dateString)
     return date.toLocaleDateString('pt-BR', {
       day: '2-digit',

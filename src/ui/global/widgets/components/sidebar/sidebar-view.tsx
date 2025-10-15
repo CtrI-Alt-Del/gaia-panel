@@ -84,7 +84,7 @@ export const SidebarView = ({ currentPath, isUserOwner }: Props) => {
             <SidebarItem
               icon={<Bell />}
               label='Alertas'
-              href={ROUTES.users}
+              href={ROUTES.alerts}
               isActive={currentPath === ROUTES.alerts}
             />
           </SidebarMenu>

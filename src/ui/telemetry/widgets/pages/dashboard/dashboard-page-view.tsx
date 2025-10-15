@@ -1,10 +1,10 @@
 import { Activity, AlertTriangle, RadioTower, Users, Zap } from 'lucide-react'
 import type { DashboardStatsDto } from '@/core/telemetry/dtos/dashboard-dto'
 import { StatsCard } from './stats-card'
-import { StationStatusChart } from './station-status-chart'
 import { RecentAlerts } from './recent-alerts'
 import { LatestReadings } from './latest-readings'
 import { StationMap } from './station-map'
+import { AlertsEvolution } from './alerts-evolution'
 
 export type DashboardPageViewProps = {
   dashboardData: DashboardStatsDto
@@ -41,7 +41,6 @@ export const DashboardPageView = ({
         />
       </div> */}
 
-      {/* Stats Cards */}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
         <StatsCard
           title="Total de Estações"
@@ -69,17 +68,13 @@ export const DashboardPageView = ({
         />
       </div>
 
-      {/* Main Content Grid */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6'>
-        <StationStatusChart 
-          data={dashboardData.stationStatusDistribution}
-          isLoading={isLoading}
-        />
-        
+      <div className='mb-6'>
+        <AlertsEvolution />
+      </div>
         <StationMap />
       </div>
 
-      {/* Bottom Section */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <RecentAlerts 
           alerts={dashboardData.recentAlerts}

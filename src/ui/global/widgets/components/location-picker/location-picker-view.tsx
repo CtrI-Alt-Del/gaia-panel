@@ -15,20 +15,17 @@ export const LocationPickerView = (props: LocationPickerViewProps) => {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    // Verificar se estamos no cliente e se o window existe
     if (typeof window !== 'undefined') {
       setIsClient(true)
     }
   }, [])
 
   if (!isClient) {
-    // Fallback para SSR - mostrar campos básicos sem mapa
     return (
       <div className={`space-y-4 ${props.className || ''}`}>
         <div className='space-y-4'>
           <Label>Localização</Label>
 
-          {/* Endereço */}
           <div className='space-y-1'>
             <Label htmlFor='address-ssr'>Endereço</Label>
             <input
@@ -42,7 +39,6 @@ export const LocationPickerView = (props: LocationPickerViewProps) => {
             />
           </div>
 
-          {/* Coordenadas */}
           <div className='grid grid-cols-2 gap-4'>
             <div className='space-y-1'>
               <Label htmlFor='latitude-ssr'>Latitude</Label>

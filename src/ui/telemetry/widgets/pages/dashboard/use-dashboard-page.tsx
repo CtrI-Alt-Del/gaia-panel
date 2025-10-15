@@ -1,12 +1,5 @@
 import { useLoaderData, useSearchParams } from 'react-router'
 
-interface DashboardLoaderData {
-  dashboardData: string
-  selectedStation: string | null
-  selectedPeriod: string
-  selectedParameter: string
-}
-
 export const useDashboardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 

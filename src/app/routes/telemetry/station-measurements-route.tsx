@@ -1,20 +1,35 @@
-import type { Route } from './+types/station-route'
+import { restContext } from "@/app/contexts/rest-context";
+import { RestMiddleware } from "@/app/middlewares/rest-middleware";
+import { StationMeasurementsSlot } from "@/ui/telemetry/widgets/slots/station-measurements";
+import type { Route as MeasurementsRoute } from "./+types/station-route";
 
-import { restContext } from '@/app/contexts/rest-context'
-import { RestMiddleware } from '@/app/middlewares/rest-middleware'
-import { StationMeasurementsSlot } from '@/ui/telemetry/widgets/slots/station-measurements'
+export const middleware = [RestMiddleware];
 
-export const middleware = [RestMiddleware]
+export const loader = async ({
+  params,
+  context,
+}: MeasurementsRoute.ActionArgs) => {
+  const { stationId } = params;
+  const { telemetryService } = context.get(restContext);
 
-export const loader = async ({ params, context }: Route.ActionArgs) => {
-  const { stationId } = params
-  const { telemetryService } = context.get(restContext)
-  const response = await telemetryService.fetchStation(stationId)
-  if (response.isFailure) response.throwError()
+  const stationResponse = await telemetryService.fetchStation(stationId);
+  if (stationResponse.isFailure) stationResponse.throwError();
+
+  const measurementsResponse = await telemetryService.fetchMeasurements({
+    stationName: stationResponse.body.name,
+    pageSize: 20,
+  });
+
+  if (measurementsResponse.isFailure) measurementsResponse.throwError();
 
   return {
-    station: response.body,
-  }
-}
+    station: stationResponse.body,
+    measurements: measurementsResponse.body.items,
+    nextCursor: measurementsResponse.body.nextCursor ?? null,
+    previousCursor: measurementsResponse.body.previousCursor ?? null,
+    hasNextPage: Boolean(measurementsResponse.body.nextCursor),
+    hasPreviousPage: Boolean(measurementsResponse.body.previousCursor),
+  };
+};
 
-export default StationMeasurementsSlot
+export default StationMeasurementsSlot;

@@ -30,6 +30,7 @@ export function useUserForm({
     defaultValues: {
       name: userDto?.name || "",
       email: userDto?.email || "",
+      role: userDto?.role || "",
     },
     mode: "onSubmit",
   });

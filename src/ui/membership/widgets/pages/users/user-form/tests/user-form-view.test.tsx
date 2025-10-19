@@ -88,6 +88,7 @@ describe('UserFormView Component', () => {
         id: 'user-1',
         name: 'John Doe',
         email: 'john@example.com',
+        role: 'admin',
       }
 
       renderComponent({ userDto })
@@ -100,6 +101,7 @@ describe('UserFormView Component', () => {
         id: 'user-1',
         name: 'John Doe',
         email: 'john@example.com',
+        role: 'admin',
       }
 
       renderComponent({ userDto })
@@ -144,6 +146,7 @@ describe('UserFormView Component', () => {
         id: 'user-1',
         name: 'John Doe',
         email: 'john@example.com',
+        role: 'admin',
       }
 
       const successResponse = new RestResponse({ body: {} as UserDto })

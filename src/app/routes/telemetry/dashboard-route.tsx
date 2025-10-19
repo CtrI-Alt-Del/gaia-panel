@@ -1,6 +1,7 @@
 import { createLoader, parseAsString } from "nuqs/server";
 import type { Route } from "./+types/dashboard-route";
-import type { DashboardStatsDto } from '@/core/telemetry/dtos'
+import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
+import type { AlertsCountDto } from '@/core/alerts/dtos/alerts-count-dto'
 
 import { DashboardPage } from '@/ui/telemetry/widgets/pages/dashboard'
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
@@ -23,15 +24,28 @@ export const middleware = [AuthMiddleware, RestMiddleware]
 export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { station, period, parameter } = loadSearchParams(request)
   const { userId } = context.get(authContext)
-  const { telemetryService } = context.get(restContext)
+  const { telemetryService, alertsService } = context.get(restContext)
 
   if (!userId) return redirect(ROUTES.auth.signIn)
 
-  const response = await telemetryService.fetchDashboardSummary()
-  const dashboardData = response.body
+  const [stationsResponse, alertsResponse] = await Promise.all([
+    telemetryService.fetchStationsCount(),
+    alertsService.fetchAlertsCount()
+  ])
+
+  const stationsData: StationsCountDto = stationsResponse.body ?? {
+    totalStations: 0,
+    activeStationsPercentage: 0
+  }
+
+  const alertsData: AlertsCountDto = alertsResponse.body ?? {
+    criticalAlertsCount: 0,
+    warningAlertsCount: 0
+  }
 
   return {
-    dashboardData,
+    stationsData,
+    alertsData,
     selectedStation: station,
     selectedPeriod: period,
     selectedParameter: parameter

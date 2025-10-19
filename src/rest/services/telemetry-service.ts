@@ -4,14 +4,14 @@ import type { RestResponse } from '@/core/global/responses/rest-response'
 import type { PaginationResponse } from '@/core/global/responses'
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
-import type { DashboardStatsDto } from '@/core/telemetry/dtos/dashboard-dto'
+import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
 import type { ParametersListingParams, StationsListingParams } from '@/core/telemetry/types'
 import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
-    async fetchDashboardSummary(): Promise<RestResponse<DashboardStatsDto>> {
-      return await restClient.get<DashboardStatsDto>('/dashboard/summary')
+    async fetchStationsCount(): Promise<RestResponse<StationsCountDto>> {
+      return await restClient.get<StationsCountDto>('/telemetry/stations/count')
     },
 
     async fetchParameters(params: ParametersListingParams): Promise<RestResponse<PaginationResponse<ParameterDto>>> {

@@ -1,12 +1,12 @@
 import type { PaginationResponse, RestResponse } from '@/core/global/responses'
 import type { ParameterDto } from '../dtos/parameter-dto'
 import type { StationDto } from '../dtos/station-dto'
-import type { DashboardStatsDto } from '../dtos/dashboard-dto'
+import type { StationsCountDto } from '../dtos/stations-count-dto'
 import type { StationsListingParams } from '../types'
 import type { ParametersListingParams } from '../types/parameters-listing-params'
 
 export interface TelemetryService {
-  fetchDashboardSummary(): Promise<RestResponse<DashboardStatsDto>>
+  fetchStationsCount(): Promise<RestResponse<StationsCountDto>>
   fetchParameters(params: ParametersListingParams): Promise<RestResponse<PaginationResponse<ParameterDto>>> 
   createParameter(parameter: ParameterDto): Promise<RestResponse<ParameterDto>>
   updateParameter(parameter: ParameterDto): Promise<RestResponse<ParameterDto>>

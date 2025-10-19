@@ -83,24 +83,6 @@ export const UserFormView = ({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name='role'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Perfil</FormLabel>
-                <FormControl>
-                  <select {...field} className='input'>
-                    <option value=''>Selecione o perfil</option>
-                    <option value='admin'>Administrador</option>
-                    <option value='user'>Usuário</option>
-                  </select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <div className='flex gap-3 pt-4'>
             <Button
               type='submit'

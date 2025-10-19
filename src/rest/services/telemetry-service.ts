@@ -119,6 +119,7 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       if (params.date) restClient.setQueryParam('date', params.date)
       if (params.parameterName) restClient.setQueryParam('parameterName', params.parameterName)
       if (params.stationName) restClient.setQueryParam('stationName', params.stationName)
+      if (params.stationId) restClient.setQueryParam('stationId', params.stationId)
       if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
       if (params.previousCursor)
         restClient.setQueryParam('previousCursor', params.previousCursor)

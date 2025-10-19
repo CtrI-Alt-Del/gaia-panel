@@ -60,15 +60,17 @@ export const MeasurementsTableView = ({
           measurements.map((measurement) => {
             const {
               id,
+              parameter,
               parameterName,
               value,
               unitOfMeasure,
               createdAt,
-            } = measurement as any
+            } = measurement
 
+            const displayParameterName = parameterName || parameter?.name || '—'
             const formattedValue =
               typeof value === 'number' ? value.toFixed(2) : '—'
-            const unit = unitOfMeasure || '—'
+            const unit = unitOfMeasure || parameter?.unitOfMeasure || '—'
             const date = createdAt
               ? new Date(createdAt).toLocaleString('pt-BR', {
                   day: '2-digit',
@@ -85,7 +87,7 @@ export const MeasurementsTableView = ({
                   <div className="flex items-center gap-3">
                     <MeasurementUnitIcon unit={unit} />
                     <div className="leading-tight">
-                      <div className="font-medium">{parameterName ?? '—'}</div>
+                      <div className="font-medium">{displayParameterName}</div>
                     </div>
                   </div>
                 </TableCell>

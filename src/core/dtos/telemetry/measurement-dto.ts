@@ -5,6 +5,7 @@ export type MeasurementDto = {
   id: string;
   station?: StationDto;
   parameter?: ParameterDto;
+  parameterName?: string;
   value: number;
   measuredAt?: Date;
   stationParameter?: {

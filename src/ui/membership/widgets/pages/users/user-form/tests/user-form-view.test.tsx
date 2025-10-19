@@ -122,10 +122,12 @@ describe('UserFormView Component', () => {
 
       const nameInput = screen.getByLabelText('Nome')
       const emailInput = screen.getByLabelText('Email')
+       const roleInput = screen.getByLabelText('Perfil')
       const submitButton = screen.getByRole('button', { name: 'Salvar' })
 
       fireEvent.change(nameInput, { target: { value: 'John Doe' } })
       fireEvent.change(emailInput, { target: { value: 'john@example.com' } })
+       fireEvent.change(roleInput, { target: { value: 'admin' } })
 
       await waitFor(() => {
         expect(submitButton).not.toBeDisabled()
@@ -134,10 +136,11 @@ describe('UserFormView Component', () => {
       fireEvent.click(submitButton)
 
       await waitFor(() => {
-        expect(membershipService.createUser).toHaveBeenCalledWith({
-          name: 'John Doe',
-          email: 'john@example.com',
-        })
+          expect(membershipService.createUser).toHaveBeenCalledWith({
+            name: 'John Doe',
+            email: 'john@example.com',
+            role: 'admin',
+          })
       })
     })
 
@@ -172,6 +175,7 @@ describe('UserFormView Component', () => {
           name: 'John Updated',
           email: 'john.updated@example.com',
           id: 'user-1',
+          role: 'admin',
         })
       })
     })

@@ -44,25 +44,25 @@ export const DashboardPageView = ({
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
         <StatsCard
           title="Total de Estações"
-          value={dashboardData.totalStations.toString()}
+          value={dashboardData.totalStations?.toString() ?? '0'}
           icon={<RadioTower className="w-4 h-4" />}
           variant="default"
         />
         <StatsCard
-          title="Estações Ativas"
-          value={`${dashboardData.activeStations}%`}
+          title="% Estações Ativas"
+          value={`${dashboardData.activeStationsPercentage ?? 0}%`}
           icon={<Activity className="w-4 h-4" />}
           variant="success"
         />
         <StatsCard
           title="Alertas de Avisos"
-          value={dashboardData.alertsCount.toString()}
+          value={dashboardData.warningAlerts?.toString() ?? '0'}
           icon={<AlertTriangle className="w-4 h-4" />}
           variant="warning"
         />
         <StatsCard
           title="Alertas Críticos"
-          value={dashboardData.criticalIssues.toString()}
+          value={dashboardData.criticalAlerts?.toString() ?? '0'}
           icon={<Zap className="w-4 h-4" />}
           variant="destructive"
         />

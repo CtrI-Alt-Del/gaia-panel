@@ -4,23 +4,24 @@ import type { RestResponse } from '@/core/global/responses/rest-response'
 import type { PaginationResponse } from '@/core/global/responses'
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
+import type { DashboardStatsDto } from '@/core/telemetry/dtos/dashboard-dto'
 import type { ParametersListingParams, StationsListingParams } from '@/core/telemetry/types'
 import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
-    async fetchAlarms(): Promise<RestResponse<PaginationResponse<AlarmDto>>> {
-      return await restClient.get<PaginationResponse<AlarmDto>>('/telemetry/alarms')
+    async fetchDashboardSummary(): Promise<RestResponse<DashboardStatsDto>> {
+      return await restClient.get<DashboardStatsDto>('/dashboard/summary')
     },
 
     async fetchParameters(params: ParametersListingParams): Promise<RestResponse<PaginationResponse<ParameterDto>>> {
       if (params.name) restClient.setQueryParam('name', params.name)
-        if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
-        if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
-        if (params.previousCursor)
-          restClient.setQueryParam('previousCursor', params.previousCursor)
-        if (params.pageSize)
-          restClient.setQueryParam('pageSize', params.pageSize.toString())
+      if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
+      if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
+      if (params.previousCursor)
+        restClient.setQueryParam('previousCursor', params.previousCursor)
+      if (params.pageSize)
+        restClient.setQueryParam('pageSize', params.pageSize.toString())
       return await restClient.get<PaginationResponse<ParameterDto>>('/telemetry/parameters')
     },
 
@@ -63,7 +64,7 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
 
     async createStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>> {
       return await restClient.post<StationDto>('/telemetry/stations', {
-        station, 
+        station,
         parameterIds,
       })
     },

@@ -1,5 +1,5 @@
 import type { ParameterDto } from "@/core/dtos/telemetry/parameter-dto";
-import type { StationDto } from "@/core/dtos/telemetry/station-dto";
+import type { StationDto } from "@/core/telemetry/dtos/station-dto";
 
 export type MeasurementDto = {
   id: string;

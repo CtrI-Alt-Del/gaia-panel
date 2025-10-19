@@ -38,7 +38,7 @@ export const RecentAlertsView = ({ alerts, isLoading }: RecentAlertsViewProps) =
           <div className="text-center py-8">
             <div className="text-muted-foreground">Carregando alertas...</div>
           </div>
-        ) : alerts.length === 0 ? (
+        ) : !alerts || alerts.length === 0 ? (
           <p className="text-muted-foreground text-center py-8">
             Nenhum alerta encontrado nas últimas 24 horas
           </p>

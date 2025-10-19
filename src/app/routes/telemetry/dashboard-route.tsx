@@ -27,74 +27,15 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
 
   if (!userId) return redirect(ROUTES.auth.signIn)
 
-  const mockDashboardData: DashboardStatsDto = {
-    totalStations: 128,
-    activeStations: 94,
-    alertsCount: 7,
-    criticalIssues: 2,
-    stationStatusDistribution: {
-      active: 93.8,
-      warning: 4.7,
-      critical: 1.6,
-      inactive: 0.0
-    },
-    recentAlerts: [
-      {
-        id: '1',
-        type: 'temperature',
-        title: 'High Temperature Alert',
-        station: 'Station 045 - São Paulo',
-        severity: 'critical' as const,
-        timestamp: new Date(Date.now() - 2 * 60 * 1000)
-      },
-      {
-        id: '2',
-        type: 'humidity',
-        title: 'Humidity Level Warning',
-        station: 'Station 023 - Rio de Janeiro',
-        severity: 'warning' as const,
-        timestamp: new Date(Date.now() - 15 * 60 * 1000)
-      },
-      {
-        id: '3',
-        type: 'air_quality',
-        title: 'Air Quality Index',
-        station: 'Station 089 - Belo Horizonte',
-        severity: 'warning' as const,
-        timestamp: new Date(Date.now() - 30 * 60 * 1000)
-      }
-    ],
-    latestReadings: [
-      {
-        code: '001',
-        name: 'São Paulo Central',
-        status: 'active' as const,
-        lastReading: new Date(Date.now() - 2 * 60 * 1000),
-        value: '24.5°C'
-      },
-      {
-        code: '045',
-        name: 'Rio Sul',
-        status: 'critical' as const,
-        lastReading: new Date(Date.now() - 5 * 60 * 1000),
-        value: '35.2°C'
-      },
-      {
-        code: '023',
-        name: 'Brasília Norte',
-        status: 'warning' as const,
-        lastReading: new Date(Date.now() - 8 * 60 * 1000),
-        value: '22.1°C'
-      }
-    ]
-  }
+  const response = await telemetryService.fetchDashboardSummary()
+  const dashboardData = response.body
 
   return {
-    dashboardData: mockDashboardData,
+    dashboardData,
     selectedStation: station,
     selectedPeriod: period,
     selectedParameter: parameter
-  };
+  }
 };
 
 export default DashboardPage;

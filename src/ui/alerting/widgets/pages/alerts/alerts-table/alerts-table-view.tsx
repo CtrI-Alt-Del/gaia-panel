@@ -1,5 +1,5 @@
 import { AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react'
-import type { AlertDto } from '@/core/alerts/dtos/alert-dto'
+import type { AlertDto } from '@/core/alerting/alerts/dtos/alert-dto'
 import { Badge } from '@/ui/shadcn/components/badge'
 import {
   Table,
@@ -35,6 +35,7 @@ export const AlertsTableView = ({
       <TableHeader>
         <TableRow>
           <TableHead className='pl-6'>Parâmetro</TableHead>
+          <TableHead>Estação</TableHead>
           <TableHead>Mensagem</TableHead>
           <TableHead>Nível</TableHead>
           <TableHead>Unidade</TableHead>
@@ -67,27 +68,36 @@ export const AlertsTableView = ({
                 <TableCell>
                   <div className='h-4 bg-gray-200 rounded animate-pulse' />
                 </TableCell>
+                <TableCell>
+                  <div className='h-4 bg-gray-200 rounded animate-pulse' />
+                </TableCell>
               </TableRow>
             )
           })
         ) : alerts.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={6} className='text-center text-stone-500 py-10'>
+            <TableCell colSpan={7} className='text-center text-stone-500 py-10'>
               Nenhum alerta encontrado.
             </TableCell>
           </TableRow>
         ) : (
-          alerts.map((alert) => {
+          alerts.map((alert, index) => {
             return (
-              <TableRow key={alert.id}>
+              <TableRow
+                key={`${alert.parameterName}-${alert.parameterStationName}-${index}`}
+              >
                 <TableCell className='pl-6'>
                   <div className='flex items-center gap-2'>
-                    <MeasurementUnitIcon
-                      unit={String(alert.parameter.entity?.unitOfMeasure)}
-                    />
+                    <MeasurementUnitIcon unit={String(alert.parameterUnitOfMeasure)} />
                     <div className='text-sm font-bold text-stone-700'>
-                      {alert.parameter.entity?.name}
+                      {alert.parameterName}
                     </div>
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className='text-sm font-medium text-stone-700'>
+                    {alert.parameterStationName || '-'}
                   </div>
                 </TableCell>
 
@@ -121,7 +131,7 @@ export const AlertsTableView = ({
 
                 <TableCell>
                   <div className='text-sm text-stone-600'>
-                    {alert.parameter.entity?.unitOfMeasure}
+                    {alert.parameterUnitOfMeasure}
                   </div>
                 </TableCell>
 
@@ -145,7 +155,7 @@ export const AlertsTableView = ({
 
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={6}>
+          <TableCell colSpan={7}>
             <PaginationControl
               previousCursor={previousCursor}
               nextCursor={nextCursor}

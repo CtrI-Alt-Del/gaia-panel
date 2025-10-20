@@ -1,6 +1,6 @@
 import type { RestClient } from '@/core/global/interfaces'
-import type { AlertsService as IAlertsService } from '@/core/alerts/interfaces/alerts-service'
-import type { AlertListingParams } from '@/core/alerts/types'
+import type { AlertsService as IAlertsService } from '@/core/alerting/alerts/interfaces/alerts-service'
+import type { AlertListingParams } from '@/core/alerting/alerts/types'
 
 export const AlertsService = (restClient: RestClient): IAlertsService => {
   return {

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
-import type { AlertDto } from '@/core/alerts/dtos/alert-dto'
+import type { AlertDto } from '@/core/alerting/alerts/dtos/alert-dto'
 
 type UseAlertsPageProps = {
   alerts: AlertDto[]

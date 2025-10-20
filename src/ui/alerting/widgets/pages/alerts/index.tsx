@@ -1,4 +1,4 @@
-import type { loader } from '@/app/routes/alerts/alerts-route'
+import type { loader } from '@/app/routes/alerting/alerts/alerts-route'
 import { AlertsPageView } from './alerts-page-view'
 import { useAlertsPage } from './use-alerts-page'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'

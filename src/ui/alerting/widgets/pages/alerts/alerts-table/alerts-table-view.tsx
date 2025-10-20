@@ -1,4 +1,4 @@
-import { AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react'
+import { AlertTriangle, AlertCircle } from 'lucide-react'
 import type { AlertDto } from '@/core/alerting/alerts/dtos/alert-dto'
 import { Badge } from '@/ui/shadcn/components/badge'
 import {
@@ -30,6 +30,7 @@ export const AlertsTableView = ({
   hasPreviousPage,
   isLoading,
 }: AlertsTableViewProps) => {
+  console.log(alerts[1].createdAt)
   return (
     <Table>
       <TableHeader>
@@ -38,8 +39,8 @@ export const AlertsTableView = ({
           <TableHead>Estação</TableHead>
           <TableHead>Mensagem</TableHead>
           <TableHead>Nível</TableHead>
+          <TableHead>Meditação</TableHead>
           <TableHead>Unidade</TableHead>
-          <TableHead>Status</TableHead>
           <TableHead>Data de Criação</TableHead>
         </TableRow>
       </TableHeader>
@@ -130,15 +131,14 @@ export const AlertsTableView = ({
                 </TableCell>
 
                 <TableCell>
-                  <div className='text-sm text-stone-600'>
-                    {alert.parameterUnitOfMeasure}
+                  <div className='flex items-center gap-2'>
+                    <span className='text-sm text-stone-600'>{alert.measurementValue}</span>
                   </div>
                 </TableCell>
-
+                
                 <TableCell>
-                  <div className='flex items-center gap-2'>
-                    <CheckCircle className='w-4 h-4 text-green-600' />
-                    <span className='text-sm text-stone-600'>Ativo</span>
+                  <div className='text-sm text-stone-600'>
+                    {alert.parameterUnitOfMeasure}
                   </div>
                 </TableCell>
 

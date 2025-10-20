@@ -88,7 +88,6 @@ describe('UserFormView Component', () => {
         id: 'user-1',
         name: 'John Doe',
         email: 'john@example.com',
-  // role removido
       }
 
       renderComponent({ userDto })
@@ -101,7 +100,6 @@ describe('UserFormView Component', () => {
         id: 'user-1',
         name: 'John Doe',
         email: 'john@example.com',
-  // role removido
       }
 
       renderComponent({ userDto })
@@ -139,7 +137,6 @@ describe('UserFormView Component', () => {
           expect(membershipService.createUser).toHaveBeenCalledWith({
             name: 'John Doe',
             email: 'john@example.com',
-            // role removido
           })
       })
     })
@@ -149,7 +146,6 @@ describe('UserFormView Component', () => {
         id: 'user-1',
         name: 'John Doe',
         email: 'john@example.com',
-  // role removido
       }
 
       const successResponse = new RestResponse({ body: {} as UserDto })
@@ -175,7 +171,6 @@ describe('UserFormView Component', () => {
           name: 'John Updated',
           email: 'john.updated@example.com',
           id: 'user-1',
-          // role removido
         })
       })
     })

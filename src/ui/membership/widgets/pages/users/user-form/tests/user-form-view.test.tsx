@@ -118,14 +118,12 @@ describe('UserFormView Component', () => {
 
       renderComponent()
 
-      const nameInput = screen.getByLabelText('Nome')
-      const emailInput = screen.getByLabelText('Email')
-       const roleInput = screen.getByLabelText('Perfil')
-      const submitButton = screen.getByRole('button', { name: 'Salvar' })
+  const nameInput = screen.getByLabelText('Nome')
+  const emailInput = screen.getByLabelText('Email')
+  const submitButton = screen.getByRole('button', { name: 'Salvar' })
 
-      fireEvent.change(nameInput, { target: { value: 'John Doe' } })
-      fireEvent.change(emailInput, { target: { value: 'john@example.com' } })
-       fireEvent.change(roleInput, { target: { value: 'admin' } })
+  fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+  fireEvent.change(emailInput, { target: { value: 'john@example.com' } })
 
       await waitFor(() => {
         expect(submitButton).not.toBeDisabled()

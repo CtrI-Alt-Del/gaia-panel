@@ -1,6 +1,6 @@
 export { useAuthProvider } from './use-auth-provider'
 export { useCache } from './use-cache'
-export { useDateTimeProvider } from './use-date-provider'
+export { useDateTimeProvider } from './use-date-time-provider'
 export { usePageTitle } from './use-page-title'
 export { useQueryParamNumber } from './use-query-param-number'
 export { useQueryParamString } from './use-query-param-string'

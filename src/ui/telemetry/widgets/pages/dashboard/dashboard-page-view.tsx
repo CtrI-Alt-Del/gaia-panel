@@ -1,5 +1,6 @@
 import { Activity, AlertTriangle, RadioTower, Users, Zap } from 'lucide-react'
-import type { DashboardStatsDto } from '@/core/telemetry/dtos/dashboard-dto'
+import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
+import type { AlertsCountDto } from '@/core/alerts/dtos/alerts-count-dto'
 import { StatsCard } from './stats-card'
 import { RecentAlerts } from './recent-alerts'
 import { LatestReadings } from './latest-readings'
@@ -7,7 +8,8 @@ import { StationMap } from './station-map'
 import { AlertsEvolution } from './alerts-evolution'
 
 export type DashboardPageViewProps = {
-  dashboardData: DashboardStatsDto
+  stationsData: StationsCountDto
+  alertsData: AlertsCountDto
   selectedStation?: string | null
   selectedPeriod: string
   selectedParameter: string
@@ -18,7 +20,8 @@ export type DashboardPageViewProps = {
 }
 
 export const DashboardPageView = ({
-  dashboardData,
+  stationsData,
+  alertsData,
   selectedStation,
   selectedPeriod,
   selectedParameter,
@@ -44,25 +47,25 @@ export const DashboardPageView = ({
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
         <StatsCard
           title="Total de Estações"
-          value={dashboardData.totalStations.toString()}
+          value={stationsData.totalStations?.toString() ?? '0'}
           icon={<RadioTower className="w-4 h-4" />}
           variant="default"
         />
         <StatsCard
-          title="Estações Ativas"
-          value={`${dashboardData.activeStations}%`}
+          title="% Estações Ativas"
+          value={`${stationsData.activeStationsPercentage ?? 0}%`}
           icon={<Activity className="w-4 h-4" />}
           variant="success"
         />
         <StatsCard
           title="Alertas de Avisos"
-          value={dashboardData.alertsCount.toString()}
+          value={alertsData.warningAlerts?.toString() ?? '0'}
           icon={<AlertTriangle className="w-4 h-4" />}
           variant="warning"
         />
         <StatsCard
           title="Alertas Críticos"
-          value={dashboardData.criticalIssues.toString()}
+          value={alertsData.criticalAlerts?.toString() ?? '0'}
           icon={<Zap className="w-4 h-4" />}
           variant="destructive"
         />
@@ -77,12 +80,12 @@ export const DashboardPageView = ({
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <RecentAlerts 
-          alerts={dashboardData.recentAlerts}
+          alerts={[]}
           isLoading={isLoading}
         />
         
         <LatestReadings 
-          readings={dashboardData.latestReadings}
+          readings={[]}
           isLoading={isLoading}
         />
       </div>

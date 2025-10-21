@@ -1,6 +1,7 @@
 import { createLoader, parseAsString } from "nuqs/server";
 import type { Route } from "./+types/dashboard-route";
-import type { DashboardStatsDto } from '@/core/telemetry/dtos'
+import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
+import type { AlertsCountDto } from '@/core/alerts/dtos/alerts-count-dto'
 
 import { DashboardPage } from '@/ui/telemetry/widgets/pages/dashboard'
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
@@ -23,78 +24,32 @@ export const middleware = [AuthMiddleware, RestMiddleware]
 export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { station, period, parameter } = loadSearchParams(request)
   const { userId } = context.get(authContext)
-  const { telemetryService } = context.get(restContext)
+  const { telemetryService, alertingService } = context.get(restContext)
 
   if (!userId) return redirect(ROUTES.auth.signIn)
 
-  const mockDashboardData: DashboardStatsDto = {
-    totalStations: 128,
-    activeStations: 94,
-    alertsCount: 7,
-    criticalIssues: 2,
-    stationStatusDistribution: {
-      active: 93.8,
-      warning: 4.7,
-      critical: 1.6,
-      inactive: 0.0
-    },
-    recentAlerts: [
-      {
-        id: '1',
-        type: 'temperature',
-        title: 'High Temperature Alert',
-        station: 'Station 045 - São Paulo',
-        severity: 'critical' as const,
-        timestamp: new Date(Date.now() - 2 * 60 * 1000)
-      },
-      {
-        id: '2',
-        type: 'humidity',
-        title: 'Humidity Level Warning',
-        station: 'Station 023 - Rio de Janeiro',
-        severity: 'warning' as const,
-        timestamp: new Date(Date.now() - 15 * 60 * 1000)
-      },
-      {
-        id: '3',
-        type: 'air_quality',
-        title: 'Air Quality Index',
-        station: 'Station 089 - Belo Horizonte',
-        severity: 'warning' as const,
-        timestamp: new Date(Date.now() - 30 * 60 * 1000)
-      }
-    ],
-    latestReadings: [
-      {
-        code: '001',
-        name: 'São Paulo Central',
-        status: 'active' as const,
-        lastReading: new Date(Date.now() - 2 * 60 * 1000),
-        value: '24.5°C'
-      },
-      {
-        code: '045',
-        name: 'Rio Sul',
-        status: 'critical' as const,
-        lastReading: new Date(Date.now() - 5 * 60 * 1000),
-        value: '35.2°C'
-      },
-      {
-        code: '023',
-        name: 'Brasília Norte',
-        status: 'warning' as const,
-        lastReading: new Date(Date.now() - 8 * 60 * 1000),
-        value: '22.1°C'
-      }
-    ]
+  const [stationsResponse, alertsResponse] = await Promise.all([
+    telemetryService.fetchStationsCount(),
+    alertingService.fetchAlertsCount()
+  ])
+
+  const stationsData: StationsCountDto = stationsResponse.body ?? {
+    totalStations: 0,
+    activeStationsPercentage: 0
+  }
+
+  const alertsData: AlertsCountDto = alertsResponse.body ?? {
+    criticalAlertsCount: 0,
+    warningAlertsCount: 0
   }
 
   return {
-    dashboardData: mockDashboardData,
+    stationsData,
+    alertsData,
     selectedStation: station,
     selectedPeriod: period,
     selectedParameter: parameter
-  };
+  }
 };
 
 export default DashboardPage;

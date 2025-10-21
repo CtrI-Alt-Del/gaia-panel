@@ -9,3 +9,6 @@
 /.cursor
 
 .env
+
+# Gemini
+GEMINI.md

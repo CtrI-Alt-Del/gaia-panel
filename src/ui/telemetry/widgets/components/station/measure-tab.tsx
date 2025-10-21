@@ -96,13 +96,13 @@ export function MeasureTab({
                   className="border-t border-stone-100 hover:bg-stone-50"
                 >
                   <td className="p-3 font-medium text-stone-900">
-                    {r.parameter.name}
+                    {r.parameter?.name ?? "—"}
                   </td>
                   <td className="p-3 text-stone-600">
-                    {r.value} {r.parameter.unitOfMeasure}
+                    {r.value} {r.parameter?.unitOfMeasure ?? ""}
                   </td>
                   <td className="p-3 text-stone-600">
-                    {formatDateTime(r.measuredAt)}
+                    {formatDateTime(r.measuredAt ?? "—" as any)}
                   </td>
                 </tr>
               ))}

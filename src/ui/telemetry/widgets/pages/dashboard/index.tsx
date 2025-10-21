@@ -5,16 +5,24 @@ import type { loader } from '@/app/routes/telemetry/dashboard-route'
 import { useUiProvider } from '@/ui/global/hooks/use-ui-provider'
 
 export const DashboardPage = () => {
-  const { stationsData, alertsData, selectedStation, selectedPeriod, selectedParameter } =
-    useLoaderData<typeof loader>()
-  
-  const { handleStationChange, handlePeriodChange, handleParameterChange } = useDashboardPage()
+  const {
+    stationsData,
+    alertsData,
+    recentAlerts,
+    selectedStation,
+    selectedPeriod,
+    selectedParameter,
+  } = useLoaderData<typeof loader>()
+
+  const { handleStationChange, handlePeriodChange, handleParameterChange } =
+    useDashboardPage()
   const { isLoading } = useUiProvider()
 
   return (
     <DashboardPageView
       stationsData={stationsData}
       alertsData={alertsData}
+      recentAlerts={recentAlerts}
       selectedStation={selectedStation}
       selectedPeriod={selectedPeriod}
       selectedParameter={selectedParameter}

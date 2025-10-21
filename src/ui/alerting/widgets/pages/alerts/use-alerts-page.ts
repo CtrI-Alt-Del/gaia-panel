@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import type { AlertDto } from '@/core/alerting/alerts/dtos/alert-dto'
+import dayjs from 'dayjs'
 
 type UseAlertsPageProps = {
   alerts: AlertDto[]
@@ -17,19 +18,18 @@ export function useAlertsPage({ alerts }: UseAlertsPageProps) {
   const filteredAlerts = useMemo(() => {
     let filtered = alerts
 
-    if (levelFilter) {
+    if (levelFilter && levelFilter !== 'all') {
       filtered = filtered.filter((alert) => alert.level === levelFilter)
     }
 
     if (dateFilter) {
-      const filterDate = new Date(dateFilter)
+      // Use dayjs to handle date comparison properly
+      const filterDate = dayjs(dateFilter)
+
       filtered = filtered.filter((alert) => {
-        const alertDate = new Date(alert.createdAt)
-        return (
-          alertDate.getDate() === filterDate.getDate() &&
-          alertDate.getMonth() === filterDate.getMonth() &&
-          alertDate.getFullYear() === filterDate.getFullYear()
-        )
+        const alertDate = dayjs(alert.createdAt)
+        // Compare dates using dayjs isSame method with 'day' granularity
+        return alertDate.isSame(filterDate, 'day')
       })
     }
 

@@ -12,6 +12,7 @@ import {
 } from '@/ui/shadcn/components/table'
 import { PaginationControl } from '@/ui/global/widgets/components/pagination-control'
 import { MeasurementUnitIcon } from '@/ui/global/widgets/components/measurement-unit-icon'
+import { useFormatDateTime } from '@/ui/global/hooks/use-format-date-time'
 
 export type AlertsTableViewProps = {
   alerts: AlertDto[]
@@ -30,7 +31,7 @@ export const AlertsTableView = ({
   hasPreviousPage,
   isLoading,
 }: AlertsTableViewProps) => {
-  console.log(alerts[1].createdAt)
+  const { formatDateTime } = useFormatDateTime()
   return (
     <Table>
       <TableHeader>
@@ -39,7 +40,7 @@ export const AlertsTableView = ({
           <TableHead>Estação</TableHead>
           <TableHead>Mensagem</TableHead>
           <TableHead>Nível</TableHead>
-          <TableHead>Meditação</TableHead>
+          <TableHead>Medição</TableHead>
           <TableHead>Unidade</TableHead>
           <TableHead>Data de Criação</TableHead>
         </TableRow>
@@ -132,10 +133,12 @@ export const AlertsTableView = ({
 
                 <TableCell>
                   <div className='flex items-center gap-2'>
-                    <span className='text-sm text-stone-600'>{alert.measurementValue}</span>
+                    <span className='text-sm text-stone-600'>
+                      {alert.measurementValue}
+                    </span>
                   </div>
                 </TableCell>
-                
+
                 <TableCell>
                   <div className='text-sm text-stone-600'>
                     {alert.parameterUnitOfMeasure}
@@ -143,9 +146,16 @@ export const AlertsTableView = ({
                 </TableCell>
 
                 <TableCell className='text-sm text-stone-600'>
-                  {alert.createdAt
-                    ? new Date(alert.createdAt).toLocaleDateString('pt-BR')
-                    : '-'}
+                  {alert.createdAt ? (
+                    <div className='flex flex-col'>
+                      <span>{formatDateTime(alert.createdAt).formattedDate}</span>
+                      <span className='text-xs text-stone-500'>
+                        {formatDateTime(alert.createdAt).formattedTime}
+                      </span>
+                    </div>
+                  ) : (
+                    '-'
+                  )}
                 </TableCell>
               </TableRow>
             )

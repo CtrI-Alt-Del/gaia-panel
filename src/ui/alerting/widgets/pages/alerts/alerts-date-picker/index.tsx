@@ -1,8 +1,25 @@
-import { useQueryParamString } from '@/ui/global/hooks/use-query-param-string'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router'
 import { AlertsDatePickerView } from './alerts-date-picker-view'
 
 export const AlertsDatePicker = () => {
-  const [value] = useQueryParamString('date', '')
+  const [searchParams] = useSearchParams()
+  const [localValue, setLocalValue] = useState<string | null>(null)
 
-  return <AlertsDatePickerView value={value || null} placeholder='Filtrar por data' />
+  // Initialize local value from URL params
+  useEffect(() => {
+    const urlValue = searchParams.get('date')
+    setLocalValue(urlValue)
+  }, [searchParams])
+
+  return (
+    <>
+      <input type='hidden' name='date' value={localValue || ''} />
+      <AlertsDatePickerView
+        value={localValue}
+        onValueChange={setLocalValue}
+        placeholder='Filtrar por data'
+      />
+    </>
+  )
 }

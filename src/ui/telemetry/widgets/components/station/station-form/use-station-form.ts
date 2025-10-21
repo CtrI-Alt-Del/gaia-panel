@@ -52,7 +52,7 @@ export function useStationForm({
         uid: station.uid,
         latitude: station.latitude,
         longitude: station.longitude,
-        parameterIds: [],
+        parameterIds: [], 
       }
     }
     return { ...defaultValues, parameterIds: [] }

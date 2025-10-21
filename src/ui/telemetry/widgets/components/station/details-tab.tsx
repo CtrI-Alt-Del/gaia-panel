@@ -1,5 +1,5 @@
-import type { StationDto } from '@/core/telemetry/dtos/station-dto'
-import { StatusPill } from '@/ui/shadcn/components/status-pill'
+import type { StationDto } from "@/core/telemetry/dtos/station-dto";
+import { StatusPill } from "@/ui/shadcn/components/status-pill";
 
 interface DetailsTabProps {
   station: StationDto
@@ -26,8 +26,8 @@ export function DetailsTab({ station, timeAgo }: DetailsTabProps) {
             </div>
           </div>
           <div>
-            <div className='text-xs text-muted-foreground'>UID</div>
-            <div className='mt-0.5'>{station.uid}</div>
+            <div className="text-xs text-muted-foreground">UID</div>
+            <div className="mt-0.5">{station.uid}</div>
           </div>
           <div>
             <div className='text-xs text-muted-foreground'>Status</div>

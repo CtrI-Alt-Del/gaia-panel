@@ -50,6 +50,8 @@ export const AlertsPopoverView = ({
   const newAlertsBadgeColor = hasAlerts ? 'red' : 'stone'
   const newAlertsBadgeTone = hasAlerts ? 'solid' : 'soft'
 
+  console.log(alerts)
+
   return (
     <>
       <AlertDialog
@@ -126,7 +128,7 @@ export const AlertsPopoverView = ({
                             </>
                           )}
                         </Badge>
-                        <p className='block animate-pulse rounded-full border border-primary px-2 py-1 text-xs text-primary'>Novo</p>
+                      {!alert.isRead && <p className='block animate-pulse rounded-full border border-primary px-2 py-1 text-xs text-primary'>Novo</p>}
                       </div>
                       <span className='text-xs font-medium text-muted-foreground'>{formatDateTime(alert.createdAt)}</span>
                     </div>
@@ -155,7 +157,7 @@ export const AlertsPopoverView = ({
                             ) : null}
                           </div>
                        </div>
-                        <Tooltip>
+                     {!alert.isRead && <Tooltip>
                           <TooltipTrigger asChild>
                             <Button variant='ghost' size='icon' onClick={() => onReadAlertButtonClick(alert.id as string)} className='size-6 bg-card border border-zinc-400 rounded-full'>
                               <Eye />
@@ -164,7 +166,7 @@ export const AlertsPopoverView = ({
                           <TooltipContent>
                             <p>Marcar como lido</p>
                           </TooltipContent>
-                        </Tooltip>
+                        </Tooltip>}
                     </div>
                   </article>
                 )

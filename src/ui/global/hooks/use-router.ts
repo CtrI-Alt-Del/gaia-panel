@@ -25,8 +25,8 @@ export function useRouter({ onNavigate }: Params = {}): RouterProvider {
     if (!onNavigate) {
       return
     }
-    onNavigate()
-  }, [location])
+    // onNavigate()
+  }, [])
 
   return {
     goTo,

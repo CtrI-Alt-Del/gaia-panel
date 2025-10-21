@@ -30,10 +30,10 @@ export function useLastAlertsSocket({
       }
     }
 
-    es.addEventListener('message', handleMessage)
+    es.addEventListener('message', (event) => handleMessage(event))
 
     return () => {
-      es.removeEventListener('message', handleMessage)
+      es.removeEventListener('message', (event) => handleMessage(event))
       es.close()
     }
   }, [])

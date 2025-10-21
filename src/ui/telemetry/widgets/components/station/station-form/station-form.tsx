@@ -70,7 +70,7 @@ export function StationForm({
           />
           <FormField
             control={form.control}
-            name='UID'
+            name='uid'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>UID</FormLabel>

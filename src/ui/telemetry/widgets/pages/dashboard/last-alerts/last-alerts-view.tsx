@@ -26,47 +26,47 @@ export const LastAlertsView = ({
 }: LastAlertsViewProps) => {
   const severityStyleByColor = {
     stone: {
-      container: 'border-stone-200/80 bg-stone-50/60 hover:bg-stone-50',
+      container: 'border-stone-200/80 hover:bg-zinc-50',
       indicator: 'bg-stone-300',
       icon: 'bg-stone-100 text-stone-700',
     },
     blue: {
-      container: 'border-blue-200/80 bg-blue-50/60 hover:bg-blue-50',
+      container: 'border-blue-200/80 hover:bg-zinc-50',
       indicator: 'bg-blue-400',
       icon: 'bg-blue-100 text-blue-600',
     },
     sky: {
-      container: 'border-sky-200/80 bg-sky-50/60 hover:bg-sky-50',
+      container: 'border-sky-200/80 hover:bg-zinc-50',
       indicator: 'bg-sky-400',
       icon: 'bg-sky-100 text-sky-600',
     },
     teal: {
-      container: 'border-teal-200/80 bg-teal-50/60 hover:bg-teal-50',
+      container: 'border-teal-200/80 hover:bg-zinc-50',
       indicator: 'bg-teal-400',
       icon: 'bg-teal-100 text-teal-600',
     },
     green: {
-      container: 'border-green-200/80 bg-green-50/60 hover:bg-green-50',
+      container: 'border-green-200/80 hover:bg-zinc-50',
       indicator: 'bg-green-400',
       icon: 'bg-green-100 text-green-600',
     },
     yellow: {
-      container: 'border-yellow-200/80 bg-yellow-50/60 hover:bg-yellow-50',
+      container: 'border-yellow-200/80 hover:bg-zinc-50',
       indicator: 'bg-yellow-400',
       icon: 'bg-yellow-100 text-yellow-600',
     },
     orange: {
-      container: 'border-orange-200/80 bg-orange-50/60 hover:bg-orange-50',
+      container: 'border-orange-200/80 hover:bg-zinc-50',
       indicator: 'bg-orange-400',
       icon: 'bg-orange-100 text-orange-600',
     },
     red: {
-      container: 'border-red-200/80 bg-red-50/60 hover:bg-red-50',
+      container: 'border-red-200/80 hover:bg-zinc-50',
       indicator: 'bg-red-400',
       icon: 'bg-red-100 text-red-600',
     },
     violet: {
-      container: 'border-violet-200/80 bg-violet-50/60 hover:bg-violet-50',
+      container: 'border-violet-200/80 hover:bg-zinc-50',
       indicator: 'bg-violet-400',
       icon: 'bg-violet-100 text-violet-600',
     },

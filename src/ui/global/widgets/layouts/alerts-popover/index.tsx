@@ -1,9 +1,40 @@
+import { useRef } from 'react'
+
+import { useRest, useRouter } from '@/ui/global/hooks'
 import { AlertsPopoverView } from './alerts-popover-view'
 import { useAlertsPopover } from './use-alerts-popover'
-import { useLastAlertsSocket } from './use-last-alerts-socket'
+import { useLastAlertsSocket } from '../../../hooks/use-last-alerts-socket'
+import type { AlertDialogRef } from '../../components/alert-dialog'
+import { useToastProvider } from '@/ui/global/hooks/use-toast-provider'
 
 export const AlertsPopover = () => {
-  const { alerts, handleLastAlerts, newAlertCount } = useAlertsPopover()
+  const alertDialogRef = useRef<AlertDialogRef | null>(null)
+  const { alertingService } = useRest()
+  const toastProvider = useToastProvider()
+  const {
+    alerts,
+    isOpen,
+    unreadAlertCount,
+    handleLastAlerts,
+    handleNavigate,
+    handleOpenChange,
+    handleReadAlertButtonClick,
+  } = useAlertsPopover({
+    alertDialogRef,
+    alertingService,
+    toastProvider,
+  })
   useLastAlertsSocket({ onGetLastAlerts: handleLastAlerts })
-  return <AlertsPopoverView alerts={alerts} newAlertCount={newAlertCount} />
+  useRouter({ onNavigate: handleNavigate })
+
+  return (
+    <AlertsPopoverView
+      alerts={alerts}
+      isOpen={isOpen}
+      unreadAlertCount={unreadAlertCount}
+      alertDialogRef={alertDialogRef}
+      onOpenChange={handleOpenChange}
+      onReadAlertButtonClick={handleReadAlertButtonClick}
+    />
+  )
 }

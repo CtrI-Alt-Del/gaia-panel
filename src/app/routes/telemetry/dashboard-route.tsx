@@ -1,5 +1,5 @@
-import { createLoader, parseAsString } from "nuqs/server";
-import type { Route } from "./+types/dashboard-route";
+import { createLoader, parseAsString } from 'nuqs/server'
+import type { Route } from './+types/dashboard-route'
 import type { DashboardStatsDto } from '@/core/telemetry/dtos'
 
 import { DashboardPage } from '@/ui/telemetry/widgets/pages/dashboard'
@@ -14,16 +14,15 @@ export const searchParams = {
   station: parseAsString,
   period: parseAsString.withDefault('7'),
   parameter: parseAsString.withDefault('temperature'),
-};
+}
 
-export const loadSearchParams = createLoader(searchParams);
+export const loadSearchParams = createLoader(searchParams)
 
 export const middleware = [AuthMiddleware, RestMiddleware]
 
 export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { station, period, parameter } = loadSearchParams(request)
   const { userId } = context.get(authContext)
-  const { telemetryService } = context.get(restContext)
 
   if (!userId) return redirect(ROUTES.auth.signIn)
 
@@ -36,16 +35,16 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
       active: 93.8,
       warning: 4.7,
       critical: 1.6,
-      inactive: 0.0
+      inactive: 0.0,
     },
-    recentAlerts: [
+    LastAlerts: [
       {
         id: '1',
         type: 'temperature',
         title: 'High Temperature Alert',
         station: 'Station 045 - São Paulo',
         severity: 'critical' as const,
-        timestamp: new Date(Date.now() - 2 * 60 * 1000)
+        timestamp: new Date(Date.now() - 2 * 60 * 1000),
       },
       {
         id: '2',
@@ -53,7 +52,7 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
         title: 'Humidity Level Warning',
         station: 'Station 023 - Rio de Janeiro',
         severity: 'warning' as const,
-        timestamp: new Date(Date.now() - 15 * 60 * 1000)
+        timestamp: new Date(Date.now() - 15 * 60 * 1000),
       },
       {
         id: '3',
@@ -61,8 +60,8 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
         title: 'Air Quality Index',
         station: 'Station 089 - Belo Horizonte',
         severity: 'warning' as const,
-        timestamp: new Date(Date.now() - 30 * 60 * 1000)
-      }
+        timestamp: new Date(Date.now() - 30 * 60 * 1000),
+      },
     ],
     latestReadings: [
       {
@@ -70,31 +69,31 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
         name: 'São Paulo Central',
         status: 'active' as const,
         lastReading: new Date(Date.now() - 2 * 60 * 1000),
-        value: '24.5°C'
+        value: '24.5°C',
       },
       {
         code: '045',
         name: 'Rio Sul',
         status: 'critical' as const,
         lastReading: new Date(Date.now() - 5 * 60 * 1000),
-        value: '35.2°C'
+        value: '35.2°C',
       },
       {
         code: '023',
         name: 'Brasília Norte',
         status: 'warning' as const,
         lastReading: new Date(Date.now() - 8 * 60 * 1000),
-        value: '22.1°C'
-      }
-    ]
+        value: '22.1°C',
+      },
+    ],
   }
 
   return {
     dashboardData: mockDashboardData,
     selectedStation: station,
     selectedPeriod: period,
-    selectedParameter: parameter
-  };
-};
+    selectedParameter: parameter,
+  }
+}
 
-export default DashboardPage;
+export default DashboardPage

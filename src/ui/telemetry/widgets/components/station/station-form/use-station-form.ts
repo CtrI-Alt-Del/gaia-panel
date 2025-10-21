@@ -8,7 +8,7 @@ import type { StationDto } from '@/core/telemetry/dtos/station-dto'
 
 const stationFormSchema = z.object({
   name: z.string().min(1, 'Informe o nome da estacao'),
-  UID: z.string().min(1, 'Informe o UID'),
+  uid: z.string().min(1, 'Informe o UID'),
   latitude: z.coerce
     .number()
     .refine((value) => Number.isFinite(value), 'Informe a latitude'),
@@ -30,7 +30,7 @@ interface UseStationFormProps {
 
 const defaultValues: StationFormData = {
   name: '',
-  UID: '',
+  uid: '',
   latitude: 0,
   longitude: 0,
   parameterIds: [],
@@ -52,6 +52,7 @@ export function useStationForm({
         uid: station.uid,
         latitude: station.latitude,
         longitude: station.longitude,
+        parameterIds: [],
       }
     }
     return { ...defaultValues, parameterIds: [] }

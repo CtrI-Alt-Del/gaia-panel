@@ -1,7 +1,15 @@
-import type { DashboardStatsDto } from '@/core/telemetry/dtos'
+import type { AlertDto } from '@/core/alerts/dtos'
+import type { Color } from '@/ui/shadcn/components/badge'
+import { useState } from 'react'
 
-export const useRecentAlerts = () => {
-  const getSeverityIcon = (severity: string) => {
+export function useLastAlerts() {
+  const [alerts, setAlerts] = useState<AlertDto[]>([])
+
+  function handleLastAlerts(lastAlerts: AlertDto[]) {
+    setAlerts(lastAlerts)
+  }
+
+  function getSeverityIcon(severity: string) {
     switch (severity.toLowerCase()) {
       case 'critical':
         return 'AlertCircle'
@@ -12,7 +20,7 @@ export const useRecentAlerts = () => {
     }
   }
 
-  const getSeverityColor = (severity: string): 'red' | 'yellow' | 'blue' => {
+  function getSeverityColor(severity: string): Color {
     switch (severity.toLowerCase()) {
       case 'critical':
         return 'red'
@@ -23,35 +31,39 @@ export const useRecentAlerts = () => {
     }
   }
 
-  const getSeverityLabel = (severity: string) => {
+  function getSeverityLabel(severity: string) {
     switch (severity.toLowerCase()) {
       case 'critical':
         return 'Crítico'
       case 'warning':
-        return 'Alerta'
+        return 'Aviso'
       default:
         return 'Info'
     }
   }
 
-  const formatTimeAgo = (date: Date) => {
+  function formatTimeAgo(date: Date) {
     const now = new Date()
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
-    
+    const diffInMinutes = Math.floor(
+      (now.getTime() - new Date(date).getTime()) / (1000 * 60),
+    )
+
     if (diffInMinutes < 1) return 'Agora mesmo'
     if (diffInMinutes < 60) return `${diffInMinutes} min atrás`
-    
+
     const diffInHours = Math.floor(diffInMinutes / 60)
     if (diffInHours < 24) return `${diffInHours}h atrás`
-    
+
     const diffInDays = Math.floor(diffInHours / 24)
     return `${diffInDays}d atrás`
   }
 
   return {
+    alerts,
     getSeverityIcon,
     getSeverityColor,
     getSeverityLabel,
     formatTimeAgo,
+    handleLastAlerts,
   }
 }

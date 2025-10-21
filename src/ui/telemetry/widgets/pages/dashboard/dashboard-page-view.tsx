@@ -1,7 +1,7 @@
-import { Activity, AlertTriangle, RadioTower, Users, Zap } from 'lucide-react'
+import { Activity, AlertTriangle, RadioTower, Zap } from 'lucide-react'
 import type { DashboardStatsDto } from '@/core/telemetry/dtos/dashboard-dto'
 import { StatsCard } from './stats-card'
-import { RecentAlerts } from './recent-alerts'
+import { LastAlerts } from './last-alerts'
 import { LatestReadings } from './latest-readings'
 import { StationMap } from './station-map'
 import { AlertsEvolution } from './alerts-evolution'
@@ -43,48 +43,42 @@ export const DashboardPageView = ({
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
         <StatsCard
-          title="Total de Estações"
+          title='Total de Estações'
           value={dashboardData.totalStations.toString()}
-          icon={<RadioTower className="w-4 h-4" />}
-          variant="default"
+          icon={<RadioTower className='w-4 h-4' />}
+          variant='default'
         />
         <StatsCard
-          title="Estações Ativas"
+          title='Estações Ativas'
           value={`${dashboardData.activeStations}%`}
-          icon={<Activity className="w-4 h-4" />}
-          variant="success"
+          icon={<Activity className='w-4 h-4' />}
+          variant='success'
         />
         <StatsCard
-          title="Alertas de Avisos"
+          title='Alertas de Avisos'
           value={dashboardData.alertsCount.toString()}
-          icon={<AlertTriangle className="w-4 h-4" />}
-          variant="warning"
+          icon={<AlertTriangle className='w-4 h-4' />}
+          variant='warning'
         />
         <StatsCard
-          title="Alertas Críticos"
+          title='Alertas Críticos'
           value={dashboardData.criticalIssues.toString()}
-          icon={<Zap className="w-4 h-4" />}
-          variant="destructive"
+          icon={<Zap className='w-4 h-4' />}
+          variant='destructive'
         />
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6'>
-      <div className='mb-6'>
-        <AlertsEvolution />
-      </div>
+        <div className='mb-6'>
+          <AlertsEvolution />
+        </div>
         <StationMap />
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <RecentAlerts 
-          alerts={dashboardData.recentAlerts}
-          isLoading={isLoading}
-        />
-        
-        <LatestReadings 
-          readings={dashboardData.latestReadings}
-          isLoading={isLoading}
-        />
+        <LastAlerts isLoading={isLoading} />
+
+        <LatestReadings readings={dashboardData.latestReadings} isLoading={isLoading} />
       </div>
     </div>
   )

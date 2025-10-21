@@ -26,6 +26,6 @@ export type DashboardStatsDto = {
     critical: number
     inactive: number
   }
-  recentAlerts: DashboardAlertDto[]
+  LastAlerts: DashboardAlertDto[]
   latestReadings: DashboardStationReadingDto[]
 }

@@ -11,6 +11,7 @@ export const ROUTES = {
   stationLocation: '/stations/:stationId/location',
   stationParameters: '/stations/:stationId/parameters',
   stationMeasurements: '/stations/:stationId/measurements',
+  measurements: '/measurements',
   parameters: '/parameters',
   alarms: '/alarms',
   alerts: '/alerts',

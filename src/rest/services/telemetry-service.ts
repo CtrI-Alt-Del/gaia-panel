@@ -3,12 +3,15 @@ import type { RestClient } from '@/core/global/interfaces'
 import type { RestResponse } from '@/core/global/responses/rest-response'
 import type { PaginationResponse } from '@/core/global/responses'
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
+import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
-import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
+import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
 import type {
   ParametersListingParams,
   StationsListingParams,
+  MeasurementsListingParams,
 } from '@/core/telemetry/types'
+import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
@@ -29,6 +32,10 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<PaginationResponse<ParameterDto>>(
         '/telemetry/parameters',
       )
+    },
+
+    async fetchAlarms(): Promise<RestResponse<PaginationResponse<AlarmDto>>> {
+      return await restClient.get<PaginationResponse<AlarmDto>>('/telemetry/alarms')
     },
 
     async createParameter(
@@ -120,6 +127,26 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return (await restClient.delete(
         `/telemetry/parameters/${parameterId}`,
       )) as RestResponse<ParameterDto>
+    },
+
+    async fetchMeasurements(
+      params: MeasurementsListingParams,
+    ): Promise<RestResponse<PaginationResponse<MeasurementDto>>> {
+      if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
+      if (params.date) restClient.setQueryParam('date', params.date)
+      if (params.parameterName)
+        restClient.setQueryParam('parameterName', params.parameterName)
+      if (params.stationName) restClient.setQueryParam('stationName', params.stationName)
+      if (params.stationId) restClient.setQueryParam('stationId', params.stationId)
+      if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
+      if (params.previousCursor)
+        restClient.setQueryParam('previousCursor', params.previousCursor)
+      if (params.pageSize)
+        restClient.setQueryParam('pageSize', params.pageSize.toString())
+
+      return await restClient.get<PaginationResponse<MeasurementDto>>(
+        '/telemetry/measurements',
+      )
     },
   }
 }

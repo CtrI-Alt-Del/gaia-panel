@@ -1,17 +1,39 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/shadcn/components/card'
+import { MeasurementsTable } from './measurements-table'
+import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
 
-export const StationMeasurementsSlotView = () => {
+type StationMeasurementsSlotViewProps = {
+  station: any
+  measurements: any[]
+  nextCursor: string | null
+  previousCursor: string | null
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+}
+
+export const StationMeasurementsSlotView = ({
+  station,
+  measurements = [],
+  nextCursor,
+  previousCursor,
+  hasNextPage,
+  hasPreviousPage,
+}: StationMeasurementsSlotViewProps) => {
+  const normalizedMeasurements: MeasurementDto[] = measurements.map((m: any) => ({
+    ...m,
+    station: m.station ?? station,
+  }))
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Dados das Medições</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className='text-center py-8 text-muted-foreground'>
-          <p>Funcionalidade de medições em desenvolvimento</p>
-          <p className='text-sm mt-2'>Em breve: vários dados coletados das estações</p>
-        </div>
-      </CardContent>
-    </Card>
+    <div className='p-6'>
+      <div className='bg-white  border border-gray-200'>
+        <MeasurementsTable
+          measurements={normalizedMeasurements}
+          nextCursor={nextCursor}
+          previousCursor={previousCursor}
+          hasNextPage={hasNextPage}
+          hasPreviousPage={hasPreviousPage}
+        />
+      </div>
+    </div>
   )
 }

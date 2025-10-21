@@ -7,15 +7,23 @@ import type { ParametersListingParams } from '../types/parameters-listing-params
 
 export interface TelemetryService {
   fetchStationsCount(): Promise<RestResponse<StationsCountDto>>
-  fetchParameters(params: ParametersListingParams): Promise<RestResponse<PaginationResponse<ParameterDto>>> 
+  fetchParameters(
+    params: ParametersListingParams,
+  ): Promise<RestResponse<PaginationResponse<ParameterDto>>>
   createParameter(parameter: ParameterDto): Promise<RestResponse<ParameterDto>>
   updateParameter(parameter: ParameterDto): Promise<RestResponse<ParameterDto>>
   deleteParameter(parameterId: string): Promise<RestResponse>
   fetchStations(
     params: StationsListingParams,
   ): Promise<RestResponse<PaginationResponse<StationDto>>>
-  createStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>>
-  updateStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>>
+  createStation(
+    station: StationDto,
+    parameterIds: string[],
+  ): Promise<RestResponse<StationDto>>
+  updateStation(
+    station: StationDto,
+    parameterIds: string[],
+  ): Promise<RestResponse<StationDto>>
   fetchStation(stationId: string): Promise<RestResponse<StationDto>>
   activateStation(stationId: string): Promise<RestResponse<StationDto>>
   deactivateStation(stationId: string): Promise<RestResponse>

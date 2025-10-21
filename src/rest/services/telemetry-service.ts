@@ -5,8 +5,10 @@ import type { PaginationResponse } from '@/core/global/responses'
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
 import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
-import type { ParametersListingParams, StationsListingParams } from '@/core/telemetry/types'
-import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
+import type {
+  ParametersListingParams,
+  StationsListingParams,
+} from '@/core/telemetry/types'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
@@ -14,7 +16,9 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<StationsCountDto>('/telemetry/stations/count')
     },
 
-    async fetchParameters(params: ParametersListingParams): Promise<RestResponse<PaginationResponse<ParameterDto>>> {
+    async fetchParameters(
+      params: ParametersListingParams,
+    ): Promise<RestResponse<PaginationResponse<ParameterDto>>> {
       if (params.name) restClient.setQueryParam('name', params.name)
       if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
       if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
@@ -22,7 +26,9 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
         restClient.setQueryParam('previousCursor', params.previousCursor)
       if (params.pageSize)
         restClient.setQueryParam('pageSize', params.pageSize.toString())
-      return await restClient.get<PaginationResponse<ParameterDto>>('/telemetry/parameters')
+      return await restClient.get<PaginationResponse<ParameterDto>>(
+        '/telemetry/parameters',
+      )
     },
 
     async createParameter(
@@ -31,17 +37,16 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.post<ParameterDto>('/telemetry/parameters', parameter)
     },
 
-    async updateParameter(parameter: Partial<ParameterDto>): Promise<RestResponse<ParameterDto>> {
-      const { id, name, unitOfMeasure, factor, offset } = parameter;
-      const body: Partial<ParameterDto> = {};
-      if (name !== undefined) body.name = name;
-      if (unitOfMeasure !== undefined) body.unitOfMeasure = unitOfMeasure;
-      if (factor !== undefined) body.factor = factor;
-      if (offset !== undefined) body.offset = offset;
-      return await restClient.put<ParameterDto>(
-        `/telemetry/parameters/${id}`,
-        body,
-      );
+    async updateParameter(
+      parameter: Partial<ParameterDto>,
+    ): Promise<RestResponse<ParameterDto>> {
+      const { id, name, unitOfMeasure, factor, offset } = parameter
+      const body: Partial<ParameterDto> = {}
+      if (name !== undefined) body.name = name
+      if (unitOfMeasure !== undefined) body.unitOfMeasure = unitOfMeasure
+      if (factor !== undefined) body.factor = factor
+      if (offset !== undefined) body.offset = offset
+      return await restClient.put<ParameterDto>(`/telemetry/parameters/${id}`, body)
     },
 
     async deleteParameter(id: string): Promise<RestResponse> {
@@ -62,7 +67,10 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<PaginationResponse<StationDto>>('/telemetry/stations')
     },
 
-    async createStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>> {
+    async createStation(
+      station: StationDto,
+      parameterIds: string[],
+    ): Promise<RestResponse<StationDto>> {
       return await restClient.post<StationDto>('/telemetry/stations', {
         station,
         parameterIds,
@@ -73,14 +81,14 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<StationDto>(`/telemetry/stations/${stationId}`)
     },
 
-    async updateStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>> {
-      return await restClient.put<StationDto>(
-        `/telemetry/stations/${station.id}`,
-        {
-          station,
-          parameterIds,
-        },
-      )
+    async updateStation(
+      station: StationDto,
+      parameterIds: string[],
+    ): Promise<RestResponse<StationDto>> {
+      return await restClient.put<StationDto>(`/telemetry/stations/${station.id}`, {
+        station,
+        parameterIds,
+      })
     },
 
     async activateStation(stationId: string): Promise<RestResponse<StationDto>> {
@@ -109,8 +117,9 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
     },
 
     async deactivateParameter(parameterId: string): Promise<RestResponse<ParameterDto>> {
-      return await restClient.delete(`/telemetry/parameters/${parameterId}`) as RestResponse<ParameterDto>;
+      return (await restClient.delete(
+        `/telemetry/parameters/${parameterId}`,
+      )) as RestResponse<ParameterDto>
     },
-
   }
 }

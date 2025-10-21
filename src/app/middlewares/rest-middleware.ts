@@ -4,7 +4,6 @@ import type { Route } from '../+types/root'
 import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
 import {
   AlertingService,
-  AlertsService,
   MembershipService,
   TelemetryService,
 } from '@/rest/services'
@@ -22,12 +21,10 @@ export const RestMiddleware = async ({ context }: Route.LoaderArgs) => {
   const membershipService = MembershipService(restClient)
   const telemetryService = TelemetryService(restClient)
   const alertingService = AlertingService(restClient)
-  const alertsService = AlertsService(restClient)
 
   context.set(restContext, {
     membershipService,
     telemetryService,
     alertingService,
-    alertsService,
   })
 }

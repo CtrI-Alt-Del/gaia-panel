@@ -24,13 +24,13 @@ export const middleware = [AuthMiddleware, RestMiddleware]
 export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { station, period, parameter } = loadSearchParams(request)
   const { userId } = context.get(authContext)
-  const { telemetryService, alertsService } = context.get(restContext)
+  const { telemetryService, alertingService } = context.get(restContext)
 
   if (!userId) return redirect(ROUTES.auth.signIn)
 
   const [stationsResponse, alertsResponse] = await Promise.all([
     telemetryService.fetchStationsCount(),
-    alertsService.fetchAlertsCount()
+    alertingService.fetchAlertsCount()
   ])
 
   const stationsData: StationsCountDto = stationsResponse.body ?? {

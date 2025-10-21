@@ -12,11 +12,11 @@ export const AlertsService = (restClient: RestClient): IAlertsService => {
         restClient.setQueryParam('previousCursor', params.previousCursor)
       if (params.pageSize)
         restClient.setQueryParam('pageSize', params.pageSize.toString())
-      return await restClient.get('/alerts')
+      return await restClient.get('/alerting/alerts')
     },
 
     async fetchAlert(alertId: string) {
-      return await restClient.get(`/alerts/${alertId}`)
+      return await restClient.get(`/alerting/alerts/${alertId}`)
     },
   }
 }

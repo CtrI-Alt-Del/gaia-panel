@@ -3,25 +3,39 @@ import type { RestClient } from '@/core/global/interfaces'
 import type { RestResponse } from '@/core/global/responses/rest-response'
 import type { PaginationResponse } from '@/core/global/responses'
 import type { ParameterDto } from '@/core/telemetry/dtos/parameter-dto'
-import type { StationDto } from '@/core/telemetry/dtos/station-dto'
-import type { ParametersListingParams, StationsListingParams } from '@/core/telemetry/types'
 import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
+import type { StationDto } from '@/core/telemetry/dtos/station-dto'
+import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
+import type {
+  ParametersListingParams,
+  StationsListingParams,
+  MeasurementsListingParams,
+} from '@/core/telemetry/types'
+import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
 
 export const TelemetryService = (restClient: RestClient): ITelemetryService => {
   return {
-    async fetchAlarms(): Promise<RestResponse<PaginationResponse<AlarmDto>>> {
-      return await restClient.get<PaginationResponse<AlarmDto>>('/telemetry/alarms')
+    async fetchStationsCount(): Promise<RestResponse<StationsCountDto>> {
+      return await restClient.get<StationsCountDto>('/telemetry/stations/count')
     },
 
-    async fetchParameters(params: ParametersListingParams): Promise<RestResponse<PaginationResponse<ParameterDto>>> {
+    async fetchParameters(
+      params: ParametersListingParams,
+    ): Promise<RestResponse<PaginationResponse<ParameterDto>>> {
       if (params.name) restClient.setQueryParam('name', params.name)
-        if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
-        if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
-        if (params.previousCursor)
-          restClient.setQueryParam('previousCursor', params.previousCursor)
-        if (params.pageSize)
-          restClient.setQueryParam('pageSize', params.pageSize.toString())
-      return await restClient.get<PaginationResponse<ParameterDto>>('/telemetry/parameters')
+      if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
+      if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
+      if (params.previousCursor)
+        restClient.setQueryParam('previousCursor', params.previousCursor)
+      if (params.pageSize)
+        restClient.setQueryParam('pageSize', params.pageSize.toString())
+      return await restClient.get<PaginationResponse<ParameterDto>>(
+        '/telemetry/parameters',
+      )
+    },
+
+    async fetchAlarms(): Promise<RestResponse<PaginationResponse<AlarmDto>>> {
+      return await restClient.get<PaginationResponse<AlarmDto>>('/telemetry/alarms')
     },
 
     async createParameter(
@@ -30,17 +44,16 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.post<ParameterDto>('/telemetry/parameters', parameter)
     },
 
-    async updateParameter(parameter: Partial<ParameterDto>): Promise<RestResponse<ParameterDto>> {
-      const { id, name, unitOfMeasure, factor, offset } = parameter;
-      const body: Partial<ParameterDto> = {};
-      if (name !== undefined) body.name = name;
-      if (unitOfMeasure !== undefined) body.unitOfMeasure = unitOfMeasure;
-      if (factor !== undefined) body.factor = factor;
-      if (offset !== undefined) body.offset = offset;
-      return await restClient.put<ParameterDto>(
-        `/telemetry/parameters/${id}`,
-        body,
-      );
+    async updateParameter(
+      parameter: Partial<ParameterDto>,
+    ): Promise<RestResponse<ParameterDto>> {
+      const { id, name, unitOfMeasure, factor, offset } = parameter
+      const body: Partial<ParameterDto> = {}
+      if (name !== undefined) body.name = name
+      if (unitOfMeasure !== undefined) body.unitOfMeasure = unitOfMeasure
+      if (factor !== undefined) body.factor = factor
+      if (offset !== undefined) body.offset = offset
+      return await restClient.put<ParameterDto>(`/telemetry/parameters/${id}`, body)
     },
 
     async deleteParameter(id: string): Promise<RestResponse> {
@@ -61,9 +74,12 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<PaginationResponse<StationDto>>('/telemetry/stations')
     },
 
-    async createStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>> {
+    async createStation(
+      station: StationDto,
+      parameterIds: string[],
+    ): Promise<RestResponse<StationDto>> {
       return await restClient.post<StationDto>('/telemetry/stations', {
-        station, 
+        station,
         parameterIds,
       })
     },
@@ -72,14 +88,14 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<StationDto>(`/telemetry/stations/${stationId}`)
     },
 
-    async updateStation(station: StationDto, parameterIds: string[]): Promise<RestResponse<StationDto>> {
-      return await restClient.put<StationDto>(
-        `/telemetry/stations/${station.id}`,
-        {
-          station,
-          parameterIds,
-        },
-      )
+    async updateStation(
+      station: StationDto,
+      parameterIds: string[],
+    ): Promise<RestResponse<StationDto>> {
+      return await restClient.put<StationDto>(`/telemetry/stations/${station.id}`, {
+        station,
+        parameterIds,
+      })
     },
 
     async activateStation(stationId: string): Promise<RestResponse<StationDto>> {
@@ -108,8 +124,29 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
     },
 
     async deactivateParameter(parameterId: string): Promise<RestResponse<ParameterDto>> {
-      return await restClient.delete(`/telemetry/parameters/${parameterId}`) as RestResponse<ParameterDto>;
+      return (await restClient.delete(
+        `/telemetry/parameters/${parameterId}`,
+      )) as RestResponse<ParameterDto>
     },
 
+    async fetchMeasurements(
+      params: MeasurementsListingParams,
+    ): Promise<RestResponse<PaginationResponse<MeasurementDto>>> {
+      if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
+      if (params.date) restClient.setQueryParam('date', params.date)
+      if (params.parameterName)
+        restClient.setQueryParam('parameterName', params.parameterName)
+      if (params.stationName) restClient.setQueryParam('stationName', params.stationName)
+      if (params.stationId) restClient.setQueryParam('stationId', params.stationId)
+      if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
+      if (params.previousCursor)
+        restClient.setQueryParam('previousCursor', params.previousCursor)
+      if (params.pageSize)
+        restClient.setQueryParam('pageSize', params.pageSize.toString())
+
+      return await restClient.get<PaginationResponse<MeasurementDto>>(
+        '/telemetry/measurements',
+      )
+    },
   }
 }

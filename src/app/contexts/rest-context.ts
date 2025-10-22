@@ -8,7 +8,6 @@ type RestContext = {
   membershipService: MembershipService
   telemetryService: TelemetryService
   alertingService: AlertingService
-  alertsService: AlertsService
 }
 
 export const restContext = createContext<RestContext>()

@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker'
-
 import type { AlertDto } from '../alert-dto'
 
 export class AlertsFaker {
@@ -62,7 +61,7 @@ export class AlertsFaker {
     }
   }
 
-  static fakeMany(count: number = 10, baseDto?: Partial<AlertDto>): AlertDto[] {
-    return Array.from({ length: count }, () => AlertsFaker.fakeDto(baseDto))
+  static fakeMany(count: number, baseDto?: Partial<AlertDto>): AlertDto[] {
+    return Array.from({ length: count }, () => AlertsFaker.fake(baseDto))
   }
 }

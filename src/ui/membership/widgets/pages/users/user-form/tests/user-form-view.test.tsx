@@ -118,12 +118,12 @@ describe('UserFormView Component', () => {
 
       renderComponent()
 
-      const nameInput = screen.getByLabelText('Nome')
-      const emailInput = screen.getByLabelText('Email')
-      const submitButton = screen.getByRole('button', { name: 'Salvar' })
+  const nameInput = screen.getByLabelText('Nome')
+  const emailInput = screen.getByLabelText('Email')
+  const submitButton = screen.getByRole('button', { name: 'Salvar' })
 
-      fireEvent.change(nameInput, { target: { value: 'John Doe' } })
-      fireEvent.change(emailInput, { target: { value: 'john@example.com' } })
+  fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+  fireEvent.change(emailInput, { target: { value: 'john@example.com' } })
 
       await waitFor(() => {
         expect(submitButton).not.toBeDisabled()
@@ -132,10 +132,10 @@ describe('UserFormView Component', () => {
       fireEvent.click(submitButton)
 
       await waitFor(() => {
-        expect(membershipService.createUser).toHaveBeenCalledWith({
-          name: 'John Doe',
-          email: 'john@example.com',
-        })
+          expect(membershipService.createUser).toHaveBeenCalledWith({
+            name: 'John Doe',
+            email: 'john@example.com',
+          })
       })
     })
 

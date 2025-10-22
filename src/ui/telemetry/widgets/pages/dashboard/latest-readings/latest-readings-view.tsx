@@ -35,7 +35,7 @@ export const LatestReadingsView = ({ readings, isLoading }: LatestReadingsViewPr
             <div className="text-center py-8">
               <div className="text-muted-foreground">Carregando...</div>
             </div>
-          ) : readings.length === 0 ? (
+          ) : !readings || readings.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-muted-foreground">Nenhuma leitura encontrada</div>
             </div>

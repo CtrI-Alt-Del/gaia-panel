@@ -17,15 +17,15 @@ export type DashboardStationReadingDto = {
 
 export type DashboardStatsDto = {
   totalStations: number
-  activeStations: number
-  alertsCount: number
-  criticalIssues: number
+  activeStationsPercentage: number
+  warningAlerts: number
+  criticalAlerts: number
   stationStatusDistribution: {
     active: number
     warning: number
     critical: number
     inactive: number
   }
-  recentAlerts: DashboardAlertDto[]
+  LastAlerts: DashboardAlertDto[]
   latestReadings: DashboardStationReadingDto[]
 }

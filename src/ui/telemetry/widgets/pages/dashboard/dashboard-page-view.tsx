@@ -1,6 +1,6 @@
-import { Activity, AlertTriangle, RadioTower, Users, Zap } from 'lucide-react'
+import { Activity, AlertTriangle, RadioTower, Zap } from 'lucide-react'
 import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
-import type { AlertsCountDto } from '@/core/alerts/dtos/alerts-count-dto'
+import type { AlertsCountDto } from '@/core/alerting/alerts/dtos/alerts-count-dto'
 import { StatsCard } from './stats-card'
 import { LastAlerts } from './last-alerts'
 import { LatestReadings } from './latest-readings'

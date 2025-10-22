@@ -3,7 +3,7 @@ import { AlertTriangle, AlertCircle, Info, Clock, Activity, MapPin } from 'lucid
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/shadcn/components/card'
 import { Badge, type Color } from '@/ui/shadcn/components/badge'
 import { Button } from '@/ui/shadcn/components/button'
-import type { AlertDto } from '@/core/alerts/dtos'
+import type { AlertDto } from '@/core/alerting/alerts/dtos'
 import { Link } from 'react-router'
 import { ROUTES } from '@/core/global/constants/routes'
 

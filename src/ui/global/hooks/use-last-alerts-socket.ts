@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 
-import type { AlertDto } from '@/core/alerts/dtos'
-import { ENV } from '@/core/global/constants'
+import type { AlertDto } from '@/core/alerting/alerts/dtos'
 
 const URL = 'http://localhost:3333/alerting/alerts/last'
 

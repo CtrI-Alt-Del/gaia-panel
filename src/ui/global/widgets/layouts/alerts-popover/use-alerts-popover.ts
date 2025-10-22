@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import type { AlertDto } from '@/core/alerts/dtos'
+import type { AlertDto } from '@/core/alerting/alerts/dtos'
 import type { AlertingService } from '@/core/alerting/interfaces/alerting-service'
 import type { ToastProvider } from '@/core/global/interfaces'
 
@@ -57,7 +57,7 @@ export function useAlertsPopover({
       if (!isCriticalAlert(alert)) {
         return false
       }
-      
+
       const alertTimestamp = new Date(alert.createdAt).getTime()
 
       return !currentCriticalAlertTimestamps.has(alertTimestamp)
@@ -66,7 +66,7 @@ export function useAlertsPopover({
     if (hasNewCriticalAlerts) {
       alertDialogRef.current?.open()
     }
-  }, [alerts])
+  }, [alerts, alertDialogRef])
 
   return {
     alerts,

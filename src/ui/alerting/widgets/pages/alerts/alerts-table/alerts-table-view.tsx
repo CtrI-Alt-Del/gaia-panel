@@ -84,7 +84,6 @@ export const AlertsTableView = ({
           </TableRow>
         ) : (
           alerts.map((alert, index) => {
-          alerts.map((alert, index) => {
             return (
               <TableRow
                 key={`${alert.parameterName}-${alert.parameterStationName}-${index}`}

@@ -2,7 +2,7 @@ import { Activity, AlertTriangle, RadioTower, Users, Zap } from 'lucide-react'
 import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
 import type { AlertsCountDto } from '@/core/alerts/dtos/alerts-count-dto'
 import { StatsCard } from './stats-card'
-import { RecentAlerts } from './recent-alerts'
+import { LastAlerts } from './last-alerts'
 import { LatestReadings } from './latest-readings'
 import { StationMap } from './station-map'
 import { AlertsEvolution } from './alerts-evolution'
@@ -72,15 +72,14 @@ export const DashboardPageView = ({
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6'>
-      <div className='mb-6'>
-        <AlertsEvolution />
-      </div>
+        <div className='mb-6'>
+          <AlertsEvolution />
+        </div>
         <StationMap />
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <RecentAlerts 
-          alerts={[]}
+        <LastAlerts 
           isLoading={isLoading}
         />
         

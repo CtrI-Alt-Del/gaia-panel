@@ -15,9 +15,9 @@ export const searchParams = {
   station: parseAsString,
   period: parseAsString.withDefault('7'),
   parameter: parseAsString.withDefault('temperature'),
-};
+}
 
-export const loadSearchParams = createLoader(searchParams);
+export const loadSearchParams = createLoader(searchParams)
 
 export const middleware = [AuthMiddleware, RestMiddleware]
 
@@ -52,4 +52,4 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
   }
 };
 
-export default DashboardPage;
+export default DashboardPage

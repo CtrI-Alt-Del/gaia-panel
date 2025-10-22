@@ -3,13 +3,14 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
 
 import type { DatetimeProvider } from '@/core/global/interfaces'
+import { useCallback } from 'react'
 
 // Configure dayjs
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export function useDateTimeProvider(): DatetimeProvider {
-  function formatRelativeTime(date?: Date): string {
+  const formatRelativeTime = useCallback((date?: Date): string => {
     if (!date) return 'Nunca'
 
     const now = dayjs()
@@ -27,9 +28,17 @@ export function useDateTimeProvider(): DatetimeProvider {
     const diffInDays = now.diff(targetDate, 'day')
     if (diffInDays === 1) return '1 dia atrás'
     return `${diffInDays} dias atrás`
-  }
+  }, [])
+
+  const formatDateTime = useCallback((date?: Date): string => {
+    if (!date) return 'Nunca'
+
+    const targetDate = dayjs(date)
+    return targetDate.format('DD/MM/YYYY HH:mm:ss')
+  }, [])
 
   return {
     formatRelativeTime,
+    formatDateTime,
   }
 }

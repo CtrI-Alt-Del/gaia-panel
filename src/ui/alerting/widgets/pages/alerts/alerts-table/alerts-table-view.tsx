@@ -77,16 +77,16 @@ export const AlertsTableView = ({
             </TableCell>
           </TableRow>
         ) : (
-          alerts.map((alert) => {
+          alerts.map((alert, index) => {
             return (
-              <TableRow key={alert.id}>
+              <TableRow
+                key={`${alert.parameterStationName}-${alert.parameterName}-${alert.createdAt}-${index}`}
+              >
                 <TableCell className='pl-6'>
                   <div className='flex items-center gap-2'>
-                    <MeasurementUnitIcon
-                      unit={String(alert.parameter.entity?.unitOfMeasure)}
-                    />
+                    <MeasurementUnitIcon unit={String(alert.parameterStationName)} />
                     <div className='text-sm font-bold text-stone-700'>
-                      {alert.parameter.entity?.name}
+                      {alert.parameterStationName}
                     </div>
                   </div>
                 </TableCell>
@@ -121,7 +121,7 @@ export const AlertsTableView = ({
 
                 <TableCell>
                   <div className='text-sm text-stone-600'>
-                    {alert.parameter.entity?.unitOfMeasure}
+                    {alert.parameterUnitOfMeasure}
                   </div>
                 </TableCell>
 

@@ -1,9 +1,11 @@
-import type { ParameterAggregateDto } from '@/core/alerting/dtos'
-
 export type AlertDto = {
   id?: string
   message: string
-  parameter: ParameterAggregateDto
+  measurementValue: number
+  parameterName: string
+  parameterUnitOfMeasure: string
+  parameterStationName: string
   level: string
+  isRead: boolean
   createdAt: Date
 }

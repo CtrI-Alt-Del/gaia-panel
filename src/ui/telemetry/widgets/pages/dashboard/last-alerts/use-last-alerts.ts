@@ -1,4 +1,4 @@
-import type { AlertDto } from '@/core/alerts/dtos'
+import type { AlertDto } from '@/core/alerting/alerts/dtos'
 import type { Color } from '@/ui/shadcn/components/badge'
 import { useState } from 'react'
 

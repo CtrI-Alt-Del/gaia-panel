@@ -6,7 +6,7 @@ import type { StationDto } from '@/core/telemetry/dtos/station-dto'
 
 import { Badge } from '@/ui/shadcn/components/badge'
 import { Dialog } from '@/ui/global/widgets/components/dialog'
-import { useDateTimeProvider } from '@/ui/global/hooks/use-date-provider'
+import { useDateTimeProvider } from '@/ui/global/hooks/use-date-time-provider'
 import { StationStatusButton } from '../stations/station-status-button'
 import { StationForm } from '../stations/station-form'
 

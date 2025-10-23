@@ -1,19 +1,9 @@
-import { useEffect, useRef } from 'react'
-import {
-  AlertCircle,
-  AlertTriangle,
-  Bell,
-  Eye,
-} from 'lucide-react'
+import { AlertCircle, AlertTriangle, Bell, Eye } from 'lucide-react'
 
-import type { AlertDto } from '@/core/alerts/dtos'
+import type { AlertDto } from '@/core/alerting/alerts/dtos'
 import { Badge } from '@/ui/shadcn/components/badge'
 import { Button } from '@/ui/shadcn/components/button'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/ui/shadcn/components/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/ui/shadcn/components/popover'
 import { Separator } from '@/ui/shadcn/components/separator'
 import { cn } from '@/ui/shadcn/utils'
 import { useDateTimeProvider } from '@/ui/global/hooks'
@@ -25,7 +15,6 @@ import {
 } from '@/ui/global/widgets/components/alert-dialog'
 import { MeasurementUnitIcon } from '../../components/measurement-unit-icon'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/shadcn/components/tooltip'
-
 
 type Props = {
   alerts: AlertDto[]
@@ -128,45 +117,60 @@ export const AlertsPopoverView = ({
                             </>
                           )}
                         </Badge>
-                      {!alert.isRead && <p className='block animate-pulse rounded-full border border-primary px-2 py-1 text-xs text-primary'>Novo</p>}
+                        {!alert.isRead && (
+                          <p className='block animate-pulse rounded-full border border-primary px-2 py-1 text-xs text-primary'>
+                            Novo
+                          </p>
+                        )}
                       </div>
-                      <span className='text-xs font-medium text-muted-foreground'>{formatDateTime(alert.createdAt)}</span>
+                      <span className='text-xs font-medium text-muted-foreground'>
+                        {formatDateTime(alert.createdAt)}
+                      </span>
                     </div>
 
                     <Separator className='my-3 opacity-50' />
 
                     <div className='flex items-end justify-between gap-3'>
-                       <div className='flex items-center gap-2'>
-                          <span
-                            className={cn(
-                              'mt-0.5 flex size-12 items-center justify-center rounded-full',
-                            )}
-                          >
-                            <MeasurementUnitIcon
-                              unit={alert.parameterUnitOfMeasure.toLowerCase()}
-                              className='size-10'
-                            />
-                          </span>
+                      <div className='flex items-center gap-2'>
+                        <span
+                          className={cn(
+                            'mt-0.5 flex size-12 items-center justify-center rounded-full',
+                          )}
+                        >
+                          <MeasurementUnitIcon
+                            unit={alert.parameterUnitOfMeasure.toLowerCase()}
+                            className='size-10'
+                          />
+                        </span>
 
-                          <div className='space-y-1'>
-                            <h3 className='text-sm font-semibold text-foreground'>
-                              {alert.parameterName || 'Alerta Meteorológico'}
-                            </h3>
-                            {alert.message ? (
-                              <p className='text-sm text-muted-foreground'>{alert.message}</p>
-                            ) : null}
-                          </div>
-                       </div>
-                     {!alert.isRead && <Tooltip>
+                        <div className='space-y-1'>
+                          <h3 className='text-sm font-semibold text-foreground'>
+                            {alert.parameterName || 'Alerta Meteorológico'}
+                          </h3>
+                          {alert.message ? (
+                            <p className='text-sm text-muted-foreground'>
+                              {alert.message}
+                            </p>
+                          ) : null}
+                        </div>
+                      </div>
+                      {!alert.isRead && (
+                        <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button variant='ghost' size='icon' onClick={() => onReadAlertButtonClick(alert.id as string)} className='size-6 bg-card border border-zinc-400 rounded-full'>
+                            <Button
+                              variant='ghost'
+                              size='icon'
+                              onClick={() => onReadAlertButtonClick(alert.id as string)}
+                              className='size-6 bg-card border border-zinc-400 rounded-full'
+                            >
                               <Eye />
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>Marcar como lido</p>
                           </TooltipContent>
-                        </Tooltip>}
+                        </Tooltip>
+                      )}
                     </div>
                   </article>
                 )
@@ -175,7 +179,9 @@ export const AlertsPopoverView = ({
               <div className='flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border/70 bg-card/40 px-6 py-10 text-center'>
                 <Bell className='size-8 text-muted-foreground' aria-hidden='true' />
                 <div className='space-y-1'>
-                  <p className='text-sm font-semibold text-foreground'>Sem alertas no momento</p>
+                  <p className='text-sm font-semibold text-foreground'>
+                    Sem alertas no momento
+                  </p>
                   <p className='text-xs text-muted-foreground'>
                     Os alertas meteorológicos recentes vão aparecer aqui.
                   </p>
@@ -186,7 +192,10 @@ export const AlertsPopoverView = ({
 
           <footer className='flex items-center justify-between gap-3 rounded-b-3xl border-t border-border bg-card px-5 py-3 text-xs text-muted-foreground'>
             <div className='flex items-center gap-2'>
-              <AlertTriangle className='size-6 text-muted-foreground' aria-hidden='true' />
+              <AlertTriangle
+                className='size-6 text-muted-foreground'
+                aria-hidden='true'
+              />
               <span>Dados fornecidos pelo monitoramento em tempo real</span>
             </div>
             <Button

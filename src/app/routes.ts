@@ -22,7 +22,7 @@ export default [
     route(ROUTES.profile, 'routes/membership/profile-route.tsx'),
     route(ROUTES.parameters, 'routes/telemetry/parameters-route.tsx'),
     route(ROUTES.alarms, 'routes/alerting/alarms-route.tsx'),
-    route(ROUTES.alerts, 'routes/alerts/alerts-route.tsx'),
+    route(ROUTES.alerts, 'routes/alerting/alerts/alerts-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
   ]),
 ] satisfies RouteConfig

@@ -1,5 +1,5 @@
 import { Form } from 'react-router'
-import type { AlertDto } from '@/core/alerts/dtos/alert-dto'
+import type { AlertDto } from '@/core/alerting/alerts/dtos/alert-dto'
 import { Button } from '@/ui/shadcn/components/button'
 import { Bell } from 'lucide-react'
 import { PageSizeSelect } from '@/ui/global/widgets/components/page-size-select'

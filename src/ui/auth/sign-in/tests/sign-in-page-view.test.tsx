@@ -48,6 +48,7 @@ const SignInPageWrapper = (props: {
         isLoading={props.isLoading || false}
         error={props.error}
         onSubmit={handleSubmit}
+        onVisitorLogin={vi.fn()}
         onForgotPassword={props.onForgotPassword || vi.fn()}
       />
     </MemoryRouter>
@@ -59,6 +60,7 @@ const renderSignInPageView = (props: {
   error?: string
   onSubmit?: () => void
   onForgotPassword?: () => void
+  onVisitorLogin?: () => void
   formData?: Partial<SignInFormData>
 }) => {
   return render(<SignInPageWrapper {...props} />)
@@ -153,7 +155,7 @@ describe('SignInPageView', () => {
     })
 
     const submitButton = screen.getByRole('button', { name: 'Entrar' })
-    
+
     // Submit form by clicking the button
     fireEvent.click(submitButton)
 

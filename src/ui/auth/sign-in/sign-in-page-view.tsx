@@ -18,8 +18,6 @@ import {
   CardDescription,
 } from '@/ui/shadcn/components/card'
 import { GaiaLogo } from '@/ui/global/widgets/components/gaia-logo'
-import { Link } from 'react-router'
-import { ROUTES } from '@/core/global/constants/routes'
 
 type SignInFormData = {
   email: string
@@ -32,6 +30,7 @@ type Props = {
   error?: string
   onSubmit: () => void
   onForgotPassword: () => void
+  onVisitorLogin: () => void
 }
 
 export const SignInPageView = ({
@@ -40,6 +39,7 @@ export const SignInPageView = ({
   error,
   onSubmit,
   onForgotPassword,
+  onVisitorLogin,
 }: Props) => {
   return (
     <div className='min-h-screen w-full grid grid-cols-2'>
@@ -108,7 +108,7 @@ export const SignInPageView = ({
 
                   <div className='flex justify-between items-center'>
                     <button
-                      type="button"
+                      type='button'
                       onClick={onForgotPassword}
                       disabled={isLoading}
                       className='p-0 h-auto text-sm text-purple-600 hover:text-purple-700 bg-transparent border-none cursor-pointer'
@@ -133,6 +133,26 @@ export const SignInPageView = ({
                   </Button>
                 </form>
               </Form>
+
+              <div className='relative'>
+                <div className='absolute inset-0 flex items-center'>
+                  <span className='w-full border-t border-gray-300' />
+                </div>
+                <div className='relative flex justify-center text-xs uppercase'>
+                  <span className='bg-white px-2 text-gray-500'>Ou</span>
+                </div>
+              </div>
+
+              <Button
+                type='button'
+                variant='outline'
+                onClick={onVisitorLogin}
+                disabled={isLoading}
+                className='w-full font-medium py-3 border-purple-300 text-purple-700 hover:bg-purple-50'
+                size='lg'
+              >
+                Entrar como Visitante
+              </Button>
             </CardContent>
           </Card>
 

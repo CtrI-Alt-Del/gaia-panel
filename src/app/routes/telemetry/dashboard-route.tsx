@@ -26,7 +26,12 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { userId } = context.get(authContext)
   const { telemetryService, alertingService } = context.get(restContext)
 
-  if (!userId) return redirect(ROUTES.auth.signIn)
+  const url = new URL(request.url)
+  const isVisitor = url.searchParams.get('visitor') === 'true'
+
+  if (!isVisitor && !userId) {
+    return redirect(ROUTES.auth.signIn)
+  }
 
   const [stationsResponse, alertsResponse] = await Promise.all([
     telemetryService.fetchStationsCount(),

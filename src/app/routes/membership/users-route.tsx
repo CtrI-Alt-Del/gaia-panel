@@ -1,5 +1,5 @@
-import { createLoader, parseAsString, parseAsInteger } from "nuqs/server";
-import type { Route } from "./+types/users-route";
+import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
+import type { Route } from './+types/users-route'
 
 import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
 import { MembershipService } from '@/rest/services/membership-service'
@@ -20,17 +20,21 @@ export const searchParams = {
   nextCursor: parseAsString,
   previousCursor: parseAsString,
   pageSize: parseAsInteger.withDefault(10),
-};
+}
 
-export const loadSearchParams = createLoader(searchParams);
+export const loadSearchParams = createLoader(searchParams)
 
 export const middleware = [AuthMiddleware, RestMiddleware, MembershipMiddleware]
 
 export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { nextCursor, previousCursor, pageSize, name, status } = loadSearchParams(request)
   const { user } = context.get(membershipContext)
-
   const { userId } = context.get(authContext)
+
+  if (!userId || !user?.isActive) {
+    return redirect(ROUTES.auth.signIn)
+  }
+
   const { membershipService } = context.get(restContext)
   const response = await membershipService.fetchUsers({
     nextCursor,
@@ -41,13 +45,9 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
   })
   if (response.isFailure) response.throwError()
 
-  if (userId) {
-    const response = await membershipService.fetchUser(userId)
-    if (response.isFailure) response.throwError()
-    if (response.body.role !== 'owner') return redirect(ROUTES.stations)
-  }
-
-  if (!userId) return redirect(ROUTES.stations)
+  const userResponse = await membershipService.fetchUser(userId)
+  if (userResponse.isFailure) userResponse.throwError()
+  if (userResponse.body.role !== 'owner') return redirect(ROUTES.stations)
 
   return {
     users: response.body.items,
@@ -57,7 +57,7 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
     pageSize: response.body.pageSize,
     hasNextPage: response.body.hasNextPage,
     hasPreviousPage: response.body.hasPreviousPage,
-  };
-};
+  }
+}
 
-export default UsersPage;
+export default UsersPage

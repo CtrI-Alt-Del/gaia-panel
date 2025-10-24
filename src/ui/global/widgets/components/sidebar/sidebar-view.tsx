@@ -22,9 +22,10 @@ import { Link } from 'react-router'
 type Props = {
   currentPath: string
   isUserOwner: boolean
+  isVisitor?: boolean
 }
 
-export const SidebarView = ({ currentPath, isUserOwner }: Props) => {
+export const SidebarView = ({ currentPath, isUserOwner, isVisitor }: Props) => {
   return (
     <Sidebar className='w-64 bg-card min-h-screen'>
       <SidebarHeader className='p-6 bg-card'>
@@ -91,7 +92,7 @@ export const SidebarView = ({ currentPath, isUserOwner }: Props) => {
 
           <div className='h-px bg-purple-200 my-4' />
 
-          {isUserOwner && (
+          {isUserOwner && !isVisitor && (
             <SidebarMenu>
               <SidebarItem
                 icon={<Users />}

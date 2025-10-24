@@ -60,11 +60,16 @@ export function useSignInPage({ authProvider, toastProvider, routerProvider }: P
     console.log('Forgot password for:', form.getValues('email'))
   }
 
+  function onVisitorLogin() {
+    routerProvider.goTo(`${ROUTES.dashboard}?visitor=true`)
+  }
+
   return {
     form,
     isLoading,
     error,
     onSubmit: form.handleSubmit(onSubmit),
     onForgotPassword,
+    onVisitorLogin,
   }
 }

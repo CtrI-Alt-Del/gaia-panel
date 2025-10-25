@@ -7,7 +7,5 @@ const envSchema = z.object({
 console.log('olá env', process.env)
 
 export const ENV = envSchema.parse({
-  gaiaServerUrl:
-    import.meta.env.VITE_GAIA_SERVER_URL ||
-    'http://dev-gaia-server-sd.dev.gaia.local:3333',
+  gaiaServerUrl: process.env.VITE_GAIA_SERVER_URL,
 })

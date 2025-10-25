@@ -10,7 +10,7 @@ export const loader = async () => {
     }
     console.log(await response.json())
   } catch (error) {
-    console.log('Failed to connect to server')
+    console.log('Failed to connect to server at', ENV.gaiaServerUrl)
     console.log('error', error)
   }
 }

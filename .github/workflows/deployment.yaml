@@ -1,20 +1,22 @@
-name: Continuous Deployment to Staging
+name: Deployment
 
 on:
-  push:
-    branches: [main]
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
 
 permissions:
   id-token: write
   contents: read
 
 env:
-  AWS_REGION: us-east-1
-  ECR_REPOSITORY: dev-gaia-panel-ecr-repository
-  ECS_CLUSTER_NAME: dev-gaia-cluster
-  ECS_SERVICE_NAME: dev-gaia-panel-service
-  ECS_TASK_FAMILY: dev-gaia-panel-task
-  CONTAINER_NAME: dev-gaia
+  ECR_REPOSITORY: ${{ inputs.environment }}-gaia-panel-ecr-repository
+  ECS_CLUSTER_NAME: ${{ inputs.environment }}-gaia-cluster
+  ECS_SERVICE_NAME: ${{ inputs.environment }}-gaia-panel-service
+  ECS_TASK_FAMILY: ${{ inputs.environment }}-gaia-panel-task
+  CONTAINER_NAME: ${{ inputs.environment }}-gaia-panel
 
 jobs:
   deploy:
@@ -32,8 +34,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::549291472718:role/gaia-panel-role
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to AWS ECR
         id: login_ecr
@@ -54,8 +56,12 @@ jobs:
         run: |
           echo "Iniciando deploy para o cluster ${{ env.ECS_CLUSTER_NAME }}"
 
+          # 1. Baixa a definição da task ATIVA
           TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_FAMILY }} --query taskDefinition)
 
+          # 2. Prepara o novo payload da task definition
+          #    - Atualiza a imagem do contêiner para a nova versão
+          #    - Usa 'del()' para remover todos os campos que não são aceitos pelo 'register-task-definition'
           NEW_TASK_DEF_PAYLOAD=$(echo $TASK_DEFINITION | \
             jq --arg IMAGE_URI "${{ steps.build_push_image.outputs.image_uri }}" \
             '
@@ -64,12 +70,17 @@ jobs:
             '
           )
 
+          # ETAPA DE DEPURAÇÃO (opcional): Descomente a linha abaixo para ver o JSON final antes de ser enviado
+          # echo "$NEW_TASK_DEF_PAYLOAD"
+
+          # 3. Registra a nova definição de tarefa
           NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
             --cli-input-json "$NEW_TASK_DEF_PAYLOAD" \
             --query "taskDefinition.taskDefinitionArn" --output text)
             
           echo "Nova revisão da Task Definition registrada: $NEW_TASK_DEF_ARN"
 
+          # 4. Atualiza o serviço para usar a nova revisão
           aws ecs update-service \
             --cluster ${{ env.ECS_CLUSTER_NAME }} \
             --service ${{ env.ECS_SERVICE_NAME }} \

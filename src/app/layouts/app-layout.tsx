@@ -8,8 +8,8 @@ import { VisitorMiddleware } from '@/app/middlewares/visitor-middleware'
 import { DashboardLayout } from '@/ui/global/widgets/layouts'
 import { membershipContext } from '../contexts/membership-context'
 import { visitorContext } from '../contexts/visitor-context'
-import { ENV } from '@/core/global/constants'
 import { ROUTES } from '@/core/global/constants/routes'
+import { SERVER_ENV } from '@/core/global/constants/server-env'
 
 export const middleware = [
   AuthMiddleware,
@@ -28,7 +28,7 @@ const getContextData = (context: any, contextKey: any) => {
 
 export const loader = async ({ context }: Route.LoaderArgs) => {
   try {
-    const response = await fetch(ENV.gaiaServerUrl)
+    const response = await fetch(SERVER_ENV.gaiaServerUrl)
     console.log('Server response', await response.json())
   } catch (error) {
     console.log('error', error)

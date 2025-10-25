@@ -22,9 +22,6 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { station, period, parameter } = loadSearchParams(request)
   const { telemetryService, alertingService } = context.get(restContext)
 
-  // Permite acesso para visitantes e usuários autenticados
-  // Não redireciona mais para login - permite acesso direto
-
   const [stationsResponse, alertsResponse] = await Promise.all([
     telemetryService.fetchStationsCount(),
     alertingService.fetchAlertsCount(),

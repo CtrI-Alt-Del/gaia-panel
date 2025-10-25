@@ -42,8 +42,6 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
   const user = membershipData?.user
   const isVisitor = visitorData?.isVisitor || false
 
-  // Permite acesso direto às páginas - não redireciona mais para login
-  // Apenas a rota de usuários será protegida individualmente
   return { user, isVisitor }
 }
 

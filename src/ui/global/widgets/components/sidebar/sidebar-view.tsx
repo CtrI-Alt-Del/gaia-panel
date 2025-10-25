@@ -30,12 +30,7 @@ export const SidebarView = ({ currentPath, isUserOwner, isVisitor }: Props) => {
     <Sidebar className='w-64 bg-card min-h-screen'>
       <SidebarHeader className='p-6 bg-card'>
         <Link to={ROUTES.index} className='flex items-center gap-1'>
-          <img
-            src='../../../../../public/images/gaia-logo.png'
-            alt='Gaia'
-            width={96}
-            height={96}
-          />
+          <img src='/images/gaia-logo.png' alt='Gaia' width={96} height={96} />
         </Link>
       </SidebarHeader>
 

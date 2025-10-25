@@ -1,3 +1,4 @@
+import { redirect } from 'react-router'
 import { createLoader, parseAsString, parseAsInteger } from 'nuqs/server'
 import type { Route } from './+types/users-route'
 
@@ -6,7 +7,6 @@ import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
 import { RestMiddleware } from '@/app/middlewares/rest-middleware'
 import { restContext } from '@/app/contexts/rest-context'
 import { authContext } from '@/app/contexts/auth-context'
-import { redirect } from 'react-router'
 import { ROUTES } from '@/core/global/constants/routes'
 import { MembershipMiddleware } from '@/app/middlewares/membership-middleware'
 import { membershipContext } from '@/app/contexts/membership-context'

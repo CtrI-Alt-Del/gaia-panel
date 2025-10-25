@@ -5,6 +5,7 @@ const envSchema = z.object({
 })
 
 export const ENV = envSchema.parse({
-  gaiaServerUrl: import.meta.env.VITE_GAIA_SERVER_URL || 'http://localhost:3333',
+  gaiaServerUrl:
+    import.meta.env.VITE_GAIA_SERVER_URL ||
+    'http://dev-gaia-server-sd.dev.gaia.local:3333',
 })
-

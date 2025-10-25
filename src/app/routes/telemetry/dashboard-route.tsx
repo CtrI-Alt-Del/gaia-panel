@@ -7,9 +7,6 @@ import { DashboardPage } from '@/ui/telemetry/widgets/pages/dashboard'
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
 import { RestMiddleware } from '@/app/middlewares/rest-middleware'
 import { restContext } from '@/app/contexts/rest-context'
-import { authContext } from '@/app/contexts/auth-context'
-import { redirect } from 'react-router'
-import { ROUTES } from '@/core/global/constants/routes'
 
 export const searchParams = {
   station: parseAsString,
@@ -23,15 +20,10 @@ export const middleware = [AuthMiddleware, RestMiddleware]
 
 export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { station, period, parameter } = loadSearchParams(request)
-  const { userId } = context.get(authContext)
   const { telemetryService, alertingService } = context.get(restContext)
 
-  const url = new URL(request.url)
-  const isVisitor = url.searchParams.get('visitor') === 'true'
-
-  if (!isVisitor && !userId) {
-    return redirect(ROUTES.auth.signIn)
-  }
+  // Permite acesso para visitantes e usuários autenticados
+  // Não redireciona mais para login - permite acesso direto
 
   const [stationsResponse, alertsResponse] = await Promise.all([
     telemetryService.fetchStationsCount(),

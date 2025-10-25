@@ -1,4 +1,4 @@
-import { Outlet, redirect } from 'react-router'
+import { Outlet } from 'react-router'
 import type { Route } from '../+types/root'
 
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
@@ -9,7 +9,6 @@ import { DashboardLayout } from '@/ui/global/widgets/layouts'
 import { membershipContext } from '../contexts/membership-context'
 import { visitorContext } from '../contexts/visitor-context'
 import { ENV } from '@/core/global/constants'
-import { ROUTES } from '@/core/global/constants/routes'
 
 export const middleware = [
   AuthMiddleware,
@@ -43,10 +42,8 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
   const user = membershipData?.user
   const isVisitor = visitorData?.isVisitor || false
 
-  if (!isVisitor && !user?.isActive) {
-    return redirect(ROUTES.auth.signIn)
-  }
-
+  // Permite acesso direto às páginas - não redireciona mais para login
+  // Apenas a rota de usuários será protegida individualmente
   return { user, isVisitor }
 }
 

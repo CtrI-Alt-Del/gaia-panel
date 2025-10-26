@@ -1,9 +1,7 @@
 export type MeasurementsListingParams = {
-  status?: string
-  date?: string
-  parameterName?: string
-  stationName?: string
   stationId?: string
+  parameterId?: string
+  date?: Date
   nextCursor?: string | null
   previousCursor?: string | null
   pageSize?: number

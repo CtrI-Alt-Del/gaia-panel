@@ -1,15 +1,25 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
-
-import type { DatetimeProvider } from '@/core/global/interfaces'
 import { useCallback } from 'react'
 
-// Configure dayjs
+import type { DatetimeProvider } from '@/core/global/interfaces'
+
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export function useDateTimeProvider(): DatetimeProvider {
+  const localizeDate = useCallback((date: Date): Date => {
+    return dayjs(date).add(3, 'hour').toDate()
+  }, [])
+
+  const formatDate = useCallback((date?: Date): string => {
+    if (!date) return 'Nunca'
+
+    const targetDate = dayjs(date)
+    return targetDate.format('DD/MM/YYYY')
+  }, [])
+
   const formatRelativeTime = useCallback((date?: Date): string => {
     if (!date) return 'Nunca'
 
@@ -40,5 +50,7 @@ export function useDateTimeProvider(): DatetimeProvider {
   return {
     formatRelativeTime,
     formatDateTime,
+    formatDate,
+    localizeDate,
   }
 }

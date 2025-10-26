@@ -1,15 +1,17 @@
-import { MeasurementsTableView } from "./measurements-table-view"
-import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
+import { useLoaderData } from 'react-router'
+import { MeasurementsTableView } from './measurements-table-view'
+import type { loader } from '@/app/routes/telemetry/station-measurements-route'
 
-type MeasurementsTableProps = {
-  measurements: MeasurementDto[]
-  nextCursor: string | null
-  previousCursor: string | null
-  hasNextPage?: boolean
-  hasPreviousPage?: boolean
-  isLoading?: boolean
-}
-
-export const MeasurementsTable = (props: MeasurementsTableProps) => {
-  return <MeasurementsTableView {...props} />
+export const MeasurementsTable = () => {
+  const { measurements, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+    useLoaderData<typeof loader>()
+  return (
+    <MeasurementsTableView
+      measurements={measurements}
+      nextCursor={nextCursor}
+      previousCursor={previousCursor}
+      hasNextPage={hasNextPage}
+      hasPreviousPage={hasPreviousPage}
+    />
+  )
 }

@@ -132,12 +132,10 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
     async fetchMeasurements(
       params: MeasurementsListingParams,
     ): Promise<RestResponse<PaginationResponse<MeasurementDto>>> {
-      if (params.status) restClient.setQueryParam('status', params.status.toLowerCase())
-      if (params.date) restClient.setQueryParam('date', params.date)
-      if (params.parameterName)
-        restClient.setQueryParam('parameterName', params.parameterName)
-      if (params.stationName) restClient.setQueryParam('stationName', params.stationName)
+      if (params.date) restClient.setQueryParam('date', params.date.toISOString())
       if (params.stationId) restClient.setQueryParam('stationId', params.stationId)
+      if (params.parameterId && params.parameterId !== 'all')
+        restClient.setQueryParam('parameterId', params.parameterId)
       if (params.nextCursor) restClient.setQueryParam('nextCursor', params.nextCursor)
       if (params.previousCursor)
         restClient.setQueryParam('previousCursor', params.previousCursor)

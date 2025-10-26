@@ -20,11 +20,15 @@ export const AlertsDatePickerView = ({
   className,
   disabled = false,
 }: AlertsDatePickerProps) => {
-  const selectedDate = value ? new Date(value) : undefined
+  const selectedDate = value ? new Date(`${value}T00:00:00`) : undefined
 
   function handleDateSelect(date: Date | undefined) {
     if (date) {
-      const formattedDate = date.toISOString().split('T')[0]
+      // Format date as YYYY-MM-DD without timezone issues
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const formattedDate = `${year}-${month}-${day}`
       onValueChange?.(formattedDate)
     } else {
       onValueChange?.(null)
@@ -36,7 +40,9 @@ export const AlertsDatePickerView = ({
   }
 
   function formatDisplayDate(dateString: string) {
-    const date = new Date(dateString)
+    // Parse the date string manually to avoid timezone issues
+    const [year, month, day] = dateString.split('-').map(Number)
+    const date = new Date(year, month - 1, day) // month is 0-indexed
     return date.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit',

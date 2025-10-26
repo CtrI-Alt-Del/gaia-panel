@@ -1,7 +1,7 @@
 import { createLoader, parseAsString } from 'nuqs/server'
 import type { Route } from './+types/dashboard-route'
 import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
-import type { AlertsCountDto } from '@/core/alerts/dtos/alerts-count-dto'
+import type { AlertsCountDto } from '@/core/alerting/alerts/dtos/alerts-count-dto'
 
 import { DashboardPage } from '@/ui/telemetry/widgets/pages/dashboard'
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
@@ -26,7 +26,12 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
   const { userId } = context.get(authContext)
   const { telemetryService, alertingService } = context.get(restContext)
 
-  if (!userId) return redirect(ROUTES.auth.signIn)
+  const url = new URL(request.url)
+  const isVisitor = url.searchParams.get('visitor') === 'true'
+
+  if (!isVisitor && !userId) {
+    return redirect(ROUTES.auth.signIn)
+  }
 
   const [stationsResponse, alertsCountResponse, recentAlertsResponse]: [
     { body?: StationsCountDto },
@@ -35,11 +40,6 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
   ] = await Promise.all([
     telemetryService.fetchStationsCount(),
     alertingService.fetchAlertsCount(),
-    alertingService.fetchAlerts({
-      pageSize: 5,
-      nextCursor: null,
-      previousCursor: null,
-    }),
   ])
 
   const stationsData: StationsCountDto = stationsResponse.body ?? {
@@ -47,24 +47,9 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
     activeStationsPercentage: 0,
   }
 
-  const alertsData: AlertsCountDto = alertsCountResponse.body ?? {
-    criticalAlerts: 0,
-    warningAlerts: 0,
-  }
-
-  let recentAlerts: any[] = []
-  try {
-    const items = recentAlertsResponse.body?.items ?? []
-    recentAlerts = items.map((alert, idx) => ({
-      id: String(idx),
-      type: 'alert',
-      title: alert.message ?? '',
-      station: alert.parameterStationName ?? '',
-      severity: alert.level ?? 'info',
-      timestamp: alert.createdAt ? new Date(alert.createdAt) : new Date(),
-    }))
-  } catch {
-    recentAlerts = []
+  const alertsData: AlertsCountDto = alertsResponse.body ?? {
+    criticalAlertsCount: 0,
+    warningAlertsCount: 0,
   }
 
   return {

@@ -50,5 +50,9 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
     async fetchAlert(alertId) {
       return await restClient.get(`/alerting/alerts/${alertId}`)
     },
+
+    async readAlert(alertId: string) {
+      return await restClient.patch(`/alerting/alerts/${alertId}`)
+    },
   }
 }

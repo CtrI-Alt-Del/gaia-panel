@@ -3,7 +3,7 @@ import type { ParameterDto } from '../dtos/parameter-dto'
 import type { StationDto } from '../dtos/station-dto'
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
 import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
-import type { StationsListingParams } from '../types'
+import type { Coordinate, StationsListingParams } from '../types'
 import type { ParametersListingParams } from '../types/parameters-listing-params'
 import type { MeasurementsListingParams } from '../types/measurements-listing-params'
 import type { StationsCountDto } from '../dtos/stations-count-dto'
@@ -20,6 +20,10 @@ export interface TelemetryService {
   fetchStations(
     params: StationsListingParams,
   ): Promise<RestResponse<PaginationResponse<StationDto>>>
+  fetchStationsMap(
+    northWestCoordianate: Coordinate,
+    southEastCoordianate: Coordinate,
+  ): Promise<RestResponse<StationDto[]>>
   createStation(
     station: StationDto,
     parameterIds: string[],

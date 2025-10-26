@@ -8,11 +8,12 @@ export const SignInPage = () => {
   const authProvider = useAuthProvider()
   const toastProvider = useToastProvider()
   const routerProvider = useRouter()
-  const { form, isLoading, error, onSubmit, onForgotPassword } = useSignInPage({
-    authProvider,
-    toastProvider,
-    routerProvider,
-  })
+  const { form, isLoading, error, onSubmit, onForgotPassword, onVisitorLogin } =
+    useSignInPage({
+      authProvider,
+      toastProvider,
+      routerProvider,
+    })
 
   return (
     <SignInPageView
@@ -21,6 +22,7 @@ export const SignInPage = () => {
       error={error}
       onSubmit={onSubmit}
       onForgotPassword={onForgotPassword}
+      onVisitorLogin={onVisitorLogin}
     />
   )
 }

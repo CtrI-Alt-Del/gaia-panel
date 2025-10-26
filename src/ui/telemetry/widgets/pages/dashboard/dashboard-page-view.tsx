@@ -1,51 +1,39 @@
-import { Activity, AlertTriangle, RadioTower, Users, Zap } from 'lucide-react'
+import { Activity, AlertTriangle, RadioTower, Zap } from 'lucide-react'
 import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
-import type { AlertsCountDto } from '@/core/alerts/dtos/alerts-count-dto'
+import type { AlertsCountDto } from '@/core/alerting/alerts/dtos/alerts-count-dto'
 import { StatsCard } from './stats-card'
-import { RecentAlerts } from './recent-alerts'
+import { LastAlerts } from './last-alerts'
 import { LatestReadings } from './latest-readings'
-import { StationMap } from './station-map'
+import { StationsMap } from './stations-map'
 import { AlertsEvolution } from './alerts-evolution'
 
 export type DashboardPageViewProps = {
   stationsData: StationsCountDto
   alertsData: AlertsCountDto
+<<<<<<< HEAD
   recentAlerts: any[]
   selectedStation?: string | null
   selectedPeriod: string
   selectedParameter: string
+=======
+>>>>>>> main
   isLoading?: boolean
-  onStationChange?: (station: string) => void
-  onPeriodChange?: (period: string) => void
-  onParameterChange?: (parameter: string) => void
 }
 
 export const DashboardPageView = ({
   stationsData,
   alertsData,
+<<<<<<< HEAD
   recentAlerts,
   selectedStation,
   selectedPeriod,
   selectedParameter,
+=======
+>>>>>>> main
   isLoading,
-  onStationChange,
-  onPeriodChange,
-  onParameterChange,
 }: DashboardPageViewProps) => {
   return (
     <div className='container mx-auto px-4 py-2'>
-      {/* Header */}
-      {/* <div className='mb-6'>
-        <DashboardFilters
-          selectedStation={selectedStation}
-          selectedPeriod={selectedPeriod}
-          selectedParameter={selectedParameter}
-          onStationChange={onStationChange}
-          onPeriodChange={onPeriodChange}
-          onParameterChange={onParameterChange}
-        />
-      </div> */}
-
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
         <StatsCard
           title='Total de Estações'
@@ -77,11 +65,19 @@ export const DashboardPageView = ({
         <div className='mb-6'>
           <AlertsEvolution />
         </div>
+<<<<<<< HEAD
         <StationMap />
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <RecentAlerts alerts={recentAlerts} isLoading={isLoading} />
+=======
+        <StationsMap />
+      </div>
+
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+        <LastAlerts isLoading={isLoading} />
+>>>>>>> main
 
         <LatestReadings readings={[]} isLoading={isLoading} />
       </div>

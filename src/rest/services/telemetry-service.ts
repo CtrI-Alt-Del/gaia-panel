@@ -10,6 +10,7 @@ import type {
   ParametersListingParams,
   StationsListingParams,
   MeasurementsListingParams,
+  Coordinate,
 } from '@/core/telemetry/types'
 import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
 
@@ -72,6 +73,17 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
         restClient.setQueryParam('pageSize', params.pageSize.toString())
 
       return await restClient.get<PaginationResponse<StationDto>>('/telemetry/stations')
+    },
+
+    async fetchStationsMap(
+      northWestCoordianate: Coordinate,
+      southEastCoordianate: Coordinate,
+    ): Promise<RestResponse<StationDto[]>> {
+      restClient.setQueryParam('long1', northWestCoordianate.longitude.toString())
+      restClient.setQueryParam('lat1', northWestCoordianate.latitude.toString())
+      restClient.setQueryParam('long2', southEastCoordianate.longitude.toString())
+      restClient.setQueryParam('lat2', southEastCoordianate.latitude.toString())
+      return await restClient.get<StationDto[]>('/telemetry/stations/box/coords')
     },
 
     async createStation(

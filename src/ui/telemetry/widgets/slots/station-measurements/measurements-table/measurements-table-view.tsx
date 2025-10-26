@@ -1,4 +1,3 @@
-import { BarChart2 } from 'lucide-react'
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
 import { PaginationControl } from '@/ui/global/widgets/components/pagination-control'
 import {
@@ -34,7 +33,7 @@ export const MeasurementsTableView = ({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="pl-6">Parâmetro</TableHead>
+          <TableHead className='pl-6'>Parâmetro</TableHead>
           <TableHead>Valor</TableHead>
           <TableHead>Unidade</TableHead>
           <TableHead>Data/Hora</TableHead>
@@ -49,28 +48,17 @@ export const MeasurementsTableView = ({
           })
         ) : measurements.length === 0 ? (
           <TableRow>
-            <TableCell
-              colSpan={4}
-              className="text-center text-stone-500 py-10"
-            >
+            <TableCell colSpan={4} className='text-center text-stone-500 py-10'>
               Nenhuma medição encontrada.
             </TableCell>
           </TableRow>
         ) : (
-          measurements.map((measurement) => {
-            const {
-              id,
-              parameter,
-              parameterName,
-              value,
-              unitOfMeasure,
-              createdAt,
-            } = measurement
+          measurements.map((measurement, index) => {
+            const { parameter, value, createdAt } = measurement
 
-            const displayParameterName = parameterName || parameter?.name || '—'
-            const formattedValue =
-              typeof value === 'number' ? value.toFixed(2) : '—'
-            const unit = unitOfMeasure || parameter?.unitOfMeasure || '—'
+            const displayParameterName = parameter?.entity?.name || '—'
+            const formattedValue = typeof value === 'number' ? value.toFixed(2) : '—'
+            const unit = parameter?.entity?.unitOfMeasure || '—'
             const date = createdAt
               ? new Date(createdAt).toLocaleString('pt-BR', {
                   day: '2-digit',
@@ -82,25 +70,26 @@ export const MeasurementsTableView = ({
               : '—'
 
             return (
-              <TableRow key={id} className="hover:bg-muted/40 transition-colors">
-                <TableCell className="pl-6">
-                  <div className="flex items-center gap-3">
+              <TableRow
+                key={String(index)}
+                className='hover:bg-muted/40 transition-colors'
+              >
+                <TableCell className='pl-6'>
+                  <div className='flex items-center gap-3'>
                     <MeasurementUnitIcon unit={unit} />
-                    <div className="leading-tight">
-                      <div className="font-medium">{displayParameterName}</div>
+                    <div className='leading-tight'>
+                      <div className='font-medium'>{displayParameterName}</div>
                     </div>
                   </div>
                 </TableCell>
 
-                <TableCell className="tabular-nums font-medium">
+                <TableCell className='tabular-nums font-medium'>
                   {formattedValue}
                 </TableCell>
 
-                <TableCell className="tabular-nums text-stone-700">
-                  {unit}
-                </TableCell>
+                <TableCell className='tabular-nums text-stone-700'>{unit}</TableCell>
 
-                <TableCell className="text-stone-500">{date}</TableCell>
+                <TableCell className='text-stone-500'>{date}</TableCell>
               </TableRow>
             )
           })

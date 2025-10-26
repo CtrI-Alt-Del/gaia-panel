@@ -1,8 +1,13 @@
-
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/shadcn/components/card'
-import type { AlertEvolutionData, AlertEvolutionType } from './use-alerts-evolution'
-import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import type { AlertEvolutionData, AlertEvolutionType } from './use-alerts-evolution-chart'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts'
 
 interface AlertsEvolutionViewProps {
   data: AlertEvolutionData[]
@@ -10,7 +15,11 @@ interface AlertsEvolutionViewProps {
   setType: (type: AlertEvolutionType) => void
 }
 
-export const AlertsEvolutionView = ({ data, type, setType }: AlertsEvolutionViewProps) => {
+export const AlertsEvolutionView = ({
+  data,
+  type,
+  setType,
+}: AlertsEvolutionViewProps) => {
   const subtitle = type === 'week' ? 'Últimos 7 dias' : 'Últimos 12 meses'
   return (
     <Card className='w-full h-[430px]'>
@@ -18,12 +27,14 @@ export const AlertsEvolutionView = ({ data, type, setType }: AlertsEvolutionView
         <CardTitle>Histórico e Evolução dos Alertas</CardTitle>
         <div className='flex gap-2 mt-2'>
           <button
+            type='button'
             className={`px-3 py-1 rounded ${type === 'week' ? 'bg-primary text-white' : 'bg-muted'}`}
             onClick={() => setType('week')}
           >
             Dias da Semana
           </button>
           <button
+            type='button'
             className={`px-3 py-1 rounded ${type === 'month' ? 'bg-primary text-white' : 'bg-muted'}`}
             onClick={() => setType('month')}
           >
@@ -45,9 +56,30 @@ export const AlertsEvolutionView = ({ data, type, setType }: AlertsEvolutionView
                 tickFormatter={(value) => value.slice(0, 3)}
               />
               <Tooltip />
-              <Line type='natural' dataKey='critical' stroke='#ef4444' name='Críticos' strokeWidth={2} dot={false} />
-              <Line type='natural' dataKey='warning' stroke='#f59e0b' name='Avisos' strokeWidth={2} dot={false} />
-              <Line type='natural' dataKey='info' stroke='#3b82f6' name='Info' strokeWidth={2} dot={false} />
+              <Line
+                type='natural'
+                dataKey='critical'
+                stroke='#ef4444'
+                name='Críticos'
+                strokeWidth={2}
+                dot={false}
+              />
+              <Line
+                type='natural'
+                dataKey='warning'
+                stroke='#f59e0b'
+                name='Avisos'
+                strokeWidth={2}
+                dot={false}
+              />
+              <Line
+                type='natural'
+                dataKey='info'
+                stroke='#3b82f6'
+                name='Info'
+                strokeWidth={2}
+                dot={false}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>

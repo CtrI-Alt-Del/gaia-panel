@@ -40,8 +40,8 @@ export const useAlertsEvolution = () => {
   const data = type === 'week' ? mockWeekData : mockMonthData
 
   return {
-      type,
-      data,
-      setType,
+    type,
+    data,
+    setType,
   }
 }

@@ -25,6 +25,7 @@ export class ParametersFaker {
     return {
       id: faker.string.uuid(),
       name: randomName,
+      code: faker.string.uuid(),
       unitOfMeasure: randomUnit,
       factor: faker.number.float({ min: 0.1, max: 10, fractionDigits: 2 }),
       offset: faker.number.float({ min: -100, max: 100, fractionDigits: 2 }),

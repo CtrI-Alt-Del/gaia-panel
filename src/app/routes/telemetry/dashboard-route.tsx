@@ -33,10 +33,9 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
     return redirect(ROUTES.auth.signIn)
   }
 
-  const [stationsResponse, alertsCountResponse, recentAlertsResponse]: [
+  const [stationsResponse, alertsCountResponse]: [
     { body?: StationsCountDto },
     { body?: AlertsCountDto },
-    { body?: { items?: any[] } },
   ] = await Promise.all([
     telemetryService.fetchStationsCount(),
     alertingService.fetchAlertsCount(),
@@ -47,15 +46,14 @@ export const loader = async ({ context, request }: Route.ActionArgs) => {
     activeStationsPercentage: 0,
   }
 
-  const alertsData: AlertsCountDto = alertsResponse.body ?? {
-    criticalAlertsCount: 0,
-    warningAlertsCount: 0,
+  const alertsData: AlertsCountDto = alertsCountResponse.body ?? {
+    criticalAlerts: 0,
+    warningAlerts: 0,
   }
 
   return {
     stationsData,
     alertsData,
-    recentAlerts,
     selectedStation: station,
     selectedPeriod: period,
     selectedParameter: parameter,

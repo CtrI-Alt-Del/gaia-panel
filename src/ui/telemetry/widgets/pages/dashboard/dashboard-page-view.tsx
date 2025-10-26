@@ -10,26 +10,12 @@ import { AlertsEvolution } from './alerts-evolution'
 export type DashboardPageViewProps = {
   stationsData: StationsCountDto
   alertsData: AlertsCountDto
-<<<<<<< HEAD
-  recentAlerts: any[]
-  selectedStation?: string | null
-  selectedPeriod: string
-  selectedParameter: string
-=======
->>>>>>> main
   isLoading?: boolean
 }
 
 export const DashboardPageView = ({
   stationsData,
   alertsData,
-<<<<<<< HEAD
-  recentAlerts,
-  selectedStation,
-  selectedPeriod,
-  selectedParameter,
-=======
->>>>>>> main
   isLoading,
 }: DashboardPageViewProps) => {
   return (
@@ -65,19 +51,11 @@ export const DashboardPageView = ({
         <div className='mb-6'>
           <AlertsEvolution />
         </div>
-<<<<<<< HEAD
-        <StationMap />
-      </div>
-
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <RecentAlerts alerts={recentAlerts} isLoading={isLoading} />
-=======
         <StationsMap />
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <LastAlerts isLoading={isLoading} />
->>>>>>> main
 
         <LatestReadings readings={[]} isLoading={isLoading} />
       </div>

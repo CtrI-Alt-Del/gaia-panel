@@ -25,15 +25,15 @@ export default {
       'always',
       (parsed) => {
         const subject = parsed.subject
-        const taskIdRegex = /^GAIA-\d+\s/
+        const taskIdRegex = /^#GAIA-\d+\s/
 
         if (subject && taskIdRegex.test(subject)) {
-          return [true] 
+          return [true]
         }
         return [
           false,
-          'O subject do commit deve começar com o ID da task (ex: "GAIA-123 ...")',
-        ] 
+          'O subject do commit deve começar com o ID da task (ex: "#GAIA-123 ...")',
+        ]
       },
     ],
   },

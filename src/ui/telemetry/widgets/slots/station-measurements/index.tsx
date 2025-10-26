@@ -1,24 +1,18 @@
-import { useLoaderData } from "react-router";
-import type { loader as StationMeasurementsLoader } from "@/app/routes/telemetry/station-measurements-route";
-import { StationMeasurementsSlotView } from "./station-measurements-slot-view";
+import { useLoaderData } from 'react-router'
+import { StationMeasurementsSlotView } from './station-measurements-slot-view'
+import type { loader } from '@/app/routes/telemetry/station-measurements-route'
 
 export const StationMeasurementsSlot = () => {
-  const {
-    station,
-    measurements = [],
-    nextCursor,
-    previousCursor,
-    hasNextPage,
-    hasPreviousPage,
-  } = useLoaderData<typeof StationMeasurementsLoader>();
+  const { date, measurements, nextCursor, previousCursor, hasNextPage, hasPreviousPage } =
+    useLoaderData<typeof loader>()
   return (
     <StationMeasurementsSlotView
-      station={station}
+      defaultDate={date ?? undefined}
       measurements={measurements}
       nextCursor={nextCursor}
       previousCursor={previousCursor}
       hasNextPage={hasNextPage}
       hasPreviousPage={hasPreviousPage}
     />
-  );
-};
+  )
+}

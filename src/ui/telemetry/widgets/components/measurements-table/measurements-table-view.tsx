@@ -1,4 +1,5 @@
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
+
 import { PaginationControl } from '@/ui/global/widgets/components/pagination-control'
 import {
   Table,
@@ -9,16 +10,18 @@ import {
   TableCell,
   TableFooter,
 } from '@/ui/shadcn/components/table'
-import { MeasurementsTableSkeleton } from '../measurements-table-skeleton'
 import { MeasurementUnitIcon } from '@/ui/global/widgets/components/measurement-unit-icon'
+import { MeasurementsTableSkeleton } from './measurements-table-skeleton'
+import { Link } from 'react-router'
 
-type MeasurementsTableViewProps = {
+type Props = {
   measurements: MeasurementDto[]
   nextCursor: string | null
   previousCursor: string | null
   hasNextPage?: boolean
   hasPreviousPage?: boolean
   isLoading?: boolean
+  hasStation?: boolean
 }
 
 export const MeasurementsTableView = ({
@@ -28,11 +31,13 @@ export const MeasurementsTableView = ({
   hasNextPage,
   hasPreviousPage,
   isLoading,
-}: MeasurementsTableViewProps) => {
+  hasStation,
+}: Props) => {
   return (
     <Table>
       <TableHeader>
         <TableRow>
+          {hasStation && <TableHead>Estação</TableHead>}
           <TableHead className='pl-6'>Parâmetro</TableHead>
           <TableHead>Valor</TableHead>
           <TableHead>Unidade</TableHead>
@@ -44,11 +49,14 @@ export const MeasurementsTableView = ({
         {isLoading ? (
           Array.from({ length: 10 }, (_, index) => {
             const skeletonId = `measurement-skeleton-${Date.now()}-${index}`
-            return <MeasurementsTableSkeleton key={skeletonId} />
+            return <MeasurementsTableSkeleton key={skeletonId} hasStation={hasStation} />
           })
         ) : measurements.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={4} className='text-center text-stone-500 py-10'>
+            <TableCell
+              colSpan={hasStation ? 5 : 4}
+              className='text-center text-stone-500 py-10'
+            >
               Nenhuma medição encontrada.
             </TableCell>
           </TableRow>
@@ -74,6 +82,16 @@ export const MeasurementsTableView = ({
                 key={String(index)}
                 className='hover:bg-muted/40 transition-colors'
               >
+                {hasStation && (
+                  <TableCell>
+                    <Link
+                      to={`/telemetry/station/${measurement.parameter.entity?.stationName}`}
+                      className='text-blue-500 hover:underline'
+                    >
+                      {measurement.parameter.entity?.stationName}
+                    </Link>
+                  </TableCell>
+                )}
                 <TableCell className='pl-6'>
                   <div className='flex items-center gap-3'>
                     <MeasurementUnitIcon unit={unit} />

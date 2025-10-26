@@ -1,33 +1,37 @@
-import { MeasurementsTable } from './measurements-table'
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
 
-type StationMeasurementsSlotViewProps = {
-  station: any
-  measurements: any[]
+import { ParametersSelect } from './parameters-select'
+import { MeasurementsTable } from '../../components/measurements-table'
+import { Button } from '@/ui/shadcn/components/button'
+import { DatePicker } from '@/ui/shadcn/components/date-picker'
+
+type Params = {
+  defaultDate?: Date
+  measurements: MeasurementDto[]
   nextCursor: string | null
   previousCursor: string | null
-  hasNextPage: boolean
-  hasPreviousPage: boolean
+  hasNextPage?: boolean
+  hasPreviousPage?: boolean
 }
 
 export const StationMeasurementsSlotView = ({
-  station,
-  measurements = [],
+  defaultDate,
+  measurements,
   nextCursor,
   previousCursor,
   hasNextPage,
   hasPreviousPage,
-}: StationMeasurementsSlotViewProps) => {
-  const normalizedMeasurements: MeasurementDto[] = measurements.map((m: any) => ({
-    ...m,
-    station: m.station ?? station,
-  }))
-
+}: Params) => {
   return (
-    <div className='p-6'>
-      <div className='bg-white  border border-gray-200'>
+    <div className='px-6'>
+      <form className='flex items-end gap-2'>
+        <ParametersSelect />
+        <DatePicker name='date' defaultValue={defaultDate} />
+        <Button type='submit'>filtrar</Button>
+      </form>
+      <div className='mt-6 bg-white border border-gray-200'>
         <MeasurementsTable
-          measurements={normalizedMeasurements}
+          measurements={measurements}
           nextCursor={nextCursor}
           previousCursor={previousCursor}
           hasNextPage={hasNextPage}

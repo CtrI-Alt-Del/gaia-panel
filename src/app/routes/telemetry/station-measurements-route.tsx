@@ -1,51 +1,58 @@
-import { restContext } from "@/app/contexts/rest-context";
-import { RestMiddleware } from "@/app/middlewares/rest-middleware";
-import { StationMeasurementsSlot } from "@/ui/telemetry/widgets/slots/station-measurements";
-import type { Route as MeasurementsRoute } from "./+types/station-route";
+import { restContext } from '@/app/contexts/rest-context'
+import { RestMiddleware } from '@/app/middlewares/rest-middleware'
+import { StationMeasurementsSlot } from '@/ui/telemetry/widgets/slots/station-measurements'
+import type { Route as MeasurementsRoute } from './+types/station-route'
+import { createLoader, parseAsInteger, parseAsIsoDate, parseAsString } from 'nuqs'
 
-export const middleware = [RestMiddleware];
+export const searchParams = {
+  parameterId: parseAsString,
+  nextCursor: parseAsString,
+  previousCursor: parseAsString,
+  date: parseAsIsoDate,
+  pageSize: parseAsInteger.withDefault(20),
+}
+
+const loadSearchParams = createLoader(searchParams)
+
+export const middleware = [RestMiddleware]
 
 export const loader = async ({
+  request,
   params,
   context,
 }: MeasurementsRoute.ActionArgs) => {
-  const { stationId } = params;
-  const { telemetryService } = context.get(restContext);
+  const { stationId } = params
+  const { nextCursor, previousCursor, pageSize, parameterId, date } =
+    loadSearchParams(request)
+  const { telemetryService } = context.get(restContext)
 
-  const stationResponse = await telemetryService.fetchStation(stationId);
-  if (stationResponse.isFailure) stationResponse.throwError();
+  const stationResponse = await telemetryService.fetchStation(stationId)
+  if (stationResponse.isFailure) stationResponse.throwError()
 
   const measurementsResponse = await telemetryService.fetchMeasurements({
     stationId: stationId,
-    pageSize: 20,
-  });
+    pageSize: pageSize,
+    parameterId: parameterId ?? undefined,
+    nextCursor: nextCursor,
+    previousCursor: previousCursor,
+    date: date ?? undefined,
+  })
 
-  if (measurementsResponse.isFailure) measurementsResponse.throwError();
+  if (measurementsResponse.isFailure) measurementsResponse.throwError()
 
-  const parametersResponse = await telemetryService.fetchParametersByStationId(stationId);
-  
-  const parametersMap = parametersResponse.isSuccessful 
-    ? new Map(parametersResponse.body.map(p => [p.id, p]))
-    : new Map();
-
-  const enrichedMeasurements = measurementsResponse.body.items.map(measurement => ({
-    ...measurement,
-    parameterName: measurement.stationParameter 
-      ? parametersMap.get(measurement.stationParameter.parameterId)?.name 
-      : undefined,
-    parameter: measurement.stationParameter
-      ? parametersMap.get(measurement.stationParameter.parameterId)
-      : undefined,
-  }));
+  const parametersResponse = await telemetryService.fetchParametersByStationId(stationId)
 
   return {
     station: stationResponse.body,
-    measurements: enrichedMeasurements,
+    parameterId,
+    parameters: parametersResponse.body,
+    measurements: measurementsResponse.body.items,
+    date,
     nextCursor: measurementsResponse.body.nextCursor ?? null,
     previousCursor: measurementsResponse.body.previousCursor ?? null,
     hasNextPage: Boolean(measurementsResponse.body.nextCursor),
     hasPreviousPage: Boolean(measurementsResponse.body.previousCursor),
-  };
-};
+  }
+}
 
-export default StationMeasurementsSlot;
+export default StationMeasurementsSlot

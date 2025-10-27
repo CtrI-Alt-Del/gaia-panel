@@ -5,7 +5,7 @@ import { StatsCard } from './stats-card'
 import { LastAlerts } from './last-alerts'
 import { Measurements } from './measurements'
 import { StationsMap } from './stations-map'
-import { AlertsEvolutionChart } from './alerts-evolution-chart'
+import { AlertsCountChart } from './alerts-count-chart'
 
 export type DashboardPageViewProps = {
   stationsData: StationsCountDto
@@ -49,7 +49,7 @@ export const DashboardPageView = ({
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6'>
         <div className='mb-6'>
-          <AlertsEvolutionChart />
+          <AlertsCountChart />
         </div>
         <StationsMap />
       </div>

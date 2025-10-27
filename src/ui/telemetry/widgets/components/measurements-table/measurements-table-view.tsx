@@ -85,7 +85,7 @@ export const MeasurementsTableView = ({
                 {hasStation && (
                   <TableCell>
                     <Link
-                      to={`/telemetry/station/${measurement.parameter.entity?.stationName}`}
+                      to={`/stations/${measurement.parameter.entity?.stationId}/location`}
                       className='text-blue-500 hover:underline'
                     >
                       {measurement.parameter.entity?.stationName}

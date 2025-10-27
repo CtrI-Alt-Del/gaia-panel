@@ -2,6 +2,7 @@ import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 import type { RestClient } from '@/core/global/interfaces'
 import type { AlertingService as IAlertingService } from '@/core/alerting/interfaces/alerting-service'
 import type { AlarmListingParams } from '@/core/alerting/types'
+import type { AlertsCountByPeriodTimeDto } from '@/core/alerting/dtos/alerts-count-by-period-time-dto'
 
 export const AlertingService = (restClient: RestClient): IAlertingService => {
   return {
@@ -34,6 +35,12 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
 
     async fetchAlertsCount() {
       return await restClient.get('/alerting/alerts/count')
+    },
+
+    async fetchAlertsCountByTimePeriod(timePeriod: string) {
+      return await restClient.get<AlertsCountByPeriodTimeDto[]>(
+        `/alerting/alerts/count/${timePeriod}`,
+      )
     },
 
     async fetchAlerts(params) {

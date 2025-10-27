@@ -1,4 +1,4 @@
-import { ENV } from '@/core/global/constants'
+import { SERVER_ENV } from '@/core/global/constants/server-env'
 import type { Route } from '../+types/root'
 
 import { AxiosRestClient } from '@/rest/axios/axios-rest-client'
@@ -12,7 +12,7 @@ export const RestMiddleware = async ({ context }: Route.LoaderArgs) => {
 
   const restClient = AxiosRestClient()
 
-  restClient.setBaseUrl(ENV.gaiaServerUrl)
+  restClient.setBaseUrl(SERVER_ENV.gaiaServerUrl)
   if (accessToken) restClient.setAuthorization(accessToken)
 
   const membershipService = MembershipService(restClient)

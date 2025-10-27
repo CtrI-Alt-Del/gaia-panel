@@ -21,6 +21,7 @@ export class AlarmsFaker {
       parameter: {
         id: faker.string.uuid(),
         entity: {
+          stationId: faker.string.uuid(),
           name: faker.lorem.word(),
           unitOfMeasure: faker.helpers.arrayElement([
             '°C',

@@ -39,8 +39,6 @@ export const AlertsPopoverView = ({
   const newAlertsBadgeColor = hasAlerts ? 'red' : 'stone'
   const newAlertsBadgeTone = hasAlerts ? 'solid' : 'soft'
 
-  console.log(alerts)
-
   return (
     <>
       <AlertDialog

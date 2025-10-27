@@ -19,22 +19,5 @@ export default {
       ],
     ],
     'header-max-length': [2, 'always', 100],
-
-    // 'function-rules/subject-starts-with-task-id': [
-    //   2,
-    //   'always',
-    //   (parsed) => {
-    //     const subject = parsed.subject
-    //     const taskIdRegex = /^gaia-\d+\s/
-
-    //     if (subject && taskIdRegex.test(subject)) {
-    //       return [true]
-    //     }
-    //     return [
-    //       false,
-    //       'O subject do commit deve começar com o ID da task (ex: "gaia-123 ...")',
-    //     ]
-    //   },
-    // ],
   },
 }

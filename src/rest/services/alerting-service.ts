@@ -2,6 +2,7 @@ import type { AlarmDto } from '@/core/alerting/dtos/alarm-dto'
 import type { RestClient } from '@/core/global/interfaces'
 import type { AlertingService as IAlertingService } from '@/core/alerting/interfaces/alerting-service'
 import type { AlarmListingParams } from '@/core/alerting/types'
+import type { AlertsCountByPeriodTimeDto } from '@/core/alerting/dtos/alerts-count-by-period-time-dto'
 
 export const AlertingService = (restClient: RestClient): IAlertingService => {
   return {
@@ -36,6 +37,12 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
       return await restClient.get('/alerting/alerts/count')
     },
 
+    async fetchAlertsCountByTimePeriod(timePeriod: string) {
+      return await restClient.get<AlertsCountByPeriodTimeDto[]>(
+        `/alerting/alerts/count/${timePeriod}`,
+      )
+    },
+
     async fetchAlerts(params) {
       if (params.date) restClient.setQueryParam('date', params.date)
       if (params.level) restClient.setQueryParam('level', params.level)
@@ -44,11 +51,11 @@ export const AlertingService = (restClient: RestClient): IAlertingService => {
         restClient.setQueryParam('previousCursor', params.previousCursor)
       if (params.pageSize)
         restClient.setQueryParam('pageSize', params.pageSize.toString())
-      return await restClient.get('/alerts')
+      return await restClient.get('/alerting/alerts')
     },
 
     async fetchAlert(alertId) {
-      return await restClient.get(`/alerts/${alertId}`)
+      return await restClient.get(`/alerting/alerts/${alertId}`)
     },
 
     async readAlert(alertId: string) {

@@ -21,9 +21,9 @@ export const middleware = [AuthMiddleware, RestMiddleware, MembershipMiddleware]
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const { nextCursor, previousCursor, pageSize, date, level } = loadSearchParams(request)
-  const { alertsService } = context.get(restContext)
+  const { alertingService } = context.get(restContext)
   const { user } = context.get(membershipContext)
-  const response = await alertsService.fetchAlerts({
+  const response = await alertingService.fetchAlerts({
     nextCursor,
     previousCursor,
     pageSize: Number(pageSize),

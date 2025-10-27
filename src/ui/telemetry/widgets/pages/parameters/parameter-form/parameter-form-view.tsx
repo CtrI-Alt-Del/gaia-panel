@@ -73,6 +73,20 @@ export const ParameterFormView = ({
 
           <FormField
             control={form.control}
+            name='code'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Código do Parâmetro</FormLabel>
+                <FormControl>
+                  <Input placeholder='Ex.: a1b2c3d4-e5f6-g7h8' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name='unitOfMeasure'
             render={({ field }) => (
               <FormItem>

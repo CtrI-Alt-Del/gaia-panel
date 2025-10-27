@@ -3,9 +3,9 @@ import type { StationsCountDto } from '@/core/telemetry/dtos/stations-count-dto'
 import type { AlertsCountDto } from '@/core/alerting/alerts/dtos/alerts-count-dto'
 import { StatsCard } from './stats-card'
 import { LastAlerts } from './last-alerts'
-import { LatestReadings } from './latest-readings'
+import { Measurements } from './measurements'
 import { StationsMap } from './stations-map'
-import { AlertsEvolution } from './alerts-evolution'
+import { AlertsCountChart } from './alerts-count-chart'
 
 export type DashboardPageViewProps = {
   stationsData: StationsCountDto
@@ -49,15 +49,14 @@ export const DashboardPageView = ({
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6'>
         <div className='mb-6'>
-          <AlertsEvolution />
+          <AlertsCountChart />
         </div>
         <StationsMap />
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <LastAlerts isLoading={isLoading} />
-
-        <LatestReadings readings={[]} isLoading={isLoading} />
+        <Measurements />
       </div>
     </div>
   )

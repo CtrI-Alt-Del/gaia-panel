@@ -7,9 +7,7 @@ import { MembershipMiddleware } from '@/app/middlewares/membership-middleware'
 import { VisitorMiddleware } from '@/app/middlewares/visitor-middleware'
 import { DashboardLayout } from '@/ui/global/widgets/layouts'
 import { membershipContext } from '../contexts/membership-context'
-import { visitorContext } from '../contexts/visitor-context'
-import { ENV } from '@/core/global/constants'
-import { ROUTES } from '@/core/global/constants/routes'
+import { SERVER_ENV } from '@/core/global/constants/server-env'
 
 export const middleware = [
   AuthMiddleware,
@@ -28,7 +26,7 @@ const getContextData = (context: any, contextKey: any) => {
 
 export const loader = async ({ context }: Route.LoaderArgs) => {
   try {
-    const response = await fetch(ENV.gaiaServerUrl)
+    const response = await fetch(SERVER_ENV.gaiaServerUrl)
     console.log('Server response', await response.json())
   } catch (error) {
     console.log('error', error)
@@ -37,17 +35,10 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
   const membershipData = getContextData(context, membershipContext) as
     | { user: any }
     | undefined
-  const visitorData = getContextData(context, visitorContext) as
-    | { isVisitor: boolean }
-    | undefined
+
   const user = membershipData?.user
-  const isVisitor = visitorData?.isVisitor || false
 
-  if (!isVisitor && !user?.isActive) {
-    return redirect(ROUTES.auth.signIn)
-  }
-
-  return { user, isVisitor }
+  return { user, isVisitor: true }
 }
 
 const AppLayout = () => {

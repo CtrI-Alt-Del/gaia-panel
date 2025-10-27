@@ -61,7 +61,7 @@ export function useSignInPage({ authProvider, toastProvider, routerProvider }: P
   }
 
   function onVisitorLogin() {
-    routerProvider.goTo(`${ROUTES.dashboard}?visitor=true`)
+    routerProvider.goTo(ROUTES.dashboard)
   }
 
   return {

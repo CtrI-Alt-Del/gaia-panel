@@ -107,7 +107,7 @@ describe('SidebarView Component', () => {
 
     const logo = screen.getByAltText('Gaia')
     expect(logo).toBeInTheDocument()
-    expect(logo).toHaveAttribute('src', '../../../../../public/images/gaia-logo.png')
+    expect(logo).toHaveAttribute('src', '/images/gaia-logo.png')
     expect(logo).toHaveAttribute('width', '96')
     expect(logo).toHaveAttribute('height', '96')
   })

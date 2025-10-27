@@ -97,16 +97,21 @@ export const MeasurementsTableView = ({
                     <MeasurementUnitIcon unit={unit} />
                     <div className='leading-tight'>
                       <div className='font-medium'>{displayParameterName}</div>
+                    <div className='leading-tight'>
+                      <div className='font-medium'>{displayParameterName}</div>
                     </div>
                   </div>
                 </TableCell>
 
                 <TableCell className='tabular-nums font-medium'>
+                <TableCell className='tabular-nums font-medium'>
                   {formattedValue}
                 </TableCell>
 
                 <TableCell className='tabular-nums text-stone-700'>{unit}</TableCell>
+                <TableCell className='tabular-nums text-stone-700'>{unit}</TableCell>
 
+                <TableCell className='text-stone-500'>{date}</TableCell>
                 <TableCell className='text-stone-500'>{date}</TableCell>
               </TableRow>
             )

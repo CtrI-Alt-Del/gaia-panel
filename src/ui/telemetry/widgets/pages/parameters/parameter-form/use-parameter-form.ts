@@ -45,6 +45,7 @@ export function useParameterForm({
 
   async function handleSubmit(data: {
     name: string
+    code: string
     unitOfMeasure: string
     factor: number
     offset: number

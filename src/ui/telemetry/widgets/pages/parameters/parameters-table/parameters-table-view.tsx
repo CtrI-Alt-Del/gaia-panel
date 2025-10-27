@@ -48,6 +48,7 @@ export const ParametersTableView = ({
       <TableHeader>
         <TableRow>
           <TableHead className='pl-6'>Nome</TableHead>
+          <TableHead>Código</TableHead>
           <TableHead>Unidade</TableHead>
           <TableHead>Fator</TableHead>
           <TableHead>Offset</TableHead>
@@ -93,6 +94,10 @@ export const ParametersTableView = ({
                       </div>
                     </div>
                   </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className='text-sm text-stone-700'>{parameter.code}</div>
                 </TableCell>
 
                 <TableCell>

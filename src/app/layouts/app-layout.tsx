@@ -1,4 +1,4 @@
-import { Outlet, redirect } from 'react-router'
+import { Outlet } from 'react-router'
 import type { Route } from '../+types/root'
 
 import { AuthMiddleware } from '@/app/middlewares/auth-middleware'
@@ -6,8 +6,8 @@ import { RestMiddleware } from '@/app/middlewares/rest-middleware'
 import { MembershipMiddleware } from '@/app/middlewares/membership-middleware'
 import { VisitorMiddleware } from '@/app/middlewares/visitor-middleware'
 import { DashboardLayout } from '@/ui/global/widgets/layouts'
-import { membershipContext } from '../contexts/membership-context'
 import { SERVER_ENV } from '@/core/global/constants/server-env'
+import { membershipContext } from '../contexts/membership-context'
 
 export const middleware = [
   AuthMiddleware,
@@ -35,10 +35,9 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
   const membershipData = getContextData(context, membershipContext) as
     | { user: any }
     | undefined
-
   const user = membershipData?.user
 
-  return { user, isVisitor: true }
+  return { user, isVisitor: !user }
 }
 
 const AppLayout = () => {

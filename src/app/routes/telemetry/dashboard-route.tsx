@@ -34,5 +34,4 @@ export const loader = async ({ context }: Route.ActionArgs) => {
     alertsData,
   }
 }
-
 export default DashboardPage

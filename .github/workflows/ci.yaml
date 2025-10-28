@@ -5,10 +5,10 @@ on:
     branches:
       - main
       - production
-  pull_request:
-    branches:
-      - main
-      - production
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - production
 
 jobs:
   # Validate if the branch is allowed to be merged or not

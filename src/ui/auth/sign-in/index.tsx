@@ -14,7 +14,6 @@ export const SignInPage = () => {
       toastProvider,
       routerProvider,
     })
-
   return (
     <SignInPageView
       form={form}

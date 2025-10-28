@@ -33,7 +33,6 @@ export const MeasurementsTableView = ({
   isLoading,
   hasStation,
 }: Props) => {
-  console.log(nextCursor, previousCursor)
   return (
     <Table>
       <TableHeader>

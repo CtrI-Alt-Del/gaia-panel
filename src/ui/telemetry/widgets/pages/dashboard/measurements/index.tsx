@@ -1,13 +1,35 @@
-import { useLoaderData } from 'react-router'
-import type { loader } from '@/app/routes/telemetry/dashboard-route'
-import { MeasurementsView } from './measurements-view'
 import { useUiProvider } from '@/ui/global/hooks'
+import { useMeasurementsSocket } from '@/ui/global/hooks/use-measurements-socket'
+import { MeasurementsView } from './measurements-view'
+import { useMeasurements } from './use-measurements'
 
 export const Measurements = () => {
-  const { measurements } = useLoaderData<typeof loader>()
   const { isLoading } = useUiProvider()
+  const {
+    measurements,
+    hasNextPage,
+    hasPreviousPage,
+    nextCursor,
+    previousCursor,
+    handleFetchMeasurements,
+  } = useMeasurements()
+  useMeasurementsSocket({
+    params: {
+      pageSize: 10,
+    },
+    onFetchMeasurements: handleFetchMeasurements,
+  })
 
-  return <MeasurementsView measurements={measurements} isLoading={isLoading} />
+  return (
+    <MeasurementsView
+      isLoading={isLoading}
+      measurements={measurements}
+      hasNextPage={hasNextPage}
+      hasPreviousPage={hasPreviousPage}
+      nextCursor={nextCursor}
+      previousCursor={previousCursor}
+    />
+  )
 }
 
 export default Measurements

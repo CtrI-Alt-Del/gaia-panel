@@ -32,6 +32,7 @@ export function useParameterForm({
       unitOfMeasure: parameterDto?.unitOfMeasure || '',
       factor: parameterDto?.factor || 1.0,
       offset: parameterDto?.offset || 0.0,
+      code: parameterDto?.code || '',
     },
     mode: 'onSubmit',
   })
@@ -52,7 +53,6 @@ export function useParameterForm({
   }) {
     const isEdition = Boolean(parameterDto?.id)
 
-
     try {
       let response: RestResponse<ParameterDto>
       if (isEdition) {
@@ -71,7 +71,6 @@ export function useParameterForm({
         toastProvider.showError('Erro ao salvar parâmetro')
         return
       }
-
 
       if (response.isSuccessful) {
         toastProvider.showSuccess(

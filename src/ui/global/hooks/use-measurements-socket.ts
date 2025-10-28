@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
-import { CLIENT_ENV } from '@/core/global/constants'
+import { CLIENT_ENV } from '@/core/global/constants/client-env'
 import type { MeasurementsListingParams } from '@/core/telemetry/types'
 import type { PaginationResponse } from '@/core/global/responses'
 

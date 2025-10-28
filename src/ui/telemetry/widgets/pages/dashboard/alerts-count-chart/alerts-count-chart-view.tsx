@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from '@/ui/shadcn/components/card'
 import type { AlertEvolutionData, AlertEvolutionType } from './use-alerts-count-chart'
+import { useDateTimeProvider } from '@/ui/global/hooks'
 
 type TooltipProps = {
   active: boolean
@@ -55,6 +56,7 @@ export const AlertsCountChartView = ({ data, type, setType }: Props) => {
   const baseGradientId = useId().replace(/:/g, '')
   const warningGradientId = `${baseGradientId}-warning`
   const criticalGradientId = `${baseGradientId}-critical`
+  const { localizeDate, formatDate } = useDateTimeProvider()
 
   const formatPeriodLabel = useCallback(
     (value: string | number) => {
@@ -201,7 +203,7 @@ export const AlertsCountChartView = ({ data, type, setType }: Props) => {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                tickFormatter={(value) => formatPeriodLabel(value)}
+                tickFormatter={(value) => formatDate(localizeDate(value)).slice(0, 5)}
                 minTickGap={16}
               />
               <YAxis

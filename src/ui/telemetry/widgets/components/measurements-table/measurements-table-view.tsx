@@ -116,21 +116,20 @@ export const MeasurementsTableView = ({
         )}
       </TableBody>
 
-      {nextCursor ||
-        (previousCursor && (
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={4}>
-                <PaginationControl
-                  previousCursor={previousCursor}
-                  nextCursor={nextCursor}
-                  hasNextPage={hasNextPage}
-                  hasPreviousPage={hasPreviousPage}
-                />
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        ))}
+      {(nextCursor || previousCursor) && (
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={4}>
+              <PaginationControl
+                previousCursor={previousCursor}
+                nextCursor={nextCursor}
+                hasNextPage={hasNextPage}
+                hasPreviousPage={hasPreviousPage}
+              />
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      )}
     </Table>
   )
 }

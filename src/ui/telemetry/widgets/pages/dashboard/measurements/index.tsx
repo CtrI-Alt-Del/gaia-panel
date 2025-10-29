@@ -26,8 +26,8 @@ export const Measurements = () => {
       measurements={measurements}
       hasNextPage={hasNextPage}
       hasPreviousPage={hasPreviousPage}
-      nextCursor={nextCursor}
-      previousCursor={previousCursor}
+      nextCursor={null}
+      previousCursor={null}
     />
   )
 }

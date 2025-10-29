@@ -4,8 +4,8 @@ import { Button } from '@/ui/shadcn/components/button'
 import { Bell } from 'lucide-react'
 import { PageSizeSelect } from '@/ui/global/widgets/components/page-size-select'
 import { AlertsTable } from './alerts-table/index'
-import { AlertsDatePicker } from './alerts-date-picker'
 import { AlertsLevelSelect } from './alerts-level-select'
+import { DatePicker } from '@/ui/shadcn/components/date-picker'
 
 export type AlertsPageViewProps = {
   alerts: AlertDto[]
@@ -38,6 +38,7 @@ export const AlertsPageView = ({
   hasNextPage,
   hasPreviousPage,
   isLoading,
+  filters,
   onClearFilters,
 }: AlertsPageViewProps) => {
   return (
@@ -51,7 +52,10 @@ export const AlertsPageView = ({
               className='flex flex-wrap items-end gap-2'
             >
               <AlertsLevelSelect />
-              <AlertsDatePicker />
+              <DatePicker
+                name='date'
+                defaultValue={filters?.date ? new Date(filters.date) : undefined}
+              />
               <PageSizeSelect />
               <Button type='submit' className='h-9'>
                 Aplicar

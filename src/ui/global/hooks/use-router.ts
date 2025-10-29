@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router'
 import { useCallback, useEffect } from 'react'
+
 import type { RouterProvider } from '@/core/global/interfaces/router-provider'
 
 type Params = {
@@ -25,8 +26,8 @@ export function useRouter({ onNavigate }: Params = {}): RouterProvider {
     if (!onNavigate) {
       return
     }
-    // onNavigate()
-  }, [])
+    onNavigate()
+  }, [location])
 
   return {
     goTo,

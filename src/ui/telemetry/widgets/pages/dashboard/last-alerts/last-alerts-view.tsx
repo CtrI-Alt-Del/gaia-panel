@@ -6,6 +6,7 @@ import { Button } from '@/ui/shadcn/components/button'
 import type { AlertDto } from '@/core/alerting/alerts/dtos'
 import { Link } from 'react-router'
 import { ROUTES } from '@/core/global/constants/routes'
+import { cn } from '@/ui/shadcn/utils'
 
 export type LastAlertsViewProps = {
   alerts: AlertDto[]
@@ -137,13 +138,18 @@ export const LastAlertsView = ({
                             <span className='h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-primary/20' />
                           )}
                         </div>
-                        <Badge
-                          color={severityColor}
-                          tone='solid'
-                          className='uppercase tracking-wide'
+                        <span
+                          className={cn('px-2 py-1 rounded-full text-sm', {
+                            'bg-red-500 text-white': severityColor === 'red',
+                            'bg-yellow-500 text-white': severityColor === 'yellow',
+                            'bg-blue-500 text-white': severityColor === 'blue',
+                            'bg-green-500 text-white': severityColor === 'green',
+                            'bg-orange-500 text-white': severityColor === 'orange',
+                            'bg-violet-500 text-white': severityColor === 'violet',
+                          })}
                         >
                           {severityLabel}
-                        </Badge>
+                        </span>
                       </div>
 
                       <div className='flex flex-wrap items-center gap-3 text-xs text-muted-foreground'>

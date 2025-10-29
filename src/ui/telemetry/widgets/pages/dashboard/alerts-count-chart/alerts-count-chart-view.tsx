@@ -37,11 +37,11 @@ type Props = {
 const chartConfig = {
   warning: {
     label: 'Avisos',
-    color: '#DC2626',
+    color: '#EAB308',
   },
   critical: {
     label: 'Críticos',
-    color: '#EAB308',
+    color: '#DC2626',
   },
 } as const
 

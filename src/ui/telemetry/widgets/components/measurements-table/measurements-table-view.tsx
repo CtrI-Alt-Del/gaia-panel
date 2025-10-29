@@ -67,6 +67,7 @@ export const MeasurementsTableView = ({
             const displayParameterName = parameter?.entity?.name || '—'
             const formattedValue = typeof value === 'number' ? value.toFixed(2) : '—'
             const unit = parameter?.entity?.unitOfMeasure || '—'
+            console.log(createdAt)
             const date = createdAt
               ? new Date(createdAt).toLocaleString('pt-BR', {
                   day: '2-digit',
@@ -74,6 +75,7 @@ export const MeasurementsTableView = ({
                   year: 'numeric',
                   hour: '2-digit',
                   minute: '2-digit',
+                  second: '2-digit',
                 })
               : '—'
 

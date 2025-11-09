@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 
 import type { AlertDto } from '@/core/alerting/alerts/dtos'
+import { CLIENT_ENV } from '@/core/global/constants/client-env'
 
-const URL = 'http://localhost:3333/alerting/alerts/last'
+const URL = `${CLIENT_ENV.gaiaServerUrl}/alerting/alerts/last`
 
 type UseLastAlertsSocketOptions = {
   onGetLastAlerts?: (alerts: AlertDto[]) => void

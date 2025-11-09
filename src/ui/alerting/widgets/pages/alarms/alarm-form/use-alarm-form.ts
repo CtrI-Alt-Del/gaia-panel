@@ -1,19 +1,19 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { alarmFormSchema, type AlarmFormData } from "./alarm-form-schema";
-import type { AlertingService } from "@/core/alerting/interfaces/alerting-service";
-import type { ToastProvider, UiProvider } from "@/core/global/interfaces";
-import type { AlarmDto } from "@/core/alerting/dtos";
-import { RestResponse } from "@/core/global/responses";
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { alarmFormSchema, type AlarmFormData } from './alarm-form-schema'
+import type { AlertingService } from '@/core/alerting/interfaces/alerting-service'
+import type { ToastProvider, UiProvider } from '@/core/global/interfaces'
+import type { AlarmDto } from '@/core/alerting/dtos'
+import { RestResponse } from '@/core/global/responses'
 
 type UseAlarmFormProps = {
-  alarmDto?: AlarmDto;
-  onSuccess?: () => void;
-  onCancel?: () => void;
-  uiProvider: UiProvider;
-  toastProvider: ToastProvider;
-  alertingService: AlertingService;
-};
+  alarmDto?: AlarmDto
+  onSuccess?: () => void
+  onCancel?: () => void
+  uiProvider: UiProvider
+  toastProvider: ToastProvider
+  alertingService: AlertingService
+}
 
 export function useAlarmForm({
   alarmDto,
@@ -23,7 +23,7 @@ export function useAlarmForm({
   uiProvider,
   toastProvider,
 }: UseAlarmFormProps) {
-  const isEditing = Boolean(alarmDto?.id);
+  const isEditing = Boolean(alarmDto?.id)
 
   function getDefaultValues(): Partial<AlarmFormData> {
     if (alarmDto) {
@@ -33,20 +33,20 @@ export function useAlarmForm({
         level: alarmDto.level,
         operation: alarmDto.rule.operation,
         threshold: alarmDto.rule.threshold.toString(),
-      };
+      }
     }
 
     return {
-      parameterId: "",
-      message: "",
-      threshold: "",
-    };
+      parameterId: '',
+      message: '',
+      threshold: '',
+    }
   }
 
   const form = useForm<AlarmFormData>({
     resolver: zodResolver(alarmFormSchema),
     defaultValues: getDefaultValues(),
-  });
+  })
 
   function buildAlarmDto(data: AlarmFormData) {
     const dto = {
@@ -60,59 +60,59 @@ export function useAlarmForm({
       },
       level: data.level,
       isActive: true,
-    };
+    }
 
     if (isEditing && alarmDto?.id) {
       return {
         ...dto,
         id: alarmDto.id,
-      };
+      }
     }
 
-    return dto;
+    return dto
   }
 
   async function onSubmit(data: AlarmFormData) {
     try {
       const isEditing = Boolean(alarmDto?.id)
-      const dto = buildAlarmDto(data);
-      
+      const dto = buildAlarmDto(data)
+
       let response = new RestResponse()
-      
+
       if (isEditing) {
-        response = await alertingService.updateAlarm({...dto, id: alarmDto?.id});
+        response = await alertingService.updateAlarm({ ...dto, id: alarmDto?.id })
       } else {
-        response = await alertingService.createAlarm(dto);
+        response = await alertingService.createAlarm(dto)
       }
 
       if (response.isFailure) {
-        toastProvider.showError(response.errorMessage);
-        return;
+        toastProvider.showError(response.errorMessage)
+        return
       }
 
       if (response.isSuccessful) {
         const successMessage = isEditing
-          ? "Alerta atualizado com sucesso!"
-          : "Alerta criado com sucesso!";
+          ? 'Alerta atualizado com sucesso!'
+          : 'Alerta criado com sucesso!'
 
-        toastProvider.showSuccess(successMessage);
-        await uiProvider.reload();
-        form.reset();
-        onSuccess?.();
+        toastProvider.showSuccess(successMessage)
+        await uiProvider.reload()
+        form.reset()
+        onSuccess?.()
       }
     } catch (error) {
       const errorMessage = isEditing
-        ? "Erro ao atualizar alarme:"
-        : "Erro ao criar alarme:";
+        ? 'Erro ao atualizar alarme:'
+        : 'Erro ao criar alarme:'
 
-      console.error(errorMessage, error);
-      toastProvider.showError("Ocorreu um erro inesperado");
+      console.error(errorMessage, error)
+      toastProvider.showError('Ocorreu um erro inesperado')
     }
   }
 
   function handleCancel() {
-    form.reset();
-    onCancel?.();
+    form.reset()
+    onCancel?.()
   }
 
   return {
@@ -120,5 +120,5 @@ export function useAlarmForm({
     isEditing,
     handleSubmit: form.handleSubmit(onSubmit),
     handleCancel,
-  };
+  }
 }

@@ -99,7 +99,7 @@ export const AlertsPopoverView = ({
                     <div className='flex items-center justify-between gap-3'>
                       <div className='flex items-center gap-2'>
                         <Badge
-                          color={alert.level === 'danger' ? 'red' : 'yellow'}
+                          color={alert.level === 'critical' ? 'red' : 'yellow'}
                           tone='soft'
                           className='rounded-full px-2.5 py-1 text-xs tracking-wide'
                         >

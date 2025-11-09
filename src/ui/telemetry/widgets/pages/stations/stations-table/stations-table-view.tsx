@@ -16,6 +16,7 @@ import {
   TableFooter,
 } from '@/ui/shadcn/components/table'
 import { StationsTableSkeleton } from '../stations-table-skeleton'
+import { useDateTimeProvider } from '@/ui/global/hooks'
 
 type StationsTableViewProps = {
   stations: StationDto[]
@@ -42,6 +43,7 @@ export const StationsTableView = ({
   onEdit,
   onCloseModal,
 }: StationsTableViewProps) => {
+  const { formatDateTime } = useDateTimeProvider()
   return (
     <Table>
       <TableHeader>
@@ -94,7 +96,7 @@ export const StationsTableView = ({
                 <StatusPill active={station.isActive || false} />
               </TableCell>
               <TableCell className='text-muted-foreground'>
-                {station.lastReadAt ? station.lastReadAt.toLocaleString() : '—'}
+                {station.lastReadAt ? formatDateTime(station.lastReadAt) : '—'}
               </TableCell>
               {isAuthenticated && (
                 <TableCell className='text-right'>

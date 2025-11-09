@@ -29,29 +29,16 @@ export const loader = async ({
   const stationResponse = await telemetryService.fetchStation(stationId)
   if (stationResponse.isFailure) stationResponse.throwError()
 
-  const measurementsResponse = await telemetryService.fetchMeasurements({
-    stationId: stationId,
-    pageSize: pageSize,
-    parameterId: parameterId ?? undefined,
-    nextCursor: nextCursor,
-    previousCursor: previousCursor,
-    date: date ?? undefined,
-  })
-
-  if (measurementsResponse.isFailure) measurementsResponse.throwError()
-
   const parametersResponse = await telemetryService.fetchParametersByStationId(stationId)
 
   return {
     station: stationResponse.body,
     parameterId,
     parameters: parametersResponse.body,
-    measurements: measurementsResponse.body.items,
     date,
-    nextCursor: measurementsResponse.body.nextCursor ?? null,
-    previousCursor: measurementsResponse.body.previousCursor ?? null,
-    hasNextPage: Boolean(measurementsResponse.body.nextCursor),
-    hasPreviousPage: Boolean(measurementsResponse.body.previousCursor),
+    nextCursor,
+    previousCursor,
+    pageSize,
   }
 }
 

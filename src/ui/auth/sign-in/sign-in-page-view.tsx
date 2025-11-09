@@ -42,8 +42,8 @@ export const SignInPageView = ({
   onVisitorLogin,
 }: Props) => {
   return (
-    <div className='min-h-screen w-full grid grid-cols-2'>
-      <div className='h-full flex items-center justify-center'>
+    <div className='min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-purple-100 via-white to-purple-200'>
+      <div className='flex items-center justify-center py-12 px-6 sm:px-10 lg:px-12'>
         <div className='w-full max-w-md space-y-6'>
           <div className='flex justify-center'>
             <GaiaLogo width={120} height={120} />
@@ -106,7 +106,7 @@ export const SignInPageView = ({
                     )}
                   />
 
-                  <div className='flex justify-between items-center'>
+                  <div className='flex justify-end'>
                     <button
                       type='button'
                       onClick={onForgotPassword}
@@ -174,8 +174,15 @@ export const SignInPageView = ({
         </div>
       </div>
 
-      <div className='h-full flex items-center justify-center'>
-        <img src='/images/rainy-city.svg' alt='Rainy City' width={750} height={750} />
+      <div className='hidden lg:flex items-center justify-center'>
+        <img
+          src='/images/rainy-city.svg'
+          alt='Rainy City'
+          width={750}
+          height={750}
+          className='h-auto w-3/4 max-w-xl object-contain'
+          loading='lazy'
+        />
       </div>
     </div>
   )

@@ -14,7 +14,6 @@ export function useLastAlertsSocket({
 }: UseLastAlertsSocketOptions = {}) {
   useEffect(() => {
     const es = new EventSource(URL)
-
     function handleMessage(event: MessageEvent) {
       if (!onGetLastAlerts) {
         return

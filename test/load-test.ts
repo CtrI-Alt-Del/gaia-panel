@@ -1,5 +1,6 @@
 import http from 'k6/http'
-import { sleep } from 'k6'
+import { check, sleep } from 'k6'
+import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/latest/dist/bundle.js'
 
 const GAIA_PANEL_URL = 'http://dev-alb-2035488909.us-east-1.elb.amazonaws.com'
 
@@ -20,13 +21,23 @@ export const options = {
     { duration: '180s', target: 0 },    // re
   ],
   thresholds: {
-    http_req_duration: ['p(95)<2000'], // 95% of requests must complete below 2s
-    http_req_failed: ['rate<0.01'], // 1% of requests failing
+    http_req_duration: ['p(95)<2000', 'p(99)<1000'],
+    http_req_failed: ['rate<0.01'],
   },
 }
 
+export function handleSummary(data: any) {
+  return {
+    "test-load-report.html": htmlReport(data),
+  }
+}
+
 export default function () {
-  http.get(`${GAIA_PANEL_URL}/dashboard`)
+  const response = http.get(`${GAIA_PANEL_URL}/dashboard`)
+
+  check(response, {
+    'status is 200': (response) => response.status === 200,
+  })
 
   sleep(1)
 }

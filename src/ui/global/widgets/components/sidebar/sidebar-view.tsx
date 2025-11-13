@@ -6,6 +6,7 @@ import {
   BarChart3,
   Users,
   ClipboardClock,
+  HelpCircle,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -97,6 +98,17 @@ export const SidebarView = ({ currentPath, isUserOwner, isVisitor }: Props) => {
               />
             </SidebarMenu>
           )}
+
+          <div className='h-px bg-purple-200 my-4' />
+
+          <SidebarMenu>
+            <SidebarItem
+              icon={<HelpCircle />}
+              label='Central de Ajuda'
+              href={ROUTES.helpCenter.index}
+              isActive={currentPath.startsWith(ROUTES.helpCenter.index)}
+            />
+          </SidebarMenu>
         </div>
       </SidebarContent>
 

@@ -354,7 +354,7 @@ describe('SidebarView Component', () => {
     )
 
     const menus = screen.getAllByTestId('sidebar-menu')
-    expect(menus).toHaveLength(3) // 3 seções de menu quando usuário não é owner
+    expect(menus).toHaveLength(4) // 4 seções de menu quando usuário não é owner
   })
 
   it('should render all sidebar menus when user is owner', () => {
@@ -365,7 +365,7 @@ describe('SidebarView Component', () => {
     )
 
     const menus = screen.getAllByTestId('sidebar-menu')
-    expect(menus).toHaveLength(4) // 4 seções de menu quando usuário é owner
+    expect(menus).toHaveLength(5) // 5 seções de menu quando usuário é owner
   })
 
   it('should render separators between menu sections', () => {

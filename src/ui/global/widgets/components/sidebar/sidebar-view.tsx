@@ -86,17 +86,18 @@ export const SidebarView = ({ currentPath, isUserOwner, isVisitor }: Props) => {
             />
           </SidebarMenu>
 
-          <div className='h-px bg-purple-200 my-4' />
-
           {isUserOwner && !isVisitor && (
-            <SidebarMenu>
-              <SidebarItem
-                icon={<Users />}
-                label='Usuários'
-                href={ROUTES.users}
-                isActive={currentPath === ROUTES.users}
-              />
-            </SidebarMenu>
+            <>
+              <div className='h-px bg-purple-200 my-4' />
+              <SidebarMenu>
+                <SidebarItem
+                  icon={<Users />}
+                  label='Usuários'
+                  href={ROUTES.users}
+                  isActive={currentPath === ROUTES.users}
+                />
+              </SidebarMenu>
+            </>
           )}
 
           <div className='h-px bg-purple-200 my-4' />

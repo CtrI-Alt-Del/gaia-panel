@@ -24,5 +24,8 @@ export default [
     route(ROUTES.alarms, 'routes/alerting/alarms-route.tsx'),
     route(ROUTES.alerts, 'routes/alerting/alerts/alerts-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
+    route(ROUTES.helpCenter.index, 'routes/help-center/help-center-route.tsx', [
+      index('routes/help-center/index-route.tsx'),
+    ]),
   ]),
 ] satisfies RouteConfig

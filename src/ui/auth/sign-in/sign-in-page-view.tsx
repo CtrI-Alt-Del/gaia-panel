@@ -52,7 +52,7 @@ export const SignInPageView = ({
           <Card className='bg-white border-gray-200 shadow-2xl'>
             <CardHeader className='space-y-2 text-center pb-3'>
               <CardTitle className='text-3xl font-bold text-gray-900'>
-                Entrar com a sua Conta no Gaia
+                Entrar com a sua Conta
               </CardTitle>
               <CardDescription className='text-gray-600 text-sm'>
                 Entre na sua conta inserindo suas informações abaixo.

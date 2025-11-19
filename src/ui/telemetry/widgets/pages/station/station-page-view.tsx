@@ -9,6 +9,7 @@ import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { useDateTimeProvider } from '@/ui/global/hooks/use-date-time-provider'
 import { StationStatusButton } from '../stations/station-status-button'
 import { StationForm } from '../stations/station-form'
+import { StationReportDownload } from './station-pdf-button'
 
 type Props = {
   station: StationDto
@@ -79,46 +80,58 @@ export const StationPageView = ({
               </div>
             </div>
 
-            {isAuthenticated && (
+            {(station.id || isAuthenticated) && (
               <div className='flex gap-3 ml-6'>
-                <Dialog
-                  title='Editar Estação'
-                  description='Edite as informações da estação'
-                  size='2xl'
-                  trigger={
-                    <button
-                      type='button'
-                      className='flex items-center gap-2 h-10 px-4 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer'
-                    >
-                      <Settings className='w-4 h-4' />
-                      Editar
-                    </button>
-                  }
-                >
-                  {(closeDialog) => (
-                    <StationForm
-                      onSuccess={closeDialog}
-                      onCancel={closeDialog}
-                      stationDto={station}
-                    />
-                  )}
-                </Dialog>
+                {station.id && (
+                  <StationReportDownload
+                    stationId={station.id}
+                    stationName={station.name}
+                    stationUid={station.uid}
+                  />
+                )}
 
-                <StationStatusButton
-                  stationId={station.id as string}
-                  isActive={station.isActive || false}
-                >
-                  <button
-                    type='button'
-                    className={`h-10 px-4 rounded-lg border transition-colors cursor-pointer ${
-                      station.isActive
-                        ? 'border-red-300 text-red-700 hover:bg-red-50'
-                        : 'border-green-300 text-green-700 hover:bg-green-50'
-                    }`}
-                  >
-                    {station.isActive ? 'Desativar' : 'Ativar'}
-                  </button>
-                </StationStatusButton>
+                {isAuthenticated && (
+                  <>
+                    <Dialog
+                      title='Editar Esta??o'
+                      description='Edite as informa??es da esta??o'
+                      size='2xl'
+                      trigger={
+                        <button
+                          type='button'
+                          className='flex items-center gap-2 h-10 px-4 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer'
+                        >
+                          <Settings className='w-4 h-4' />
+                          Editar
+                        </button>
+                      }
+                    >
+                      {(closeDialog) => (
+                        <StationForm
+                          onSuccess={closeDialog}
+                          onCancel={closeDialog}
+                          stationDto={station}
+                        />
+                      )}
+                    </Dialog>
+
+                    <StationStatusButton
+                      stationId={station.id as string}
+                      isActive={station.isActive || false}
+                    >
+                      <button
+                        type='button'
+                        className={`h-10 px-4 rounded-lg border transition-colors cursor-pointer ${
+                          station.isActive
+                            ? 'border-red-300 text-red-700 hover:bg-red-50'
+                            : 'border-green-300 text-green-700 hover:bg-green-50'
+                        }`}
+                      >
+                        {station.isActive ? 'Desativar' : 'Ativar'}
+                      </button>
+                    </StationStatusButton>
+                  </>
+                )}
               </div>
             )}
           </div>

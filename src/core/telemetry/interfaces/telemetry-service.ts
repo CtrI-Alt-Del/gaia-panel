@@ -33,6 +33,7 @@ export interface TelemetryService {
     parameterIds: string[],
   ): Promise<RestResponse<StationDto>>
   fetchStation(stationId: string): Promise<RestResponse<StationDto>>
+  downloadStationPdf(stationId: string): Promise<RestResponse<Blob>>
   activateStation(stationId: string): Promise<RestResponse<StationDto>>
   deactivateStation(stationId: string): Promise<RestResponse>
   fetchStationParameters(stationId: string): Promise<RestResponse<ParameterDto[]>>

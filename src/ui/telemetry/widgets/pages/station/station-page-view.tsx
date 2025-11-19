@@ -9,7 +9,7 @@ import { Dialog } from '@/ui/global/widgets/components/dialog'
 import { useDateTimeProvider } from '@/ui/global/hooks/use-date-time-provider'
 import { StationStatusButton } from '../stations/station-status-button'
 import { StationForm } from '../stations/station-form'
-import { StationReportDownload } from './station-pdf-button'
+import { StationReportDownload } from './station-pdf-download-button'
 
 type Props = {
   station: StationDto

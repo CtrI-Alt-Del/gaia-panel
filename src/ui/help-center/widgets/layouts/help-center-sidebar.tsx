@@ -52,7 +52,7 @@ export function HelpCenterSidebar() {
           className={({ isActive }) =>
             `block py-2 px-3 rounded-md transition-colors ${
               isActive
-                ? 'bg-blue-50 text-blue-700 font-medium'
+                ? 'bg-purple-200 text-purple-700 font-medium'
                 : 'text-gray-700 hover:bg-gray-100'
             }`
           }

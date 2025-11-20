@@ -1,9 +1,9 @@
+import Doc from '@/ui/help-center/widgets/pages/index.mdx'
+
 export default function HelpCenterIndexRoute() {
   return (
-    <div>
-      <h1>Central de Ajuda</h1>
-      <p>Bem-vindo à central de ajuda do sistema GAIA</p>
-      {/* Lista de artigos/documentação aqui */}
-    </div>
-  )
+      <div className="bg-red-500">
+        <Doc />
+      </div>
+    )
 }

@@ -1,5 +1,8 @@
 import Axios from 'axios'
-import type { RestClient } from '../../core/global/interfaces/rest-client'
+import type {
+  RestClient,
+  RestClientRequestConfig,
+} from '../../core/global/interfaces/rest-client'
 import type { RestResponse } from '../../core/global/responses/rest-response'
 import { buildUrl, createRestResponse, handleError } from './utils'
 
@@ -15,10 +18,14 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
   }
 
   return {
-    async get<ResponseBody>(url: string): Promise<RestResponse<ResponseBody>> {
+    async get<ResponseBody>(
+      url: string,
+      config?: RestClientRequestConfig,
+    ): Promise<RestResponse<ResponseBody>> {
       try {
         const response = await axios.get<ResponseBody>(
           buildUrl(currentBaseUrl, url, queryParams),
+          mapAxiosConfig(config),
         )
         return createRestResponse<ResponseBody>(response)
       } catch (error) {
@@ -29,11 +36,13 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
     async post<ResponseBody>(
       url: string,
       body?: unknown,
+      config?: RestClientRequestConfig,
     ): Promise<RestResponse<ResponseBody>> {
       try {
         const response = await axios.post<ResponseBody>(
           buildUrl(currentBaseUrl, url, queryParams),
           body,
+          mapAxiosConfig(config),
         )
         return createRestResponse<ResponseBody>(response)
       } catch (error) {
@@ -44,11 +53,13 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
     async patch<ResponseBody>(
       url: string,
       body?: unknown,
+      config?: RestClientRequestConfig,
     ): Promise<RestResponse<ResponseBody>> {
       try {
         const response = await axios.patch<ResponseBody>(
           buildUrl(currentBaseUrl, url, queryParams),
           body,
+          mapAxiosConfig(config),
         )
         return createRestResponse<ResponseBody>(response)
       } catch (error) {
@@ -59,11 +70,13 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
     async put<ResponseBody>(
       url: string,
       body?: unknown,
+      config?: RestClientRequestConfig,
     ): Promise<RestResponse<ResponseBody>> {
       try {
         const response = await axios.put<ResponseBody>(
           buildUrl(currentBaseUrl, url, queryParams),
           body,
+          mapAxiosConfig(config),
         )
         return createRestResponse<ResponseBody>(response)
       } catch (error) {
@@ -71,9 +84,15 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
       }
     },
 
-    async delete(url: string): Promise<RestResponse> {
+    async delete(
+      url: string,
+      config?: RestClientRequestConfig,
+    ): Promise<RestResponse> {
       try {
-        const response = await axios.delete(buildUrl(currentBaseUrl, url, queryParams))
+        const response = await axios.delete(
+          buildUrl(currentBaseUrl, url, queryParams),
+          mapAxiosConfig(config),
+        )
         return createRestResponse(response)
       } catch (error) {
         return handleError(error)
@@ -106,5 +125,14 @@ export const AxiosRestClient = (baseUrl?: string): RestClient => {
         delete queryParams[key]
       })
     },
+  }
+}
+
+function mapAxiosConfig(config?: RestClientRequestConfig) {
+  if (!config) return undefined
+
+  return {
+    responseType: config.responseType,
+    headers: config.headers,
   }
 }

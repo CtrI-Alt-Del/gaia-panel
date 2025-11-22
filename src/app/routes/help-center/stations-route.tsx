@@ -1,5 +1,9 @@
-import Doc from '@/ui/help-center/widgets/pages/stations.mdx'
+import Doc from '@/ui/help-center/widgets/pages/stations'
 
 export default function StationsHelpRoute() {
-  return <Doc />
+  return (
+    <div className="prose prose-sm dark:prose-invert max-w-none">
+      <Doc />
+    </div>
+  )
 }

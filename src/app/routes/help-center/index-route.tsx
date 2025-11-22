@@ -1,9 +1,9 @@
-import Doc from '@/ui/help-center/widgets/pages/index.mdx'
+import Doc from '@/ui/help-center/widgets/pages/index'
 
 export default function HelpCenterIndexRoute() {
   return (
-      <div className="bg-red-500">
-        <Doc />
-      </div>
-    )
+    <div className="prose prose-sm dark:prose-invert max-w-none">
+      <Doc />
+    </div>
+  )
 }

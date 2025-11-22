@@ -19,4 +19,9 @@ export const ROUTES = {
   configuration: '/configuration',
   profile: '/profile',
   users: '/users',
+  helpCenter: {
+    index: '/help-center',
+    category: '/help-center/:category',
+    doc: '/help-center/:category/:doc',
+  },
 }

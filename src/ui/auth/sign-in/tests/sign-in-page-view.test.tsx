@@ -81,7 +81,9 @@ describe('SignInPageView', () => {
       onForgotPassword: mockOnForgotPassword,
     })
 
-    expect(screen.getByText('Entrar na sua Conta')).toBeInTheDocument()
+    expect(
+      screen.getByText((text) => text.includes('Entrar com a sua Conta')),
+    ).toBeInTheDocument()
     expect(
       screen.getByText('Entre na sua conta inserindo suas informações abaixo.'),
     ).toBeInTheDocument()

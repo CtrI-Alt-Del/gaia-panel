@@ -24,7 +24,7 @@ export const ROUTES = {
     dashboard: '/help-center/dashboard',
     stations: '/help-center/stations',
     parameters: '/help-center/parameters',
-    reports: '/help-center/reports',
+    notifications: '/help-center/notifications',
     alarms: '/help-center/alarms',
     alerts: '/help-center/alerts',
     users: '/help-center/users',

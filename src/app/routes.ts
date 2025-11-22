@@ -28,7 +28,7 @@ export default [
       route(ROUTES.helpCenter.index, 'routes/help-center/help-center-route.tsx', [
         index('routes/help-center/index-route.tsx'),
         route(ROUTES.helpCenter.dashboard, 'routes/help-center/dashboard-route.tsx'),
-        route(ROUTES.helpCenter.reports, 'routes/help-center/reports-route.tsx'),
+        route(ROUTES.helpCenter.notifications, 'routes/help-center/notifications-route.tsx'),
         route(ROUTES.helpCenter.stations, 'routes/help-center/stations-route.tsx'),
         route(ROUTES.helpCenter.parameters, 'routes/help-center/parameters-route.tsx'),
         route(ROUTES.helpCenter.alarms, 'routes/help-center/alarms-route.tsx'),

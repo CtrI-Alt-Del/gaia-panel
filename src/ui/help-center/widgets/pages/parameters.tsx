@@ -1,5 +1,8 @@
 import React from 'react';
-import { Sliders, Search, Calculator, Tag, CheckCircle, Activity, Ruler } from 'lucide-react';
+import { Sliders, Search, Calculator, Tag, CheckCircle, Activity, Ruler, Edit, Power, Plus, AlertCircle } from 'lucide-react';
+import parametrosListagem from '../assets/parametros_tela_usuario.png';
+import modalEdicao from '../assets/modal_editar_parametro.png';
+import modalDesativar from '../assets/modal_desativar_parametro.png';
 
 export default function ParametersHelpPage() {
   return (
@@ -16,107 +19,106 @@ export default function ParametersHelpPage() {
           Parâmetros
         </h1>
         <p className="text-xl text-slate-500 font-light">
-          Gerencie as definições de variáveis monitoráveis, unidades de medida e fatores de conversão utilizados por todo o sistema.
+          Gerencie o "dicionário" do sistema. Defina quais variáveis (sensores) o GAIA deve reconhecer, suas unidades de medida e regras de conversão.
         </p>
       </header>
 
-      {/* SEÇÃO 1: Visão Geral */}
+      {/* SEÇÃO 1: Listagem e Gestão */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-          1. O que são Parâmetros?
+          1. Listagem de Variáveis
         </h2>
         <p className="mb-6">
-          No sistema GAIA, um <strong>Parâmetro</strong> representa um tipo específico de dado ambiental que pode ser coletado por uma estação (Ex: Temperatura, Velocidade do Vento, Radiação Solar). Esta tela lista todas as variáveis que o sistema está "ensinado" a reconhecer.
+          A tela principal lista todos os tipos de dados que podem ser coletados pelas estações. É aqui que você padroniza como o sistema entende "Temperatura", "Chuva", "Vento", etc.
         </p>
 
-        {/* Placeholder Imagem Principal */}
-        {/* <figure className="my-6">
+        {/* Imagem Principal da Listagem */}
+        <figure className="my-6">
           <img 
-            src={require('../../assets/prints/parametros_tela.png')} 
-            alt="Tela de listagem de parâmetros" 
-            className="rounded-xl border border-slate-200 shadow-lg w-full" 
+            src={parametrosListagem} 
+            alt="Tela de listagem de parâmetros com botões de ação" 
+            className="rounded-xl border border-slate-200 shadow-sm w-full object-cover" 
           />
           <figcaption className="text-sm text-slate-500 text-center mt-2 italic">
-            Figura 1: Tabela geral de parâmetros configurados no sistema.
+            Figura 1: Tabela de parâmetros ativos com opções de edição e desativação.
           </figcaption>
-        </figure> */}
+        </figure>
 
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg my-6">
-          <div className="flex items-start gap-3">
-            <Activity className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-            <p className="text-sm text-blue-800 leading-relaxed">
-              <strong>Importante:</strong> As configurações definidas aqui (como Fator e Offset) são aplicadas globalmente para processar os dados brutos recebidos dos sensores, garantindo padronização nas medições.
-            </p>
-          </div>
+        <div className="bg-slate-50 rounded-lg p-5 border border-slate-200 space-y-4">
+          <h3 className="font-semibold text-slate-900">Ações Disponíveis:</h3>
+          <ul className="space-y-4 text-sm">
+            <li className="flex gap-3 items-start">
+              <div className="bg-indigo-600 text-white p-1 rounded-md mt-0.5"><Plus className="w-3 h-3" /></div>
+              <div>
+                <span className="font-bold text-slate-800">Novo Parâmetro:</span>
+                <p className="text-slate-600">Botão no topo esquerdo. Usado para cadastrar um novo tipo de sensor que o sistema passará a suportar.</p>
+              </div>
+            </li>
+            <li className="flex gap-3 items-start">
+              <div className="bg-slate-200 text-slate-600 p-1 rounded-md mt-0.5"><Edit className="w-3 h-3" /></div>
+              <div>
+                <span className="font-bold text-slate-800">Editar Propriedades:</span>
+                <p className="text-slate-600">Ajuste o nome, código técnico, unidades ou fatores de conversão de um parâmetro existente.</p>
+              </div>
+            </li>
+            <li className="flex gap-3 items-start">
+              <div className="bg-red-100 text-red-600 p-1 rounded-md mt-0.5"><Power className="w-3 h-3" /></div>
+              <div>
+                <span className="font-bold text-slate-800">Desativar:</span>
+                <p className="text-slate-600">Arquiva o parâmetro. Ele deixará de aparecer nas opções de configuração das estações.</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </section>
 
-      {/* SEÇÃO 2: Estrutura da Tabela */}
+      {/* SEÇÃO 2: Configuração Técnica (Edição) */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-          2. Detalhes Técnicos das Colunas
+          2. Detalhes de Configuração
         </h2>
         <p className="mb-6">
-          A tabela principal apresenta informações cruciais para a interpretação dos dados. Entenda o significado de cada coluna:
+          Ao criar ou editar um parâmetro, você define as regras matemáticas que o sistema usará para interpretar os dados brutos. Entenda cada campo do formulário:
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           
-          {/* Card Identificação */}
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <Tag className="w-4 h-4 text-indigo-600" /> Identificação
-            </h3>
-            <ul className="space-y-3 text-sm text-slate-600">
-              <li className="flex flex-col">
-                <span className="font-semibold text-slate-800">Nome</span>
-                <span>Descrição amigável (Ex: "Sensação térmica"). Abaixo do nome, é exibida a data de criação do parâmetro.</span>
-              </li>
-              <li className="flex flex-col">
-                <span className="font-semibold text-slate-800">Código (Slug)</span>
-                <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded w-fit text-slate-500">vis, wnd_spd</span>
-                <span>Identificador técnico curto usado em APIs e integrações de banco de dados.</span>
-              </li>
-            </ul>
+          {/* Imagem do Modal de Edição */}
+          <div>
+            <img 
+              src={modalEdicao} 
+              alt="Formulário de edição de parâmetro" 
+              className="rounded-xl border border-slate-200 shadow-sm w-full" 
+            />
+            <p className="text-xs text-slate-400 mt-2 text-center">
+              Formulário de cadastro/edição
+            </p>
           </div>
 
-          {/* Card Medição */}
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <Ruler className="w-4 h-4 text-indigo-600" /> Unidades
-            </h3>
-            <p className="text-sm text-slate-600 mb-2">
-              Define a grandeza física da medição. Exemplos comuns na lista:
-            </p>
-            <div className="flex flex-wrap gap-2 text-xs">
-              <span className="bg-slate-100 px-2 py-1 rounded border">°C (Graus)</span>
-              <span className="bg-slate-100 px-2 py-1 rounded border">m/s (Velocidade)</span>
-              <span className="bg-slate-100 px-2 py-1 rounded border">W/m² (Radiação)</span>
-              <span className="bg-slate-100 px-2 py-1 rounded border">% (Porcentagem)</span>
+          {/* Explicação dos Campos */}
+          <div className="space-y-6">
+            <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+              <h3 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                <Tag className="w-4 h-4 text-indigo-600" /> Identificação
+              </h3>
+              <ul className="text-sm space-y-2 text-slate-600">
+                <li><strong>Nome:</strong> O rótulo que aparecerá nos gráficos e relatórios (Ex: "Visibilidade horizontal").</li>
+                <li><strong>Código (Slug):</strong> Identificador interno único (Ex: <code>vis</code>, <code>temp_ar</code>). Usado por desenvolvedores e integrações API.</li>
+              </ul>
             </div>
-          </div>
 
-          {/* Card Calibração (Técnico) */}
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm md:col-span-2">
-            <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <Calculator className="w-4 h-4 text-indigo-600" /> Fatores de Conversão
-            </h3>
-            <p className="text-sm text-slate-600 mb-4">
-              O sistema utiliza uma fórmula linear padrão para converter sinais elétricos brutos ou dados comprimidos em valores legíveis:
-              <br/>
-              <code className="bg-slate-100 px-2 py-1 rounded mt-1 inline-block font-mono text-indigo-700">
-                Valor Final = (Dado Bruto × Fator) + Offset
-              </code>
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="font-bold text-slate-800 block">Fator (Multiplicador)</span>
-                <span className="text-slate-500">Usado para escala. Ex: Se o sensor envia 100 e o fator é 0.1, o valor lido será 10.</span>
-              </div>
-              <div>
-                <span className="font-bold text-slate-800 block">Offset (Deslocamento)</span>
-                <span className="text-slate-500">Usado para ajuste de zero ou calibração fina. Soma-se ao resultado da multiplicação.</span>
-              </div>
+            <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+              <h3 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                <Calculator className="w-4 h-4 text-indigo-600" /> Conversão de Dados
+              </h3>
+              <p className="text-xs text-slate-500 mb-3">
+                O GAIA aplica a fórmula: <code>Valor = (Bruto × Fator) + Offset</code>
+              </p>
+              <ul className="text-sm space-y-2 text-slate-600">
+                <li><strong>Unidade:</strong> A grandeza física (km, °C, m/s).</li>
+                <li><strong>Fator:</strong> Multiplicador de escala. Se o sensor envia o dado multiplicado por 10 (ex: 255 p/ 25.5°C), use Fator 0.1.</li>
+                <li><strong>Offset:</strong> Valor de ajuste somado ao final. Útil para calibração de "ponto zero".</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -124,47 +126,30 @@ export default function ParametersHelpPage() {
 
       <hr className="border-slate-100 my-10" />
 
-      {/* SEÇÃO 3: Funcionalidades da Tela */}
+      {/* SEÇÃO 3: Desativação */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-          3. Barra de Ferramentas
+          3. Zona de Perigo
         </h2>
         
-        <div className="space-y-6">
-          <div className="flex gap-4 items-start">
-            <div className="bg-indigo-50 p-2 rounded-lg text-indigo-600 mt-1">
-              <Search className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900">Busca Textual</h3>
-              <p className="text-sm text-slate-600 mt-1">
-                O campo <em>"Filtrar por nome"</em> permite localizar rapidamente um parâmetro. A busca é feita em tempo real enquanto você digita (Ex: ao digitar "vento", o sistema mostra Rajada, Direção e Velocidade do vento).
-              </p>
-            </div>
+        <div className="bg-red-50 border border-red-100 rounded-xl p-6 flex flex-col md:flex-row gap-8 items-center">
+          <div className="space-y-4 flex-1">
+            <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2">
+              <AlertCircle className="w-5 h-5" /> Desativando um Parâmetro
+            </h3>
+            <p className="text-red-900/80 text-sm leading-relaxed">
+              Ao clicar no botão de desativar, uma confirmação será exigida.
+              <br/><br/>
+              <strong>Cuidado:</strong> Desativar um parâmetro globalmente (ex: "Temperatura") fará com que ele deixe de ser processado em <strong>todas</strong> as estações que o utilizam. O histórico de dados antigos será preservado, mas novas coletas serão ignoradas.
+            </p>
           </div>
-
-          <div className="flex gap-4 items-start">
-            <div className="bg-indigo-50 p-2 rounded-lg text-indigo-600 mt-1">
-              <CheckCircle className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900">Filtro de Status</h3>
-              <p className="text-sm text-slate-600 mt-1">
-                Por padrão, todos os parâmetros ativos e inativos são exibidos. Use o dropdown "Status" para visualizar apenas os <span className="text-green-600 font-bold text-xs border border-green-200 bg-green-50 px-1 rounded">Ativo</span> caso deseje limpar a visualização de itens obsoletos.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4 items-start">
-            <div className="bg-indigo-50 p-2 rounded-lg text-indigo-600 mt-1">
-              <Sliders className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900">Paginação</h3>
-              <p className="text-sm text-slate-600 mt-1">
-                Caso existam muitos parâmetros cadastrados (o sistema suporta centenas), use o seletor "Itens por página" para controlar quantos registros aparecem por vez (10, 20 ou 50).
-              </p>
-            </div>
+          
+          <div className="w-full md:w-1/2">
+             <img 
+               src={modalDesativar} 
+               alt="Modal de confirmação de desativação" 
+               className="rounded-lg shadow-sm border border-red-200 w-full" 
+             />
           </div>
         </div>
       </section>

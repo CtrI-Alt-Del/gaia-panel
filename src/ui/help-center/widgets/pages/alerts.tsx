@@ -1,5 +1,6 @@
 import React from 'react';
-import { Bell, Calendar, Filter, AlertTriangle, Zap, Clock, FileText, RotateCcw } from 'lucide-react';
+import { Bell, Calendar, Filter, AlertTriangle, Zap, Clock, FileText, RotateCcw, List } from 'lucide-react';
+import alertasTela from '../assets/alertas_tela.png';
 
 export default function AlertsHelpPage() {
   return (
@@ -26,27 +27,27 @@ export default function AlertsHelpPage() {
           1. Histórico de Ocorrências
         </h2>
         <p className="mb-6">
-          Enquanto a tela de <em>Alarmes</em> define as regras, a tela de <strong>Alertas</strong> exibe o resultado prático. Cada linha nesta tabela representa um momento no tempo onde uma estação reportou um dado fora dos padrões estabelecidos.
+          Enquanto a tela de <em>Alarmes</em> define as regras (o "se"), a tela de <strong>Alertas</strong> exibe o resultado prático (o "então"). Cada linha nesta tabela representa um momento no tempo onde uma estação reportou um dado fora dos padrões estabelecidos.
         </p>
 
-        {/* Placeholder Imagem Principal */}
-        {/* <figure className="my-6">
+        {/* Imagem Principal */}
+        <figure className="my-6">
           <img 
-            src={require('../../assets/prints/alertas_tela.png')} 
+            src={alertasTela} 
             alt="Tela de listagem de alertas disparados" 
-            className="rounded-xl border border-slate-200 shadow-lg w-full" 
+            className="rounded-xl border border-slate-200 shadow-sm w-full object-cover" 
           />
           <figcaption className="text-sm text-slate-500 text-center mt-2 italic">
-            Figura 1: Log de alertas do sistema mostrando eventos críticos e avisos.
+            Figura 1: Log de alertas do sistema mostrando eventos críticos e avisos com filtros ativos.
           </figcaption>
-        </figure> */}
+        </figure>
 
         <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
           <h3 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
             <Clock className="w-4 h-4 text-indigo-600" /> Retenção de Dados
           </h3>
           <p className="text-sm text-slate-600">
-            Os alertas são registros permanentes de auditoria. Eles informam exatamente <strong>qual</strong> estação falhou, <strong>quando</strong> ocorreu e <strong>qual valor</strong> foi medido naquele instante.
+            Os alertas são registros permanentes de auditoria. Eles informam exatamente <strong>qual</strong> estação falhou, <strong>quando</strong> ocorreu e <strong>qual valor</strong> foi medido naquele instante. Eles não podem ser editados ou apagados, garantindo a integridade do histórico.
           </p>
         </div>
       </section>
@@ -57,7 +58,7 @@ export default function AlertsHelpPage() {
           2. Filtrando Eventos
         </h2>
         <p className="mb-4">
-          Em dias de tempestade ou instabilidade, o volume de alertas pode ser alto. Utilize a barra de ferramentas para focar no que importa.
+          Em dias de tempestade ou instabilidade climática, o volume de alertas pode ser alto. Utilize a barra de ferramentas superior para focar no que realmente importa.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -67,7 +68,7 @@ export default function AlertsHelpPage() {
               <Filter className="w-4 h-4 text-indigo-500" /> Nível
             </div>
             <p className="text-xs text-slate-500">
-              Alterne entre "Todos", "Aviso" (Amarelo) ou "Crítico" (Vermelho) para priorizar os problemas mais graves.
+              Alterne entre <strong>Todos</strong>, <strong>Aviso</strong> (Amarelo - Atenção) ou <strong>Crítico</strong> (Vermelho - Urgente) para priorizar os problemas mais graves.
             </p>
           </div>
 
@@ -77,17 +78,17 @@ export default function AlertsHelpPage() {
               <Calendar className="w-4 h-4 text-indigo-500" /> Data
             </div>
             <p className="text-xs text-slate-500">
-              Selecione um dia específico ou um intervalo para investigar incidentes passados (Retroanálise).
+              Selecione um dia específico ou um intervalo de datas para investigar incidentes passados (Retroanálise de falhas).
             </p>
           </div>
 
-          {/* Botão Limpar */}
+          {/* Paginação */}
           <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:border-indigo-300 transition-colors">
             <div className="flex items-center gap-2 mb-2 font-semibold text-slate-900">
-              <RotateCcw className="w-4 h-4 text-indigo-500" /> Limpar Filtros
+              <List className="w-4 h-4 text-indigo-500" /> Paginação
             </div>
             <p className="text-xs text-slate-500">
-              Remove rapidamente todas as seleções para voltar à visualização em tempo real de todos os eventos.
+              Use "Itens por página" para controlar a densidade da lista (10, 20 ou 50 itens) e os botões "Aplicar" para confirmar seus filtros.
             </p>
           </div>
         </div>
@@ -101,28 +102,39 @@ export default function AlertsHelpPage() {
           3. Detalhes do Incidente
         </h2>
         <p className="mb-6">
-          Cada linha da tabela conta a história completa de um evento. Entenda os dados apresentados:
+          Cada linha da tabela conta a história completa de um evento. Entenda o significado de cada coluna para tomar a decisão correta:
         </p>
 
         <div className="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
           <table className="min-w-full text-sm text-left">
             <thead className="bg-slate-50 text-slate-700 font-semibold">
               <tr>
-                <th className="px-4 py-3 border-b">Coluna</th>
+                <th className="px-4 py-3 border-b w-1/3">Coluna</th>
                 <th className="px-4 py-3 border-b">Significado Operacional</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">
               <tr>
-                <td className="px-4 py-3 font-medium text-slate-900">Parâmetro & Estação</td>
+                <td className="px-4 py-3 font-medium text-slate-900">
+                  <div className="flex flex-col">
+                    <span>Parâmetro</span>
+                    <span className="text-xs text-slate-400 font-normal">Ícone colorido</span>
+                  </div>
+                </td>
                 <td className="px-4 py-3 text-slate-600">
-                  Identifica a origem. Ex: "Pluviosidade" na estação "Kittyfield".
+                  O sensor que detectou o problema (ex: Pluviosidade, Temperatura). O ícone ajuda a identificar visualmente o tipo de dado.
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-medium text-slate-900">Estação</td>
+                <td className="px-4 py-3 text-slate-600">
+                  O nome da estação de origem (ex: "Kittyfield Weather Station"). Essencial para saber onde enviar a equipe de manutenção.
                 </td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-medium text-slate-900">Mensagem</td>
                 <td className="px-4 py-3 text-slate-600">
-                  O texto explicativo configurado na regra do Alarme (Ex: "Pluviosidade muito alta"). Ajuda a entender o contexto sem olhar os números.
+                  O texto explicativo configurado na regra do Alarme (ex: "Pluviosidade muito alta"). Ajuda a entender o contexto sem precisar analisar os números brutos.
                 </td>
               </tr>
               <tr>
@@ -130,12 +142,12 @@ export default function AlertsHelpPage() {
                 <td className="px-4 py-3">
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-xs font-bold">Aviso</span>
-                      <span className="text-slate-500 text-xs">Atenção necessária.</span>
+                      <span className="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-xs font-bold border border-yellow-200">Aviso</span>
+                      <span className="text-slate-500 text-xs">Atenção necessária, monitorar evolução.</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">Crítico</span>
-                      <span className="text-slate-500 text-xs">Risco iminente ou falha grave.</span>
+                      <span className="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold border border-red-200">Crítico</span>
+                      <span className="text-slate-500 text-xs">Risco iminente ou falha grave. Ação imediata.</span>
                     </div>
                   </div>
                 </td>
@@ -143,7 +155,7 @@ export default function AlertsHelpPage() {
               <tr>
                 <td className="px-4 py-3 font-medium text-slate-900">Medição & Unidade</td>
                 <td className="px-4 py-3 text-slate-600">
-                  O "dado culpado". Mostra o valor exato que quebrou a regra (Ex: <strong>99 mm</strong>).
+                  O "dado culpado". Mostra o valor exato que quebrou a regra (Ex: <strong>99 mm</strong>). Compare este valor com o limite do alarme para entender a gravidade.
                 </td>
               </tr>
               <tr>
@@ -161,7 +173,7 @@ export default function AlertsHelpPage() {
           <div>
             <h4 className="font-bold text-indigo-900 text-sm">Dica de Análise</h4>
             <p className="text-sm text-indigo-800 mt-1">
-              Se você notar muitos alertas repetidos de "Crítico" para a mesma estação em um curto período (Ex: a cada 5 minutos), isso pode indicar um sensor defeituoso ou uma situação de emergência contínua. Verifique a tela de <em>Estações</em>.
+              Se você notar muitos alertas repetidos de "Crítico" para a mesma estação em um curto período (Ex: a cada 5 minutos com o mesmo valor), isso pode indicar um sensor travado ou defeituoso, e não necessariamente um evento climático real. Verifique a tela de <em>Estações</em>.
             </p>
           </div>
         </div>

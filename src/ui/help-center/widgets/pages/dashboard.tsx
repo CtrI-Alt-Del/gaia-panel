@@ -1,5 +1,10 @@
 import React from 'react';
-import { Activity, AlertTriangle, Zap, Map, BarChart2, List, Thermometer } from 'lucide-react';
+import { Activity, AlertTriangle, Zap, Map, BarChart2, List } from 'lucide-react';
+
+// Importação das imagens dos ativos
+import dashboardKpis from '../assets/cards_dashboard.jpeg';
+import dashboardOverview from '../assets/dashboard.png';
+import dashboardBottom from '../assets/dashboard2.png';
 
 export default function DashboardHelpPage() {
   return (
@@ -24,18 +29,17 @@ export default function DashboardHelpPage() {
           Localizados no topo da página, estes quatro cartões fornecem um diagnóstico instantâneo da rede de monitoramento.
         </p>
 
-        {/* Placeholder para a Imagem 1 (Topo) */}
-        {/* <figure className="my-6">
+        {/* Imagem dos Cards KPI */}
+        <figure className="my-6">
           <img 
-            src={require('../../assets/manual/dashboard-kpis.jpg')} 
-            alt="Print dos cartões de KPI e Gráfico" 
-            className="rounded-xl border border-slate-200 shadow-lg w-full" 
+            src={dashboardKpis} 
+            alt="Cartões de indicadores principais do Dashboard" 
+            className="rounded-xl border border-slate-200 shadow-sm w-full" 
           />
           <figcaption className="text-sm text-slate-500 text-center mt-2 italic">
-            Figura 1: Visão superior do Dashboard com KPIs e Mapa.
+            Figura 1: Visão detalhada dos indicadores principais.
           </figcaption>
-        </figure> 
-        */}
+        </figure>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
@@ -83,8 +87,20 @@ export default function DashboardHelpPage() {
         <h2 className="text-2xl font-bold text-slate-800 mb-6">
           2. Análise Geográfica e Temporal
         </h2>
+
+        {/* Imagem Geral (Overview) que mostra gráficos e mapas */}
+        <figure className="my-6">
+          <img 
+            src={dashboardOverview} 
+            alt="Visão geral contendo gráficos de evolução e mapa das estações" 
+            className="rounded-xl border border-slate-200 shadow-sm w-full" 
+          />
+          <figcaption className="text-sm text-slate-500 text-center mt-2 italic">
+            Figura 2: Gráfico de histórico de alertas e Mapa geográfico das estações.
+          </figcaption>
+        </figure>
         
-        <div className="space-y-8">
+        <div className="space-y-8 mt-6">
           <div>
             <h3 className="text-xl font-semibold text-slate-700 mb-2 flex items-center gap-2">
               <BarChart2 className="w-5 h-5 text-indigo-600" /> Histórico e Evolução de Alertas
@@ -121,20 +137,19 @@ export default function DashboardHelpPage() {
           A parte inferior do Dashboard é dividida em duas colunas essenciais para a operação diária: Gestão de Incidentes e Auditoria de Dados.
         </p>
 
-        {/* Placeholder para a Imagem 2 (Parte inferior) */}
-        {/* <figure className="my-6">
+        {/* Imagem da parte inferior */}
+        <figure className="my-6">
           <img 
-            src={require('../../assets/manual/dashboard-bottom.png')} 
+            src={dashboardBottom} 
             alt="Listagem de Alertas Recentes e Tabela de Medições" 
-            className="rounded-xl border border-slate-200 shadow-lg w-full" 
+            className="rounded-xl border border-slate-200 shadow-sm w-full" 
           />
           <figcaption className="text-sm text-slate-500 text-center mt-2 italic">
-            Figura 2: Área inferior com lista de alertas e tabela de medições.
+            Figura 3: Área inferior com lista de alertas recentes e tabela de medições em tempo real.
           </figcaption>
-        </figure> 
-        */}
+        </figure>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
           
           {/* Coluna da Esquerda: Alertas */}
           <div>

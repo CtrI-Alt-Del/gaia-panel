@@ -21,7 +21,12 @@ export const ROUTES = {
   users: '/users',
   helpCenter: {
     index: '/help-center',
-    category: '/help-center/:category',
-    doc: '/help-center/:category/:doc',
+    dashboard: '/help-center/dashboard',
+    stations: '/help-center/stations',
+    parameters: '/help-center/parameters',
+    notifications: '/help-center/notifications',
+    alarms: '/help-center/alarms',
+    alerts: '/help-center/alerts',
+    users: '/help-center/users',
   },
 }

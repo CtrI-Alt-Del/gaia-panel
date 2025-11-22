@@ -1,6 +1,6 @@
-import Doc from '@/ui/help-center/widgets/pages/index'
+import Doc from '@/ui/help-center/widgets/pages/stations'
 
-export default function HelpCenterIndexRoute() {
+export default function StationsHelpRoute() {
   return (
     <div className="prose prose-sm dark:prose-invert max-w-none">
       <Doc />

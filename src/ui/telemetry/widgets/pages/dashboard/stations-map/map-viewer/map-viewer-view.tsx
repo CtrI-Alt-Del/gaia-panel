@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+
 import type { StationDto } from '@/core/telemetry/dtos/station-dto'
 import { MapEventsCapturer } from './map-events-capturer'
 
@@ -20,6 +24,7 @@ const MapViewerView = ({ stations, className, onChange }: Props) => {
   const [TileLayer, setTileLayer] = useState<any>(null)
   const [Marker, setMarker] = useState<any>(null)
   const [Popup, setPopup] = useState<any>(null)
+  const [defaultIcon, setDefaultIcon] = useState<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const cleanupRef = useRef<(() => void) | null>(null)
   const onChangeRef = useRef(onChange)
@@ -29,15 +34,31 @@ const MapViewerView = ({ stations, className, onChange }: Props) => {
   }, [onChange])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     const loadLeaflet = async () => {
-      await import('leaflet/dist/leaflet.css')
       const ReactLeaflet = await import('react-leaflet')
+      const leafletModule = await import('leaflet')
+      const L = leafletModule.default ?? leafletModule
+
+      const icon = L.icon({
+        iconUrl: '/images/leaflet-marker-icon.png',
+        iconRetinaUrl: '/images/leaflet-marker-icon-2x.png',
+        shadowUrl: '/images/leaflet-marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+      })
+
+      setDefaultIcon(icon)
       setMapContainer(() => ReactLeaflet.MapContainer)
       setTileLayer(() => ReactLeaflet.TileLayer)
       setMarker(() => ReactLeaflet.Marker)
       setPopup(() => ReactLeaflet.Popup)
       setIsLoaded(true)
     }
+
     loadLeaflet()
   }, [])
 
@@ -49,7 +70,7 @@ const MapViewerView = ({ stations, className, onChange }: Props) => {
     }
   }, [])
 
-  if (!isLoaded || !MapContainer || !TileLayer || !Marker || !Popup) {
+  if (!isLoaded || !MapContainer || !TileLayer || !Marker || !Popup || !defaultIcon) {
     return (
       <div
         className={`bg-muted flex items-center justify-center rounded-lg ${className || ''}`}
@@ -71,7 +92,11 @@ const MapViewerView = ({ stations, className, onChange }: Props) => {
         <MapEventsCapturer onBoundsChange={onChange} />
         <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
         {stations.map((station) => (
-          <Marker key={station.id} position={[station.latitude, station.longitude]}>
+          <Marker
+            key={station.id}
+            position={[station.latitude, station.longitude]}
+            icon={defaultIcon}
+          >
             <Popup>
               <div>
                 <strong>{station.name}</strong>

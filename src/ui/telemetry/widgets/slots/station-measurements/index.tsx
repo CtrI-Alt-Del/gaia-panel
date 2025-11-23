@@ -26,8 +26,6 @@ export const StationMeasurementsSlot = () => {
     onFetchMeasurements: handleFetchMeasurements,
   })
 
-  console.log('StationMeasurementsSlot', { nextCursor, previousCursor })
-
   return (
     <StationMeasurementsSlotView
       defaultDate={loaderData.date ?? undefined}

@@ -93,8 +93,8 @@ export const StationPageView = ({
                 {isAuthenticated && (
                   <>
                     <Dialog
-                      title='Editar Esta??o'
-                      description='Edite as informa??es da esta??o'
+                      title='Editar Estação'
+                      description='Edite as informações da estação'
                       size='2xl'
                       trigger={
                         <button

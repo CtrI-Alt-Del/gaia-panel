@@ -17,6 +17,8 @@ import type { Route } from './+types/root'
 import '@/ui/global/styles/global.css'
 import { Toaster } from '@/ui/shadcn/components/sonner'
 import { PageBackground } from '@/ui/global/widgets/components/page-background'
+import { NotFoundPageView } from '@/ui/errors/widgets/pages/404-page/404-page-view'
+import { InternalServerErrorPage } from '@/ui/errors/widgets/pages/500-page'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -86,11 +88,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   console.log('ErrorBoundary:', error)
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? '404' : 'Error'
-    details =
-      error.status === 404
-        ? 'The requested page could not be found.'
-        : error.statusText || details
+    if (isRouteErrorResponse(error) && error.status === 404) {
+      return <NotFoundPageView />
+    }
+    return <InternalServerErrorPage error={error} />
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message
     stack = error.stack

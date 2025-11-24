@@ -27,7 +27,7 @@ const getContextData = (context: any, contextKey: any) => {
 export const loader = async ({ context }: Route.LoaderArgs) => {
   try {
     const response = await fetch(SERVER_ENV.gaiaServerUrl)
-    console.log('Server response', await response.json())
+    console.log('Server response:', await response.json())
   } catch (error) {
     console.log('error', error)
   }

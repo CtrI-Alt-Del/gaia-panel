@@ -24,5 +24,17 @@ export default [
     route(ROUTES.alarms, 'routes/alerting/alarms-route.tsx'),
     route(ROUTES.alerts, 'routes/alerting/alerts/alerts-route.tsx'),
     route(ROUTES.users, 'routes/membership/users-route.tsx'),
+    layout('layouts/help-center-layout.tsx', [
+      route(ROUTES.helpCenter.index, 'routes/help-center/help-center-route.tsx', [
+        index('routes/help-center/index-route.tsx'),
+        route(ROUTES.helpCenter.dashboard, 'routes/help-center/dashboard-route.tsx'),
+        route(ROUTES.helpCenter.notifications, 'routes/help-center/notifications-route.tsx'),
+        route(ROUTES.helpCenter.stations, 'routes/help-center/stations-route.tsx'),
+        route(ROUTES.helpCenter.parameters, 'routes/help-center/parameters-route.tsx'),
+        route(ROUTES.helpCenter.alarms, 'routes/help-center/alarms-route.tsx'),
+        route(ROUTES.helpCenter.alerts, 'routes/help-center/alerts-route.tsx'),
+        route(ROUTES.helpCenter.users, 'routes/help-center/users-route.tsx'),
+      ]),
+    ]),
   ]),
 ] satisfies RouteConfig

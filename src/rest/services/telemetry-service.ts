@@ -100,6 +100,12 @@ export const TelemetryService = (restClient: RestClient): ITelemetryService => {
       return await restClient.get<StationDto>(`/telemetry/stations/${stationId}`)
     },
 
+    async downloadStationPdf(stationId: string): Promise<RestResponse<Blob>> {
+      return await restClient.get<Blob>(`/telemetry/stations/report/${stationId}`, {
+        responseType: 'blob',
+      })
+    },
+
     async updateStation(
       station: StationDto,
       parameterIds: string[],

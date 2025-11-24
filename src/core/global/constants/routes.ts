@@ -19,4 +19,14 @@ export const ROUTES = {
   configuration: '/configuration',
   profile: '/profile',
   users: '/users',
+  helpCenter: {
+    index: '/help-center',
+    dashboard: '/help-center/dashboard',
+    stations: '/help-center/stations',
+    parameters: '/help-center/parameters',
+    notifications: '/help-center/notifications',
+    alarms: '/help-center/alarms',
+    alerts: '/help-center/alerts',
+    users: '/help-center/users',
+  },
 }

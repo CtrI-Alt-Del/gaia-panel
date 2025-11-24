@@ -36,5 +36,6 @@ export default [
         route(ROUTES.helpCenter.users, 'routes/help-center/users-route.tsx'),
       ]),
     ]),
+    route('*', 'routes/404.tsx'),
   ]),
 ] satisfies RouteConfig

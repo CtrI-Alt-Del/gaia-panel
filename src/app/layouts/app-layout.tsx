@@ -6,7 +6,6 @@ import { RestMiddleware } from '@/app/middlewares/rest-middleware'
 import { MembershipMiddleware } from '@/app/middlewares/membership-middleware'
 import { VisitorMiddleware } from '@/app/middlewares/visitor-middleware'
 import { DashboardLayout } from '@/ui/global/widgets/layouts'
-import { SERVER_ENV } from '@/core/global/constants/server-env'
 import { membershipContext } from '../contexts/membership-context'
 
 export const middleware = [
@@ -25,13 +24,6 @@ const getContextData = (context: any, contextKey: any) => {
 }
 
 export const loader = async ({ context }: Route.LoaderArgs) => {
-  try {
-    const response = await fetch(SERVER_ENV.gaiaServerUrl)
-    console.log('Server response:', await response.json())
-  } catch (error) {
-    console.log('error', error)
-  }
-
   const membershipData = getContextData(context, membershipContext) as
     | { user: any }
     | undefined

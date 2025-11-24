@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { MeasurementDto } from '@/core/dtos/telemetry/measurement-dto'
 import { CLIENT_ENV } from '@/core/global/constants/client-env'
@@ -13,6 +13,8 @@ type Params = {
 }
 
 export function useMeasurementsSocket({ params, onFetchMeasurements }: Params) {
+  const [isLoading, setIsLoading] = useState(true)
+
   useEffect(() => {
     const searchParams = new URLSearchParams(
       Object.entries(params)
@@ -21,21 +23,28 @@ export function useMeasurementsSocket({ params, onFetchMeasurements }: Params) {
     ).toString()
     const es = new EventSource(`${URL}?${searchParams}`)
 
-    function handleMessage(event: MessageEvent) {
+    const handleMessage = (event: MessageEvent) => {
       try {
         const payload = JSON.parse(event.data) as PaginationResponse<MeasurementDto>
-        // console.log('handleMessage', payload)
         onFetchMeasurements(payload)
+        setIsLoading(false)
       } catch (error) {
         console.error('Failed to parse alerts stream payload', error)
+        setIsLoading(false)
       }
     }
 
-    es.addEventListener('message', (event) => handleMessage(event))
+    const handleError = () => setIsLoading(false)
+
+    es.addEventListener('message', handleMessage)
+    es.addEventListener('error', handleError)
 
     return () => {
-      es.removeEventListener('message', (event) => handleMessage(event))
+      es.removeEventListener('message', handleMessage)
+      es.removeEventListener('error', handleError)
       es.close()
     }
   }, [params])
+
+  return { isLoading }
 }

@@ -13,6 +13,7 @@ type Params = {
   previousCursor: string | null
   hasNextPage?: boolean
   hasPreviousPage?: boolean
+  isLoading?: boolean
 }
 
 export const StationMeasurementsSlotView = ({
@@ -22,6 +23,7 @@ export const StationMeasurementsSlotView = ({
   previousCursor,
   hasNextPage,
   hasPreviousPage,
+  isLoading,
 }: Params) => {
   return (
     <div className='px-6'>
@@ -38,6 +40,7 @@ export const StationMeasurementsSlotView = ({
           previousCursor={previousCursor}
           hasNextPage={hasNextPage}
           hasPreviousPage={hasPreviousPage}
+          isLoading={isLoading}
         />
       </div>
     </div>

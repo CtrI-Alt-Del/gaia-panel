@@ -8,7 +8,6 @@ export function useStationMeasurements() {
     useState<PaginationResponse<MeasurementDto> | null>(null)
 
   function handleFetchMeasurements(measurements: PaginationResponse<MeasurementDto>) {
-    console.log('handleFetchMeasurements', measurements)
     setMeasurements(measurements)
   }
 

@@ -78,7 +78,7 @@ export const ParameterFormView = ({
               <FormItem>
                 <FormLabel>Código do Parâmetro</FormLabel>
                 <FormControl>
-                  <Input placeholder='Ex.: a1b2c3d4-e5f6-g7h8' {...field} />
+                  <Input placeholder='Ex.: temp 0.25' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

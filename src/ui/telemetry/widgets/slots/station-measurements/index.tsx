@@ -14,7 +14,7 @@ export const StationMeasurementsSlot = () => {
     hasPreviousPage,
     handleFetchMeasurements,
   } = useStationMeasurements()
-  useMeasurementsSocket({
+  const { isLoading } = useMeasurementsSocket({
     params: {
       stationId: loaderData.station.id,
       pageSize: loaderData.pageSize,
@@ -26,8 +26,6 @@ export const StationMeasurementsSlot = () => {
     onFetchMeasurements: handleFetchMeasurements,
   })
 
-  console.log('StationMeasurementsSlot', { nextCursor, previousCursor })
-
   return (
     <StationMeasurementsSlotView
       defaultDate={loaderData.date ?? undefined}
@@ -36,6 +34,7 @@ export const StationMeasurementsSlot = () => {
       previousCursor={previousCursor}
       hasNextPage={hasNextPage}
       hasPreviousPage={hasPreviousPage}
+      isLoading={isLoading}
     />
   )
 }

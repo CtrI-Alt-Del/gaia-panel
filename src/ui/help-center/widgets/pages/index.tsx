@@ -119,7 +119,7 @@ export default function HelpCenterIndexPage() {
         <div className='grid gap-6 md:grid-cols-2'>
           <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
             <h3 className='font-bold text-slate-900 mb-3 text-lg'>
-              Como faço para começar?
+              Como faço para poder começar?
             </h3>
             <p className='text-slate-600 text-sm leading-relaxed'>
               Recomendamos iniciar pelo <strong>Dashboard</strong> para ter uma visão
